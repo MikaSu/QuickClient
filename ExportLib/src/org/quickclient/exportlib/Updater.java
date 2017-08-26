@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package fi.fortica.dctm;
+package org.quickclient.exportlib;
 
 import com.documentum.fc.client.IDfSession;
 

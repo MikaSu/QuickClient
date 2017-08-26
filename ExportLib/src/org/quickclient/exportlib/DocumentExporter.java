@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fi.fortica.dctm;
+package org.quickclient.exportlib;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
