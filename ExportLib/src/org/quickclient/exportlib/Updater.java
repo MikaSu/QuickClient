@@ -9,8 +9,7 @@ import com.documentum.fc.client.IDfSession;
 
 /**
  * Update attribute of exported document
- * 
- * @author miksuoma
+ *
  */
 class Updater {
 

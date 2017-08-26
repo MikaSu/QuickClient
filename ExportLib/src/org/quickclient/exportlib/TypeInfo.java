@@ -8,8 +8,7 @@ package org.quickclient.exportlib;
 import java.util.ArrayList;
 
 /**
- * 
- * @author miksuoma
+ *
  */
 public class TypeInfo {
 	private String typeName;
@@ -32,7 +31,7 @@ public class TypeInfo {
 
 	/**
 	 * Appends info of attribute type information
-	 * 
+	 *
 	 * @param info
 	 *            info
 	 */
@@ -42,7 +41,7 @@ public class TypeInfo {
 
 	/**
 	 * Gets attribute info
-	 * 
+	 *
 	 * @return attrInfo
 	 */
 	public ArrayList<AttrInfo> getAttributeInfo() {

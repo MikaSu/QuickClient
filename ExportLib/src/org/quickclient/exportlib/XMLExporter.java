@@ -45,7 +45,6 @@ import com.documentum.fc.common.IDfTime;
 
 /**
  *
- * @author miksuoma
  */
 class XMLExporter {
 
@@ -54,7 +53,7 @@ class XMLExporter {
 	private String folderRoot;
 
 	/**
-	 * 
+	 *
 	 * @param session
 	 *            Documentum session
 	 * @param chronicleId

@@ -34,10 +34,10 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.IDfTime;
 
 /**
- * 
- * @author miksuoma
+ *
+
  */
-@SuppressWarnings("restriction")
+
 public class FolderExporter {
 
 	IDfFolder folder = null;
@@ -46,7 +46,7 @@ public class FolderExporter {
 
 	/**
 	 * Set location (folder) of export in local filesystem
-	 * 
+	 *
 	 * @param folder
 	 *            absolule folderpath
 	 */
