@@ -11,58 +11,59 @@ import java.util.Properties;
 
 /**
  *
- * @author miksuoma
  */
 public class ConfigReader {
 
-    private static String configFile = "";
-    private static Properties props = null;
+	private String configFile = "";
+	private Properties props = null;
 
-    private ConfigReader() {
-    }
+	private ConfigReader() {
+	}
 
-    public static ConfigReader getInstance() {
-        return ConfigReaderHolder.INSTANCE;
-    }
+	public static ConfigReader getInstance() {
+		return ConfigReaderHolder.INSTANCE;
+	}
 
-    private static class ConfigReaderHolder {
+	private static class ConfigReaderHolder {
 
-        private static final ConfigReader INSTANCE = new ConfigReader();
-    }
+		private static final ConfigReader INSTANCE = new ConfigReader();
+	}
 
-    public void setConfigFile(String configfile) {
-        configFile = configfile;
-    }
+	public void setConfigFile(final String configfile) {
+		configFile = configfile;
+	}
 
-    public void readProps() {
+	public void readProps() {
 
-        FileInputStream fis = null;
-        try {
-            System.out.println(configFile);
-            fis = new FileInputStream(configFile);
-            props = new Properties();
-            props.load(fis);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        } finally {
-            try {
-                fis.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                System.exit(1);
-            }
-        }
-    }
+		FileInputStream fis = null;
+		try {
+			System.out.println(configFile);
+			fis = new FileInputStream(configFile);
+			props = new Properties();
+			props.load(fis);
+		} catch (final FileNotFoundException ex) {
+			ex.printStackTrace();
+			System.exit(1);
+		} catch (final IOException ex) {
+			ex.printStackTrace();
+			System.exit(1);
+		} finally {
+			try {
+				if (fis != null) {
+					fis.close();
+				}
+			} catch (final IOException ex) {
+				ex.printStackTrace();
+				System.exit(1);
+			}
+		}
+	}
 
-    public String getProperty(String property) {
-        return props.getProperty(property);
-    }
+	public String getProperty(final String property) {
+		return props.getProperty(property);
+	}
 
-    public Properties getAllProps() {
-        return props;
-    }
+	public Properties getAllProps() {
+		return props;
+	}
 }

@@ -13,28 +13,27 @@ import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.common.DfLogger;
 
 /**
- * 
- * @author miksuoma
+ *
+
  */
 public class ExportWorker extends Thread implements Callable<String> {
 
-	IDfSession session = null;
 	Logger log = Logger.getLogger(ExportWorker.class);
+	IDfSession session = null;;
 	ConfigReader cr = ConfigReader.getInstance();
-	private String targetDir;
+	private final String targetDir;
 
+	public ExportWorker(final String threadid, final IDfSession session, final String targetDir) {
 
-	public ExportWorker(String threadid, IDfSession session, String targetDir) {
-		
 		super(threadid);
 		this.session = session;
 		this.targetDir = targetDir;
-		System.out.println("Worker " + threadid + " started.");
+		log.debug("Worker " + threadid + " started.");
 		try {
-			System.out.println("threadid " + threadid + " got session: " + session.getDMCLSessionId());
-		} catch (Exception ex) {
+			log.debug("threadid " + threadid + " got session: " + session.getSessionId());
+		} catch (final Exception ex) {
 			DfLogger.error(this, "Failed to get session, exiting.", null, ex);
-			System.out.println("Doing system.exit, rerun the export set please.");
+			log.error("Doing system.exit, rerun the export set please.");
 			System.exit(1);
 		}
 	}
@@ -43,18 +42,18 @@ public class ExportWorker extends Thread implements Callable<String> {
 	public void run() {
 		if (session != null) {
 			String id = "";
-			XMLExporter e = new XMLExporter();
+			final XMLExporter e = new XMLExporter();
 			while (true) {
 				id = IdHolder.getId();
 				if (id != null) { // TODO fiksaa 53
 					// make folder for each i_chronicle_id.
-					File file = new File(targetDir + "/" + id);
-					boolean success = file.mkdir();
+					final File file = new File(targetDir + "/" + id);
+					final boolean success = file.mkdir();
 					if (success) {
 						e.exportVersionTree(session, id, file, targetDir);
 					} else {
-						System.out.println("Failed to create a folder.");
-						System.out.println("Doing system.exit, rerun the export set please.");
+						log.error("Failed to create a folder.");
+						log.error("Doing system.exit, rerun the export set please.");
 						System.exit(1);
 					}
 
@@ -69,18 +68,18 @@ public class ExportWorker extends Thread implements Callable<String> {
 	public String call() throws Exception {
 		if (session != null) {
 			String id = "";
-			XMLExporter e = new XMLExporter();
+			final XMLExporter e = new XMLExporter();
 			while (true) {
 				id = IdHolder.getId();
 				if (id != null) { // TODO fiksaa 53
 					// make folder for each i_chronicle_id.
-					File file = new File(targetDir + "/" + id);
-					boolean success = file.mkdir();
+					final File file = new File(targetDir + "/" + id);
+					final boolean success = file.mkdir();
 					if (success) {
 						e.exportVersionTree(session, id, file, targetDir);
 					} else {
-						System.out.println("Failed to create a folder.");
-						System.out.println("Doing system.exit, rerun the export set please.");
+						log.error("Failed to create a folder.");
+						log.error("Doing system.exit, rerun the export set please.");
 						return "1";
 					}
 

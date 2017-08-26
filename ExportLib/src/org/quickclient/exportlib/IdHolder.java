@@ -16,6 +16,7 @@ import com.documentum.fc.common.DfLogger;
 public class IdHolder {
 
 	static Vector<String> idlist = new Vector();
+
 	private IdHolder() {
 	}
 
@@ -27,7 +28,7 @@ public class IdHolder {
 		return SingletonHolder.INSTANCE;
 	}
 
-	public static void addId(String id) {
+	public static void addId(final String id) {
 		if (!idlist.contains(id))
 			idlist.add(id);
 		else
@@ -40,14 +41,14 @@ public class IdHolder {
 			id = idlist.remove(0);
 			System.out.println("idlist size is:" + idlist.size());
 			DfLogger.debug(IdHolder.class, "give id: " + id, null, null);
-		} catch (ArrayIndexOutOfBoundsException aiooe) {
+		} catch (final ArrayIndexOutOfBoundsException aiooe) {
 			return DfId.DF_NULLID.getId();
 		}
 		return id;
 	}
 
 	public static String getSize() {
-		String size = String.valueOf(idlist.size());
+		final String size = String.valueOf(idlist.size());
 		return size;
 	}
 }

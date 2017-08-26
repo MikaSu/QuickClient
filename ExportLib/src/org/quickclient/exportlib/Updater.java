@@ -9,12 +9,13 @@ import com.documentum.fc.client.IDfSession;
 
 /**
  * Update attribute of exported document
+ * 
  * @author miksuoma
  */
 class Updater {
 
-    static void updateexportedinfo(IDfSession session, String id, String typeName) {
- 
-    }
+	static void updateexportedinfo(final IDfSession session, final String id, final String typeName) {
+
+	}
 
 }

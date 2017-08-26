@@ -6,44 +6,37 @@ package org.quickclient.exportlib;
 
 import java.util.ArrayList;
 
-
 /**
  *
- * @author miksuoma
  */
 public class TypeInfoHolder {
 
-    static ArrayList<TypeInfo> typeInfo = new ArrayList();
+	static ArrayList<TypeInfo> typeInfo = new ArrayList<>();
 
+	private TypeInfoHolder() {
+	}
 
-    private TypeInfoHolder() {
-    }
+	private static class SingletonHolder {
 
-    private static class SingletonHolder {
+		public static final TypeInfoHolder INSTANCE = new TypeInfoHolder();
+	}
 
-        public static final TypeInfoHolder INSTANCE = new TypeInfoHolder();
-    }
+	public static TypeInfoHolder getInstance() {
+		return SingletonHolder.INSTANCE;
+	}
 
-    public static TypeInfoHolder getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
+	public static void addTypeInfo(final TypeInfo info) {
+		typeInfo.add(info);
+	}
 
-    public static void addTypeInfo(TypeInfo info) {
-        typeInfo.add(info);
-    }
-
-    public synchronized static TypeInfo getTypeInfo(String typeName) {
-        TypeInfo rval = null;
-        for (TypeInfo info: typeInfo) {
-            if (info.getTypeName().equals(typeName)) {
-                rval = info;
-            }
-        }
-        return rval;
-    }
-
+	public static synchronized TypeInfo getTypeInfo(final String typeName) {
+		TypeInfo rval = null;
+		for (final TypeInfo info : typeInfo) {
+			if (info.getTypeName().equals(typeName)) {
+				rval = info;
+			}
+		}
+		return rval;
+	}
 
 }
-
-
-
