@@ -1,0 +1,74 @@
+<menu>
+	<contextmenuitem label="View" class="org.quickclient.actions.ViewAction"/>
+	<contextmenuitem label="View as text" class="org.quickclient.actions.ViewInternalAction" tooltip="View content in internal editor" />
+	<contextmenuitem separator="true"/>
+	<contextmenuitem label="Edit" class="org.quickclient.actions.EditAction"/>
+	<contextmenuitem label="Check out" class="org.quickclient.actions.CheckoutAction"/>
+	<contextmenuitem label="Check in" class="org.quickclient.actions.CheckinAction"/>
+	<contextmenuitem label="Cancel Checkout" class="org.quickclient.actions.CancelCheckoutAction"/>
+	<contextmenuitem label="Export" icon="/export.gif" class="org.quickclient.actions.ExportAction"/>
+	
+	<contextmenuitem label="Lifecycle">
+		<contextmenuitem label="Attach" class="org.quickclient.actions.lifecycle.AttachLCAction"/>
+		<contextmenuitem label="Promote" class="org.quickclient.actions.lifecycle.PromoteLCAction"/>
+		<contextmenuitem label="Demote" class="org.quickclient.actions.lifecycle.DemoteLCAction"/>
+		<contextmenuitem label="Suspend" class="org.quickclient.actions.lifecycle.SuspendLCAction"/>
+		<contextmenuitem label="Resume" class="org.quickclient.actions.lifecycle.ResumeLCAction"/>
+		<contextmenuitem label="Remove" class="org.quickclient.actions.lifecycle.RemoveLCAction"/>
+	</contextmenuitem>
+	<contextmenuitem label="Workflow">
+		<contextmenuitem label="Start workflow" class="org.quickclient.actions.StartWorkflow"/>
+		<contextmenuitem label="Quickflow" class="org.quickclient.actions.Quickflow"/>
+		<contextmenuitem label="Queue to user" class="org.quickclient.actions.Queue" tooltip="Send item to users inbox"/>
+	</contextmenuitem>
+	<contextmenuitem label="Media Services">
+		<contextmenuitem label="Transform" class="org.quickclient.actions.Transform" tooltip="Transform content with MTS"/>
+		<contextmenuitem label="Reset Renditions" class="org.quickclient.actions.ResetRenditions" tooltip="Recreates thumbnail"/>
+	</contextmenuitem>
+	<contextmenuitem label="VDM" tooltip="Virtual Document Management">
+		<contextmenuitem label="Convert to Virtual" class="org.quickclient.actions.ConvertVDM"/>
+		<contextmenuitem label="Convert to Normal Document" class="org.quickclient.actions.ConvertNormalDoc"/>
+		<contextmenuitem label="Edit Virtual" class="org.quickclient.actions.VDEdit" tooltip="Opens Virtual Document Editor"/>
+	</contextmenuitem>
+		<contextmenuitem label="Subscriptions">
+		<contextmenuitem label="Subscribe" class="org.quickclient.actions.Subscribe"/>
+		<contextmenuitem label="Unsubscribe" class="org.quickclient.actions.UnSubscribe"/>
+	</contextmenuitem>
+	<contextmenuitem separator="true"/>
+	<contextmenuitem label="Signing">
+		<contextmenuitem label="Add Electronic Signature" class="org.quickclient.actions.sign.AddESignature"/>
+		<contextmenuitem label="Add Digital Signature" class="org.quickclient.actions.sign.AddDigSignature"/>
+	<contextmenuitem separator="true"/>
+		<contextmenuitem label="Verify Signature" class="org.quickclient.actions.sign.VerifyESignature"/>
+		<contextmenuitem label="Verify Audit" class="org.quickclient.actions.sign.VerifyAudit"/>
+	</contextmenuitem>
+	<contextmenuitem separator="true"/>
+	<contextmenuitem label="Add rendition">
+		<contextmenuitem label="Request PDF Rendition" class="org.quickclient.actions.rendition.RequestPDF"/>
+		<contextmenuitem label="Request HTML Rendition" class="org.quickclient.actions.rendition.RequestHTML"/>
+		<contextmenuitem label="Import PDF Rendition" class="org.quickclient.actions.rendition.ImportPDF" tooltip="Add existing PDF file as rendition"/>
+		<contextmenuitem label="Import Rendition" class="org.quickclient.actions.rendition.ImportRendition" tooltip="Add any file format as rendition"/>
+	</contextmenuitem>
+	<contextmenuitem separator="true"/>
+	<contextmenuitem separator="true"/>
+	<contextmenuitem label="Delete" icon="/Delete.gif" class="org.quickclient.actions.Delete"/>
+	<contextmenuitem label="Rename" class="org.quickclient.actions.Rename"/>
+	<contextmenuitem separator="true"/>
+	<contextmenuitem label="Tools">
+		<contextmenuitem label="Change Permission Set" class="org.quickclient.actions.tools.ChangePermit"/>
+		<contextmenuitem label="Get Delete Permit" class="org.quickclient.actions.tools.GrantDelete"/>
+		<contextmenuitem label="Change Owner" class="org.quickclient.actions.tools.ChangeOwner"/>
+		<contextmenuitem label="Show Filesystem Path" class="org.quickclient.actions.ShowFilesystemPath"/>
+		<contextmenuitem label="Change Object Type" class="org.quickclient.actions.tools.ChangeTypeAction"/>
+		<contextmenuitem label="Set File" class="org.quickclient.actions.tools.SetFile"/>
+		<contextmenuitem label="Compare with local File" class="org.quickclient.actions.tools.CompareLocal"/>
+		<contextmenuitem label="Comsdfadfafd File" class="org.quickclient.actions.tools.ExportFolder"/>
+		<contextmenuitem label="Show Dump" class="org.quickclient.actions.tools.Dump"/>
+		<contextmenuitem label="DmrContent Dump" class="org.quickclient.actions.tools.DumpDmrContent"/>
+		<contextmenuitem label="Attribute Editor" class="org.quickclient.actions.tools.AttrEdit"/>
+		<contextmenuitem label="Generate API" class="org.quickclient.actions.tools.APIGenerator"/>
+		<contextmenuitem label="Copy ID" class="org.quickclient.actions.tools.CopyID"/>
+		<contextmenuitem label="MD5Sum" class="org.quickclient.actions.tools.MD5Calc"/>
+	</contextmenuitem>
+	<contextmenuitem label="Properties" class="org.quickclient.actions.Properties"/>
+</menu>

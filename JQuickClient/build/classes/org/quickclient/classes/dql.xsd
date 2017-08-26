@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="topic">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="String"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="query">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dql"/>
+				<xs:element ref="description"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="queries">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="category" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dql">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="description">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="category">
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="query" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

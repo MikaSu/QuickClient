@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><listattributes>
+	<config id="default">
+		<attribute label="Modify Date" name="r_object_type" type="dm_sysobject"/>
+		<attribute label="Keywords" name="keywords" type="dm_sysobject"/>
+		<attribute label="ID" name="r_object_id" type="dm_sysobject"/>
+		<attribute name="a_content_type" type="dm_sysobject"/>
+	</config>
+	<repository name="documentum">
+		<config id="a">
+			<attribute name="sp_room_initialized" type="sp_web"/>
+			<attribute name="spweb_spfolder_guid" type="sp_web"/>
+			<attribute name="spa_guid" type="sp_web"/>
+			<attribute name="r_object_type" type="dm_sysobject"/>
+		<attribute name="rep_attr" type="custom_folder"/></config>
+		<config id="b">
+			<attribute name="acl_name" type="dm_sysobject"/>
+		</config>
+	</repository>
+	<repository name="repo">
+		<config id="testi">
+			<attribute name="r_version_label" type="dm_sysobject"/>
+			<attribute name="keywords" type="dm_sysobject"/>
+		</config>
+	</repository>
+</listattributes>

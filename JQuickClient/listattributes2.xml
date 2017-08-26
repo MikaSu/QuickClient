@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><listattributes>
+	<config id="eka">
+		<attribute label="Modify Date" name="r_object_type" type="dm_sysobject"/>
+		<attribute label="Keywords" name="keywords" type="dm_sysobject"/>
+		<attribute label="ID" name="r_object_id" type="dm_sysobject"/>
+		<attribute label="Modified" name="r_modify_date" type="dm_sysobject"/>		
+		
+		
+		<attribute name="rep_attr" type="custom_folder"/>
+		
+	<attribute name="a_content_type" type="dm_sysobject"/></config>
+	<config id="toka">
+		<attribute name="r_object_type" type="dm_sysobject"/>
+		<attribute name="asiasanat" type="asiakirja"/>
+	<attribute name="a_compound_architecture" type="asiakirja"/></config>
+</listattributes>
