@@ -9,13 +9,12 @@ import javax.swing.JTable;
 import org.quickclient.actions.IQuickAction;
 import org.quickclient.actions.QCActionException;
 import org.quickclient.classes.DocuSessionManager;
+import org.quickclient.exportlib.DocumentExporter;
 
 import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
-
-import fi.fortica.dctm.DocumentExporter;
 
 public class ExportFolder implements IQuickAction {
 

@@ -10,51 +10,53 @@ package org.quickclient.exportlib;
  */
 class AttrInfo {
 
-    private int datatype = 99;
-    private String attrName = "";
-    private boolean isrep = false;
+	private int datatype = 99;
+	private String attrName = "";
+	private boolean isrep = false;
 
-    /**
-     * @return the datatype
-     */
-    public int getDatatype() {
-        return datatype;
-    }
+	/**
+	 * @return the datatype
+	 */
+	public int getDatatype() {
+		return datatype;
+	}
 
-    /**
-     * @param datatype the datatype to set
-     */
-    public void setDatatype(int datatype) {
-        this.datatype = datatype;
-    }
+	/**
+	 * @param datatype
+	 *            the datatype to set
+	 */
+	public void setDatatype(final int datatype) {
+		this.datatype = datatype;
+	}
 
-    /**
-     * @return the attrName
-     */
-    public String getAttrName() {
-        return attrName;
-    }
+	/**
+	 * @return the attrName
+	 */
+	public String getAttrName() {
+		return attrName;
+	}
 
-    /**
-     * @param attrName the attrName to set
-     */
-    public void setAttrName(String attrName) {
-        this.attrName = attrName;
-    }
+	/**
+	 * @param attrName
+	 *            the attrName to set
+	 */
+	public void setAttrName(final String attrName) {
+		this.attrName = attrName;
+	}
 
-    /**
-     * @return the isrep
-     */
-    public boolean isIsrep() {
-        return isrep;
-    }
+	/**
+	 * @return the isrep
+	 */
+	public boolean isIsrep() {
+		return isrep;
+	}
 
-    /**
-     * @param isrep the isrep to set
-     */
-    public void setIsrep(boolean isrep) {
-        this.isrep = isrep;
-    }
+	/**
+	 * @param isrep
+	 *            the isrep to set
+	 */
+	public void setIsrep(final boolean isrep) {
+		this.isrep = isrep;
+	}
 
-   
 }
