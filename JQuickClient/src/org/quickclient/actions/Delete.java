@@ -28,6 +28,7 @@ public class Delete implements IQuickAction {
 	public void execute() throws QCActionException {
 		final DocuSessionManager smanager = DocuSessionManager.getInstance();
 		IDfSession session = null;
+		final int answer1 = JOptionPane.showConfirmDialog(null, "Delete ALL versions?", "Choose", JOptionPane.YES_NO_OPTION);
 		try {
 			session = smanager.getSession();
 
@@ -36,8 +37,8 @@ public class Delete implements IQuickAction {
 				final String objid = idlist.get(i);
 				final IDfSysObject obj = (IDfSysObject) session.getObject(new DfId(objid));
 				if (objid.startsWith("0b") || objid.startsWith("0c")) {
-					final int answer = JOptionPane.showConfirmDialog(null, "Selected object '" + obj.getObjectName() + "' is folder, should all contents be deleted??!", "Confirm", JOptionPane.YES_NO_OPTION);
-					if (answer == JOptionPane.YES_OPTION) {
+					final int answer2 = JOptionPane.showConfirmDialog(null, "Selected object '" + obj.getObjectName() + "' is folder, should all contents be deleted??!", "Confirm", JOptionPane.YES_NO_OPTION);
+					if (answer2 == JOptionPane.YES_OPTION) {
 						final IDfClientX clientx = new DfClientX();
 						final IDfDeleteOperation deleop = clientx.getDeleteOperation();
 						deleop.setVersionDeletionPolicy(IDfDeleteOperation.ALL_VERSIONS);
@@ -64,12 +65,11 @@ public class Delete implements IQuickAction {
 						}
 					}
 				} else {
-					final int answer = JOptionPane.showConfirmDialog(null, "Delete ALL versions?", "Choose", JOptionPane.YES_NO_OPTION);
 
 					final IDfClientX clientx = new DfClientX();
 					final IDfDeleteOperation deleop = clientx.getDeleteOperation();
 					final IDfOperationNode node = deleop.add(obj);
-					if (answer == JOptionPane.YES_OPTION) {
+					if (answer1 == JOptionPane.YES_OPTION) {
 						deleop.setVersionDeletionPolicy(IDfDeleteOperation.ALL_VERSIONS);
 					} else {
 						deleop.setVersionDeletionPolicy(IDfDeleteOperation.SELECTED_VERSIONS);
