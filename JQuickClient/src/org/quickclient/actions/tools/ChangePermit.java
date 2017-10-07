@@ -2,8 +2,8 @@ package org.quickclient.actions.tools;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JTable;
 
@@ -21,65 +21,61 @@ import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 public class ChangePermit implements IQuickAction {
 
 	private List<String> idlist;
 
 	@Override
-	public void setIdList(List<String> idlist) {
+	public void execute() throws QCActionException {
+
+		final AclBrowserData x = new AclBrowserData();
+
+		final ArrayList<String> myVector = (ArrayList<String>) idlist;
+		final ActionListener al = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final DocuSessionManager smanager = DocuSessionManager.getInstance();
+				IDfSession session = null;
+				try {
+					session = smanager.getSession();
+					for (int i = 0; i < myVector.size(); i++) {
+						final String objid = myVector.get(i);
+						final IDfId id = new DfId(objid);
+						final IDfSysObject obj = (IDfSysObject) session.getObject(id);
+						obj.setString("acl_domain", x.getAclDomain());
+						obj.setString("acl_name", x.getAclName());
+						if (obj.isCheckedOut()) {
+							obj.saveLock();
+						} else {
+							obj.save();
+						}
+					}
+				} catch (final DfException ex) {
+					DfLogger.error(this, null, null, ex);
+					SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
+				} finally {
+					if (session != null) {
+						smanager.releaseSession(session);
+					}
+				}
+			}
+		};
+		final ACLBrowserFrame frame = new ACLBrowserFrame(al, x, true);
+
+		frame.setVisible(true);
+
+	}
+
+	@Override
+	public void setIdList(final List<String> idlist) {
 		this.idlist = idlist;
 
 	}
 
 	@Override
-	public void execute() throws QCActionException {
-		
-			final String newOwner = "";
-			final AclBrowserData x = new AclBrowserData();
-
-			final Vector myVector = (Vector) idlist;
-			ActionListener al = new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					// //System.out.println(e);
-					// //System.out.println(e.getSource().toString());
-					DocuSessionManager smanager = DocuSessionManager.getInstance();
-					IDfSession session = null;
-					try {
-						session = smanager.getSession();
-						for (int i = 0; i < myVector.size(); i++) {
-							String objid = (String) myVector.get(i);
-							IDfId id = new DfId(objid);
-							IDfSysObject obj = (IDfSysObject) session.getObject(id);
-							obj.setString("acl_domain", x.getAclDomain());
-							obj.setString("acl_name", x.getAclName());
-							if (obj.isCheckedOut()) {
-								obj.saveLock();
-							} else {
-								obj.save();
-							}
-						}
-					} catch (DfException ex) {
-						DfLogger.error(this,null,null,ex);
-						SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
-					} finally {
-						if (session != null) {
-							smanager.releaseSession(session);
-						}
-					}
-				}
-			};
-			ACLBrowserFrame frame = new ACLBrowserFrame(al, x, true);
-
-			frame.setVisible(true);
-
-
-	}
-
-	@Override
-	public void setTable(JTable t) {
-
+	public void setTable(final JTable t) {
+		// a
 	}
 
 }

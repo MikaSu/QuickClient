@@ -16,9 +16,8 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 /**
- * 
+ *
  * @author Administrator
  */
 public class DumpFrame extends javax.swing.JFrame {
@@ -26,41 +25,27 @@ public class DumpFrame extends javax.swing.JFrame {
 	DocuSessionManager smanager;
 
 	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+	private IDfId id;
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton jButton1;
+
+	private java.awt.TextArea textArea1;
+	// End of variables declaration//GEN-END:variables
+
+	private String strID;
+
+	/**
 	 * Creates new form DumpFrame
 	 */
 	public DumpFrame() {
 		initComponents();
 		smanager = DocuSessionManager.getInstance();
-		Font font = new Font("Courier", Font.PLAIN, 12);
+		final Font font = new Font("Courier", Font.PLAIN, 12);
 		textArea1.setFont(font);
-	}
-
-	public void initData() {
-
-		IDfSession session = null;
-		try {
-			session = smanager.getSession();
-			if (id != null) {
-				IDfPersistentObject obj = (IDfPersistentObject) session.getObject(id);
-				if (obj != null) {
-					textArea1.setText(obj.dump());
-					textArea1.validate();
-					this.setTitle("Dump of: " + id.getId());
-				} else {
-					DfLogger.error(this, "null obj", null, null);
-					SwingHelper.showErrorMessage("null object", "Failed to fetch object.");
-				}
-			} else {
-				SwingHelper.showErrorMessage("null id", "Failed to fetch object.");				
-			}
-		} catch (DfException e) {
-			DfLogger.error(this, e.getMessage(), null, e);
-			SwingHelper.showErrorMessage("Error", e.getMessage());
-		} finally {
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-		}
 	}
 
 	/**
@@ -81,59 +66,74 @@ public class DumpFrame extends javax.swing.JFrame {
 		jButton1.setMnemonic('C');
 		jButton1.setText("Close");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
 			}
 		});
 		jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseClicked(final java.awt.event.MouseEvent evt) {
 				jButton1MouseClicked(evt);
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
+		final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				layout.createSequentialGroup()
-						.add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(layout.createSequentialGroup().addContainerGap().add(textArea1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
-								.add(layout.createSequentialGroup().add(204, 204, 204).add(jButton1))).addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(org.jdesktop.layout.GroupLayout.TRAILING,
-				layout.createSequentialGroup().addContainerGap().add(textArea1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jButton1).addContainerGap()));
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(layout.createSequentialGroup().add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(layout.createSequentialGroup().addContainerGap().add(textArea1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)).add(layout.createSequentialGroup().add(204, 204, 204).add(jButton1))).addContainerGap()));
+		layout.setVerticalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup().addContainerGap().add(textArea1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jButton1).addContainerGap()));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-		// TODO add your handling code here:
+	public void initData() {
+
+		IDfSession session = null;
+		try {
+			session = smanager.getSession();
+			if (id != null) {
+				final IDfPersistentObject obj = session.getObject(id);
+				if (obj != null) {
+					textArea1.setText(obj.dump());
+					textArea1.validate();
+					this.setTitle("Dump of: " + id.getId());
+				} else {
+					DfLogger.error(this, "null obj", null, null);
+					SwingHelper.showErrorMessage("null object", "Failed to fetch object.");
+				}
+			} else {
+				SwingHelper.showErrorMessage("null id", "Failed to fetch object.");
+			}
+		} catch (final DfException e) {
+			DfLogger.error(this, e.getMessage(), null, e);
+			SwingHelper.showErrorMessage("Error", e.getMessage());
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+		}
+	}
+
+	private void jButton1ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
+		// add your handling code here:
 		this.setVisible(false);
 	}// GEN-LAST:event_jButton1ActionPerformed
 
-	private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton1MouseClicked
-		// TODO add your handling code here:
+	private void jButton1MouseClicked(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton1MouseClicked
+		// add your handling code here:
 
 	}// GEN-LAST:event_jButton1MouseClicked
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	private IDfId id;
-	private String strID;
-
-	public void setstrID(String strid) {
-		this.strID = strid;
-	}
-
-	public void setId(IDfId id) {
+	public void setId(final IDfId id) {
 		this.id = id;
 	}
 
-	public void setTextArea1(java.awt.TextArea textArea1) {
-		this.textArea1 = textArea1;
+	public void setstrID(final String strid) {
+		this.strID = strid;
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton jButton1;
-	private java.awt.TextArea textArea1;
-	// End of variables declaration//GEN-END:variables
+	public void setTextArea1(final java.awt.TextArea textArea1) {
+		this.textArea1 = textArea1;
+	}
 }

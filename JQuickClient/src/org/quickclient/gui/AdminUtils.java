@@ -16,9 +16,9 @@ import org.quickclient.classes.SwingHelper;
 
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.impl.util.RegistryPasswordUtils;
-import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class AdminUtils extends JFrame {
@@ -57,12 +57,12 @@ public class AdminUtils extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("708px"), }, new RowSpec[] { FormFactory.UNRELATED_GAP_ROWSPEC, RowSpec.decode("fill:default"), FormFactory.NARROW_LINE_GAP_ROWSPEC, RowSpec.decode("fill:default"), }));
+		contentPane.setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("708px"), }, new RowSpec[] { FormSpecs.UNRELATED_GAP_ROWSPEC, RowSpec.decode("fill:default"), FormSpecs.NARROW_LINE_GAP_ROWSPEC, RowSpec.decode("fill:default"), }));
 
 		final JPanel encr = new JPanel();
 		encr.setBorder(new TitledBorder(null, "Encryption", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(encr, "2, 2, fill, fill");
-		encr.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("53px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("284px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("50px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("283px"), }, new RowSpec[] { RowSpec.decode("27px"), RowSpec.decode("20px"), }));
+		encr.setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("53px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("284px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("50px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("283px"), }, new RowSpec[] { RowSpec.decode("27px"), RowSpec.decode("20px"), }));
 
 		final JLabel lblNewLabel = new JLabel("Encrypted:");
 		encr.add(lblNewLabel, "2, 1, left, center");
@@ -113,7 +113,7 @@ public class AdminUtils extends JFrame {
 		final JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Dataticket calculator", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(panel_1, "2, 4, fill, fill");
-		panel_1.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("42px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("294px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("53px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("281px"), }, new RowSpec[] { RowSpec.decode("27px"), RowSpec.decode("20px"), }));
+		panel_1.setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("42px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("294px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("53px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("281px"), }, new RowSpec[] { RowSpec.decode("27px"), RowSpec.decode("20px"), }));
 
 		final JLabel lblFilepath = new JLabel("Filepath:");
 		panel_1.add(lblFilepath, "2, 1, left, center");

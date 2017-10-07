@@ -26,7 +26,6 @@ public class ResetRenditions implements IQuickAction {
 			IDfSession session = null;
 			try {
 				session = smanager.getSession();
-
 				ICTSService ctsService = null;
 				final IDfClient client = DfClient.getLocalClient();
 				ctsService = (ICTSService) client.newService(ICTSService.class.getName(), smanager.getSMgr());

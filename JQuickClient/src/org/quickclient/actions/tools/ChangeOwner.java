@@ -20,75 +20,68 @@ import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 public class ChangeOwner implements IQuickAction {
 
 	private List<String> idlist;
 
 	@Override
-	public void setIdList(List<String> idlist) {
+	public void execute() throws QCActionException {
+
+		final UserorGroupSelectorData x = new UserorGroupSelectorData();
+		IDfSession session = null;
+		final DocuSessionManager smanager = DocuSessionManager.getInstance();
+
+		try {
+			for (int i = 0; i < idlist.size(); i++) {
+				final String objid = idlist.get(i);
+				session = smanager.getSession();
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				final ActionListener al = new ActionListener() {
+
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						try {
+							obj.setString("owner_name", x.getUserorGroupname());
+							if (obj.isCheckedOut()) {
+								obj.saveLock();
+							} else {
+								obj.save();
+							}
+
+						} catch (final DfException ex) {
+							DfLogger.error(this, null, null, ex);
+							SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
+						}
+
+					}
+				};
+
+				final UserorGroupSelectorFrame frame = new UserorGroupSelectorFrame(al, x);
+				SwingHelper.centerJFrame(frame);
+				frame.setVisible(true);
+			}
+		} catch (final DfException ex) {
+			DfLogger.error(this, null, null, ex);
+			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+
+	}
+
+	@Override
+	public void setIdList(final List<String> idlist) {
 		this.idlist = idlist;
 
 	}
 
 	@Override
-	public void execute() throws QCActionException {
-	
-		
-			
-				final String newOwner = "";
-				final UserorGroupSelectorData x = new UserorGroupSelectorData();
-				IDfSession session = null;
-				DocuSessionManager smanager = DocuSessionManager.getInstance();
-
-				try {
-					for (int i = 0; i < idlist.size(); i++) {
-					String objid = idlist.get(i);
-					session = smanager.getSession();
-					IDfId id = new DfId(objid);
-					final IDfSysObject obj = (IDfSysObject) session.getObject(id);
-					ActionListener al = new ActionListener() {
-
-						public void actionPerformed(ActionEvent e) {
-							// //System.out.println(e);
-							// //System.out.println(e.getSource().toString());
-							try {
-								obj.setString("owner_name", x.getUserorGroupname());
-								if (obj.isCheckedOut()) {
-									obj.saveLock();
-								} else {
-									obj.save();
-								}
-
-							} catch (DfException ex) {
-								DfLogger.error(this,null,null,ex);
-								SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
-							}
-
-						}
-					};
-				
-					UserorGroupSelectorFrame frame = new UserorGroupSelectorFrame(al, x);
-					SwingHelper.centerJFrame(frame);
-					frame.setVisible(true);
-					}
-				} catch (DfException ex) {
-					DfLogger.error(this,null,null,ex);
-					SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
-				} finally {
-					if (session != null) {
-						smanager.releaseSession(session);
-					}
-
-				}
-			
-		 
-
-	}
-
-	@Override
-	public void setTable(JTable t) {
-
+	public void setTable(final JTable t) {
+		// A
 	}
 
 }

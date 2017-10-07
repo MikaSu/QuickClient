@@ -7,6 +7,7 @@ package org.quickclient.gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -89,88 +91,65 @@ import com.documentum.xml.xdql.IDfXmlQuery;
 
 public class DqlFrameSyntax extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
+
+	public static void main(final String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					final DqlFrameSyntax frame = new DqlFrameSyntax();
+					frame.setVisible(true);
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	DocuSessionManager smanager;
 	private Document document;
 	private boolean usedocbase = false;
-
-	private final String sb = "";
-
+	// private final String sb = "";
 	DQLHistorySingleton history = DQLHistorySingleton.getInstance();
 	private AbstractTokenMakerFactory atmf;
 	private AbstractTokenMakerFactory atmfapi;
 	private DQLCompletionProvider provider;
-
 	private DefaultTableModel tablemodel;
-
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JCheckBox chkShowSQL;
-
 	private javax.swing.JComboBox cmbAttrCombo;
-
 	private javax.swing.JComboBox cmbQueries;
-
 	private javax.swing.JComboBox cmbQueryCategory;
-
 	private javax.swing.JComboBox cmbTypeCombo;
-
 	private javax.swing.JButton cmdHistoryDown1;
-
 	private javax.swing.JButton cmdHistoryUP;
-
 	private javax.swing.JButton cmdQuery;
-
 	private javax.swing.JButton cmdSaveQuery;
-
 	private javax.swing.JPopupMenu dqlPopUp;
-
 	private javax.swing.JButton jButton1;
-
 	private javax.swing.JButton jButton2;
-
 	private javax.swing.JButton jButton3;
-
 	private javax.swing.JLabel jLabel1;
-
 	private javax.swing.JLabel jLabel2;
-
 	private javax.swing.JLabel jLabel3;
-
 	private javax.swing.JLabel jLabel4;
-
 	private javax.swing.JPanel jPanel1;
-
 	private javax.swing.JPanel jPanel2;
-
 	private javax.swing.JPanel jPanel3;
-
 	private javax.swing.JPanel jPanel4;
-
 	private javax.swing.JScrollPane jScrollPane1;
-
 	private javax.swing.JScrollPane jScrollPane2;
-
 	private javax.swing.JScrollPane jScrollPane4;
-
 	private javax.swing.JSeparator jSeparator1;
-
 	private javax.swing.JSeparator jSeparator2;
-
 	private javax.swing.JPopupMenu.Separator jSeparator3;
-
 	private javax.swing.JSplitPane jSplitPane1;
-
 	private javax.swing.JLabel lblTimer;
-
 	private javax.swing.JMenuItem mnuAttributes;
-
 	private javax.swing.JMenuItem mnuCopy;
-
 	private javax.swing.JMenuItem mnuDestroy;
-
 	private javax.swing.JMenuItem mnuDump;
-
 	private javax.swing.JMenuItem mnuExportExcel;
-
 	private javax.swing.JMenuItem mnuSetAcl;
 	private javax.swing.JMenuItem mnuSetAttribute;
 	private javax.swing.JMenuItem mnuShowLocations;
@@ -181,6 +160,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 	private ExJTextArea txtSQL;
 	// End of variables declaration//GEN-END:variables
 	private int historylocation;
+
 	private JCheckBox chckbxXml;
 
 	/** Creates new form DqlFrame */
@@ -373,7 +353,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 	}// GEN-LAST:event_cmdHistoryUPActionPerformed
 
 	private void cmdQueryActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdQueryActionPerformed
-		// TODO add your handling code here:
+
 		if (this.chckbxXml.isSelected() == false) {
 			historylocation = historylocation + 1;
 			this.executeQuery();
@@ -462,13 +442,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 				fos.close();
 			}
 
-		} catch (final XPathExpressionException ex) {
-			DfLogger.error(this, ex.getMessage(), null, ex);
-
-		} catch (final DfException ex) {
-			DfLogger.error(this, ex.getMessage(), null, ex);
-
-		} catch (final IOException ex) {
+		} catch (final XPathExpressionException | DfException | IOException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 
 		} finally {
@@ -493,7 +467,6 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 		setCursor(cur);
 		try {
 			session = smanager.getSession();
-
 			tablemodel = new DefaultTableModel() {
 
 				@Override
@@ -1100,11 +1073,26 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 		gbc_chkShowSQL.gridy = 2;
 		jPanel4.add(chkShowSQL, gbc_chkShowSQL);
 
+		final JButton btnNewWindow = new JButton("New Window");
+		btnNewWindow.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				final DqlFrameSyntax newframe = new DqlFrameSyntax();
+				SwingHelper.centerJFrame(newframe);
+				newframe.setVisible(true);
+			}
+		});
+		btnNewWindow.setMargin(new Insets(2, 2, 2, 2));
+		final GridBagConstraints gbc_btnNewWindow = new GridBagConstraints();
+		gbc_btnNewWindow.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewWindow.gridx = 0;
+		gbc_btnNewWindow.gridy = 3;
+		jPanel4.add(btnNewWindow, gbc_btnNewWindow);
+
 		chckbxXml = new JCheckBox("XML");
 		chckbxXml.setToolTipText("Product DQLXM resultL instead of grid");
 		final GridBagConstraints gbc_chckbxXml = new GridBagConstraints();
-		gbc_chckbxXml.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxXml.gridx = 0;
+		gbc_chckbxXml.gridx = 1;
 		gbc_chckbxXml.gridy = 3;
 		jPanel4.add(chckbxXml, gbc_chckbxXml);
 
@@ -1146,7 +1134,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 				}
 			} else {
 				final String xmlString = Utils.readFileAsString(ConfigService.getInstance().getDqlfile());
-				if (xmlString != null) {
+				if (xmlString != null && !xmlString.isEmpty()) {
 					final DocumentBuilder builder = factory.newDocumentBuilder();
 					document = builder.parse(new InputSource(new StringReader(xmlString)));
 					final XPath xpath = XPathFactory.newInstance().newXPath();
@@ -1207,8 +1195,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButton1ActionPerformed
 
 	private void jButton2ActionPerformed(final java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
-		txtDQL.setText("");
+
 	}
 
 	private void jButton3ActionPerformed(final java.awt.event.ActionEvent evt) {
@@ -1272,7 +1259,6 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 	}// GEN-LAST:event_mnuDestroyActionPerformed
 
 	private void mnuDumpActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuDumpActionPerformed
-		// TODO add your handling code here:
 
 		String val = "";
 		val = (String) tblResult.getValueAt(tblResult.getSelectedRow(), tblResult.getSelectedColumn());
@@ -1313,7 +1299,8 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 				myCell = myRow.createCell(j);
 				final HSSFCellStyle cellStyle = myWorkBook.createCellStyle();
 				final HSSFFont font = myWorkBook.createFont();
-				font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+				// font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+				font.setBold(true);
 				cellStyle.setFont(font);
 				myCell.setCellStyle(cellStyle);
 				myCell.setCellType(Cell.CELL_TYPE_STRING);

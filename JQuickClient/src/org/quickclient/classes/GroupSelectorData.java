@@ -14,20 +14,15 @@ package org.quickclient.classes;
  * @author Administrator
  */
 public class GroupSelectorData {
-    
-    /** Creates a new instance of GroupSelectorData */
-    public GroupSelectorData() {
-    }
-    
-    private String groupName;
 
-    public String getGroupName() {
-        return groupName;
-    }
+	private String groupName;
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-    
-    
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(final String groupName) {
+		this.groupName = groupName;
+	}
+
 }

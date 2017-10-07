@@ -57,20 +57,181 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
-import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
-
 /**
- * 
+ *
  * @author Administrator
  */
 public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 	DocuSessionManager smanager;
 	Logger log = Logger.getLogger(UsergroupManagementFrame.class);
+
+	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JCheckBox chkGroupisPrivate;
+
+	private javax.swing.JCheckBox chkIsDymanic;
+
+	private javax.swing.JCheckBox chkUserActive;
+
+	private javax.swing.JCheckBox chkWFEnabled;
+
+	private javax.swing.JComboBox cmbAliasSet;
+
+	private javax.swing.JComboBox cmbClientCapability;
+
+	private javax.swing.JComboBox cmbGroupClass;
+
+	private javax.swing.JComboBox cmbGroupSource;
+
+	private javax.swing.JComboBox cmbUserAliasSet;
+
+	private javax.swing.JComboBox cmbUserPrivileges;
+
+	private javax.swing.JComboBox cmbuserSource;
+
+	private javax.swing.JButton cmdDeleteGroup;
+
+	private javax.swing.JButton cmdDeleteUser;
+
+	private javax.swing.JButton cmdGroupQuery;
+
+	private javax.swing.JButton cmdNewGroup;
+
+	private javax.swing.JButton cmdNewUser;
+
+	private javax.swing.JButton cmdRenameGroup;
+
+	private javax.swing.JButton cmdSaveGroup;
+
+	private javax.swing.JButton cmdSearchUser;
+
+	private javax.swing.JButton cmdSelectACL;
+
+	private javax.swing.JButton cmdSelectDefaultFolder;
+
+	private javax.swing.JButton cmdSelectGroups;
+
+	private javax.swing.JButton cmdSelectUsers;
+
+	private javax.swing.JButton cmdUserRename;
+
+	private javax.swing.JButton cmdUserSelectDefaultGroup;
+
+	private javax.swing.JButton cmdValidate;
+
+	private javax.swing.JButton cmdviewGroupRenameLog;
+
+	private javax.swing.JButton cmdviewUserRenameLog;
+
+	private javax.swing.JTable groupTable;
+
+	private javax.swing.JButton jButton1;
+
+	private javax.swing.JButton jButton10;
+
+	private javax.swing.JButton jButton2;
+
+	private javax.swing.JButton jButton9;
+
+	private javax.swing.JLabel jLabel1;
+
+	private javax.swing.JLabel jLabel10;
+
+	private javax.swing.JLabel jLabel11;
+
+	private javax.swing.JLabel jLabel12;
+
+	private javax.swing.JLabel jLabel13;
+
+	private javax.swing.JLabel jLabel14;
+
+	private javax.swing.JLabel jLabel15;
+
+	private javax.swing.JLabel jLabel16;
+	private javax.swing.JLabel jLabel17;
+	private javax.swing.JLabel jLabel18;
+	private javax.swing.JLabel jLabel19;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel20;
+	private javax.swing.JLabel jLabel21;
+	private javax.swing.JLabel jLabel22;
+	private javax.swing.JLabel jLabel23;
+	private javax.swing.JLabel jLabel24;
+	private javax.swing.JLabel jLabel25;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel5;
+	private javax.swing.JLabel jLabel6;
+	private javax.swing.JLabel jLabel7;
+	private javax.swing.JLabel jLabel8;
+	private javax.swing.JLabel jLabel9;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel10;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JPanel jPanel3;
+	private javax.swing.JPanel jPanel4;
+	private javax.swing.JPanel jPanel5;
+	private javax.swing.JPanel jPanel6;
+	private javax.swing.JPanel jPanel7;
+	private javax.swing.JPanel jPanel8;
+	private javax.swing.JPanel jPanel9;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane jScrollPane2;
+	private javax.swing.JScrollPane jScrollPane3;
+	private javax.swing.JScrollPane jScrollPane4;
+	private javax.swing.JScrollPane jScrollPane5;
+	private javax.swing.JScrollPane jScrollPane6;
+	private javax.swing.JScrollPane jScrollPane7;
+	private javax.swing.JTabbedPane jTabbedPane1;
+	private javax.swing.JList lstGroups;
+	private javax.swing.JList lstUsers;
+	private javax.swing.JMenuItem mnuDeleteGroupRename;
+	private javax.swing.JMenuItem mnuDeleteUserRename;
+	private javax.swing.JMenuItem mnuViewGroupRename;
+	private javax.swing.JMenuItem mnuViewUserRename;
+	private javax.swing.JPopupMenu popupGruopRename;
+	private javax.swing.JPopupMenu popupUserRename;
+	private javax.swing.JTable tblGroupRename;
+	private javax.swing.JTable tblUserRename;
+	private javax.swing.JTextField txtDefaultFolder;
+	private javax.swing.JTextField txtDefaultGroup;
+	private javax.swing.JTextField txtGroupAddress;
+	private ExJTextArea txtGroupDescription;
+	private javax.swing.JTextField txtGroupFilter;
+	private javax.swing.JTextField txtGroupName;
+	private javax.swing.JTextField txtGroupOwner;
+	private javax.swing.JTextField txtUserACL;
+	private javax.swing.JTextField txtUserDbName;
+	private javax.swing.JTextField txtUserDescription;
+	private javax.swing.JTextField txtUserFilter;
+	private javax.swing.JTextField txtUserName;
+	private javax.swing.JTextField txtUserOsDomain;
+	private javax.swing.JTextField txtUserOsName;
+	private javax.swing.JTextField txtUserPassword;
+	private javax.swing.JTable userTable;
+	// End of variables declaration//GEN-END:variables
+	private DefaultTableModel usertablemodel;
+	private FolderSelectorData folderselectordata;
+	private DefaultTableModel grouptablemodel;
+	private DefaultListModel userlistmodel;
+	private DefaultListModel grouplistmodel;
+	private AclBrowserData acldata;
+	private GroupSelectorData groupselectordata;
+	private UserSelectorData userselectordata;
+	private DefaultTableModel grouprenamemodel;
+	private DefaultTableModel userrenamemodel;
+	private JLabel label;
+	private ExJTextField txtUserAddress;
+	private JLabel label_1;
+	private ExJTextField txtLoginName;
 
 	/**
 	 * Creates new form UsergroupManagementFrame
@@ -87,14 +248,14 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		userrenamemodel = new DefaultTableModel() {
 
 			@Override
-			public boolean isCellEditable(int row, int column) {
+			public boolean isCellEditable(final int row, final int column) {
 				return false;
 			}
 		};
 		grouprenamemodel = new DefaultTableModel() {
 
 			@Override
-			public boolean isCellEditable(int row, int column) {
+			public boolean isCellEditable(final int row, final int column) {
 				return false;
 			}
 		};
@@ -115,56 +276,43 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		grouplistmodel = new DefaultListModel();
 		lstGroups.setModel(grouplistmodel);
 		lstGroups.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		GroupLayout gl_jPanel10 = new GroupLayout(jPanel10);
-		gl_jPanel10.setHorizontalGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_jPanel10
-						.createSequentialGroup()
-						.addGroup(
-								gl_jPanel10
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_jPanel10.createSequentialGroup().addGap(79).addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addComponent(chkGroupisPrivate).addComponent(chkIsDymanic)))
-										.addGroup(gl_jPanel10.createSequentialGroup().addGap(30).addComponent(jLabel22).addGap(4).addComponent(cmbAliasSet, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_jPanel10.createSequentialGroup().addGap(18).addComponent(jLabel21).addGap(4).addComponent(jScrollPane7, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												gl_jPanel10.createSequentialGroup().addGap(39).addComponent(jLabel19).addGap(4).addComponent(txtGroupOwner, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE).addGap(6)
-														.addComponent(jButton10, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												gl_jPanel10.createSequentialGroup().addGap(37).addComponent(jLabel18).addGap(4).addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE).addGap(6)
-														.addComponent(cmdSelectGroups, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												gl_jPanel10.createSequentialGroup().addGap(44).addComponent(jLabel20).addGap(4).addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE).addGap(6)
-														.addComponent(cmdSelectUsers, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_jPanel10.createSequentialGroup().addComponent(jLabel17).addGap(4).addComponent(txtGroupAddress, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_jPanel10.createSequentialGroup().addGap(1).addComponent(jLabel16, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE).addGap(4).addComponent(cmbGroupClass, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_jPanel10.createSequentialGroup().addGap(6).addComponent(jLabel25).addGap(4).addComponent(cmbGroupSource, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_jPanel10.createSequentialGroup().addGap(12).addComponent(jLabel15).addGap(4).addComponent(txtGroupName, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))).addGap(28)));
-		gl_jPanel10.setVerticalGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_jPanel10.createSequentialGroup().addGap(11)
-						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(3).addComponent(jLabel15)).addComponent(txtGroupName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
+		final GroupLayout gl_jPanel10 = new GroupLayout(jPanel10);
+		gl_jPanel10.setHorizontalGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_jPanel10.createSequentialGroup()
+						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(79).addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addComponent(chkGroupisPrivate).addComponent(chkIsDymanic)))
+								.addGroup(gl_jPanel10.createSequentialGroup().addGap(30).addComponent(jLabel22).addGap(4).addComponent(cmbAliasSet, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel10.createSequentialGroup().addGap(18).addComponent(jLabel21).addGap(4).addComponent(jScrollPane7, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_jPanel10.createSequentialGroup().addGap(39).addComponent(jLabel19).addGap(4).addComponent(txtGroupOwner, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE).addGap(6).addComponent(jButton10, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_jPanel10.createSequentialGroup().addGap(37).addComponent(jLabel18).addGap(4).addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE).addGap(6).addComponent(cmdSelectGroups, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_jPanel10.createSequentialGroup().addGap(44).addComponent(jLabel20).addGap(4).addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE).addGap(6).addComponent(cmdSelectUsers, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_jPanel10.createSequentialGroup().addComponent(jLabel17).addGap(4).addComponent(txtGroupAddress, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_jPanel10.createSequentialGroup().addGap(1).addComponent(jLabel16, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE).addGap(4).addComponent(cmbGroupClass, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_jPanel10.createSequentialGroup().addGap(6).addComponent(jLabel25).addGap(4).addComponent(cmbGroupSource, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel10.createSequentialGroup().addGap(12).addComponent(jLabel15).addGap(4).addComponent(txtGroupName, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE)))
+						.addGap(28)));
+		gl_jPanel10.setVerticalGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_jPanel10.createSequentialGroup().addGap(11).addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(3).addComponent(jLabel15)).addComponent(txtGroupName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
 						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(4).addComponent(jLabel25)).addComponent(cmbGroupSource, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
 						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(4).addComponent(jLabel16)).addComponent(cmbGroupClass, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
 						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(3).addComponent(jLabel17)).addComponent(txtGroupAddress, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
 						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addComponent(jLabel20).addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE).addGroup(gl_jPanel10.createSequentialGroup().addGap(65).addComponent(cmdSelectUsers))).addGap(8)
 						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addComponent(jLabel18).addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE).addGroup(gl_jPanel10.createSequentialGroup().addGap(64).addComponent(cmdSelectGroups))).addGap(6)
-						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(3).addComponent(jLabel19)).addComponent(txtGroupOwner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(jButton10))
-						.addGap(6).addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addComponent(jLabel21).addComponent(jScrollPane7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
-						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(4).addComponent(jLabel22)).addComponent(cmbAliasSet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(4)
-						.addComponent(chkIsDymanic, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE).addGap(6).addComponent(chkGroupisPrivate)));
+						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(3).addComponent(jLabel19)).addComponent(txtGroupOwner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(jButton10)).addGap(6)
+						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addComponent(jLabel21).addComponent(jScrollPane7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(6)
+						.addGroup(gl_jPanel10.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel10.createSequentialGroup().addGap(4).addComponent(jLabel22)).addComponent(cmbAliasSet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(4).addComponent(chkIsDymanic, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE).addGap(6).addComponent(chkGroupisPrivate)));
 		jPanel10.setLayout(gl_jPanel10);
 
-		FolderSelectorData xx = new FolderSelectorData();
+		final FolderSelectorData xx = new FolderSelectorData();
 		setFolderselectordata(xx);
-		AclBrowserData adata = new AclBrowserData();
+		final AclBrowserData adata = new AclBrowserData();
 		this.acldata = adata;
-		GroupSelectorData s = new GroupSelectorData();
-		UserSelectorData x = new UserSelectorData();
+		final GroupSelectorData s = new GroupSelectorData();
+		final UserSelectorData x = new UserSelectorData();
 		setGroupselectordata(s);
 		setUserselectordata(x);
 
 		usertablemodel = new DefaultTableModel() {
 
 			@Override
-			public boolean isCellEditable(int row, int column) {
+			public boolean isCellEditable(final int row, final int column) {
 				return false;
 			}
 		};
@@ -176,33 +324,21 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		//
 		userTable.setAutoCreateColumnsFromModel(true);
 		userTable.setModel(usertablemodel);
-		GroupLayout gl_jPanel6 = new GroupLayout(jPanel6);
-		gl_jPanel6.setHorizontalGroup(gl_jPanel6.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_jPanel6
-						.createSequentialGroup()
-						.addGap(10)
-						.addGroup(
-								gl_jPanel6
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_jPanel6.createSequentialGroup().addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE).addContainerGap())
-										.addComponent(jLabel23)
-										.addGroup(
-												gl_jPanel6.createSequentialGroup().addComponent(txtUserFilter, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(cmdSearchUser, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addContainerGap())
-										.addGroup(
-												gl_jPanel6.createSequentialGroup().addComponent(cmdUserRename, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(cmdDeleteUser, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE).addContainerGap()).addComponent(cmdNewUser, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))));
-		gl_jPanel6.setVerticalGroup(gl_jPanel6.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_jPanel6.createSequentialGroup().addComponent(jLabel23).addGap(2).addGroup(gl_jPanel6.createParallelGroup(Alignment.BASELINE).addComponent(txtUserFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(cmdSearchUser)).addGap(7)
-						.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_jPanel6.createParallelGroup(Alignment.BASELINE).addComponent(cmdUserRename).addComponent(cmdDeleteUser)).addGap(6)
-						.addComponent(cmdNewUser)));
+		final GroupLayout gl_jPanel6 = new GroupLayout(jPanel6);
+		gl_jPanel6.setHorizontalGroup(gl_jPanel6.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_jPanel6.createSequentialGroup().addGap(10)
+						.addGroup(gl_jPanel6.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel6.createSequentialGroup().addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE).addContainerGap()).addComponent(jLabel23)
+								.addGroup(gl_jPanel6.createSequentialGroup().addComponent(txtUserFilter, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(cmdSearchUser, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addContainerGap())
+								.addGroup(gl_jPanel6.createSequentialGroup().addComponent(cmdUserRename, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(cmdDeleteUser, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE).addContainerGap()).addComponent(cmdNewUser, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))));
+		gl_jPanel6.setVerticalGroup(gl_jPanel6.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel6.createSequentialGroup().addComponent(jLabel23).addGap(2).addGroup(gl_jPanel6.createParallelGroup(Alignment.BASELINE).addComponent(txtUserFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(cmdSearchUser)).addGap(7)
+				.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_jPanel6.createParallelGroup(Alignment.BASELINE).addComponent(cmdUserRename).addComponent(cmdDeleteUser)).addGap(6).addComponent(cmdNewUser)));
 		jPanel6.setLayout(gl_jPanel6);
 		userTable.validate();
 
 		grouptablemodel = new DefaultTableModel() {
 
 			@Override
-			public boolean isCellEditable(int row, int column) {
+			public boolean isCellEditable(final int row, final int column) {
 				return false;
 			}
 		};
@@ -218,7 +354,7 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		userTable.getColumnModel().getColumn(0).setCellRenderer(new ActivityImageRenderer());
 
 		for (int i = 0; i < 1; i++) {
-			TableColumn col = userTable.getColumnModel().getColumn(i);
+			final TableColumn col = userTable.getColumnModel().getColumn(i);
 			if (i == 0 || i == 1) {
 				col.setPreferredWidth(22);
 				col.setMaxWidth(22);
@@ -230,33 +366,600 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 	}
 
-	private void deleteLog(String objid) {
+	private void cmdDeleteGroupActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdDeleteGroupActionPerformed
+		final int row = groupTable.getSelectedRow();
+		final Vector v = (Vector) grouptablemodel.getDataVector().elementAt(row);
+		// //System.out.println(v);
+		final DokuData d = (DokuData) v.elementAt(1);
+		final String userid = d.getObjID();
 		IDfSession session = null;
 		try {
-			int answer = JOptionPane.showConfirmDialog(this, "Delete selected object?", "Confirm", JOptionPane.YES_NO_OPTION);
+			session = smanager.getSession();
+			final IDfId id = new DfId(userid);
+			final IDfGroup group = (IDfGroup) session.getObject(id);
+			group.destroy();
+			grouptablemodel.removeRow(row);
+			groupTable.validate();
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			DfLogger.error(this, ex.getMessage(), null, ex);
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+	}// GEN-LAST:event_cmdDeleteGroupActionPerformed
+
+	private void cmdDeleteUserActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdDeleteUserActionPerformed
+
+		final int answer = JOptionPane.showConfirmDialog(this, "Destroy selected user, Are you sure??", "Confirm", JOptionPane.YES_NO_OPTION);
+		if (answer == JOptionPane.YES_OPTION) {
+
+			final int row = userTable.getSelectedRow();
+			final Vector v = (Vector) usertablemodel.getDataVector().elementAt(row);
+			final DokuData d = (DokuData) v.elementAt(2);
+			final String userid = d.getObjID();
+			IDfSession session = null;
+			try {
+				session = smanager.getSession();
+				final IDfId id = new DfId(userid);
+				final IDfUser user = (IDfUser) session.getObject(id);
+				user.destroy();
+				usertablemodel.removeRow(row);
+				userTable.validate();
+			} catch (final DfException ex) {
+				JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+				log.error(ex);
+			} finally {
+				if (session != null) {
+					smanager.releaseSession(session);
+				}
+			}
+		}
+
+	}// GEN-LAST:event_cmdDeleteUserActionPerformed
+
+	private void cmdGroupQueryActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdGroupQueryActionPerformed
+		final String groupFilter = txtGroupFilter.getText();
+		grouptablemodel.setRowCount(0);
+		IDfCollection col = null;
+		IDfSession session = null;
+		try {
+			session = smanager.getSession();
+			final IDfQuery query = new DfQuery();
+			query.setDQL("select group_name, r_object_id from dm_group where group_name like '" + groupFilter + "%' order by group_name ENABLE (RETURN_TOP 1000)");
+			col = query.execute(session, IDfQuery.DF_READ_QUERY);
+			while (col.next()) {
+				final Vector<Object> vx = new Vector<Object>();
+				final String jep = col.getString("group_name");
+				vx.add(jep);
+				final DokuData data = new DokuData(col.getString("r_object_id"));
+				vx.add(data);
+				grouptablemodel.addRow(vx);
+			}
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			log.error(ex);
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+			if (col != null) {
+				try {
+					col.close();
+				} catch (final DfException e) {
+				}
+			}
+		}
+		groupTable.setModel(grouptablemodel);
+		groupTable.validate();
+
+	}// GEN-LAST:event_cmdGroupQueryActionPerformed
+
+	private void cmdNewGroupActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdNewGroupActionPerformed
+		txtGroupName.setEditable(true);
+	}// GEN-LAST:event_cmdNewGroupActionPerformed
+
+	private void cmdNewUserActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdNewUserActionPerformed
+
+		txtUserName.setEditable(true);
+
+		txtUserName.setText("");
+
+		txtDefaultFolder.setText("");
+		txtDefaultGroup.setText("docu");
+		txtUserAddress.setText("replaceme@test");
+		txtUserDbName.setText("");
+		txtLoginName.setText("");
+		txtUserDescription.setText("");
+		txtUserOsDomain.setText("");
+		txtUserOsName.setText("");
+		acldata.setAclDomain("dm_dbo");
+		acldata.setAclName("Global User Default ACL");
+		txtLoginName.setText("");
+		txtUserACL.setText(acldata.getAclName() + "@" + acldata.getAclDomain());
+		cmbUserPrivileges.setSelectedIndex(0);
+
+		chkUserActive.setSelected(true);
+		chkWFEnabled.setSelected(true);
+
+	}// GEN-LAST:event_cmdNewUserActionPerformed
+
+	private void cmdRenameGroupActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdRenameGroupActionPerformed
+
+		final int row = groupTable.getSelectedRow();
+		final Vector v = (Vector) grouptablemodel.getDataVector().elementAt(row);
+		// //System.out.println(v);
+		final DokuData d = (DokuData) v.elementAt(1);
+		final String userid = d.getObjID();
+		IDfSession session = null;
+		try {
+			session = smanager.getSession();
+			final IDfId id = new DfId(userid);
+			final IDfGroup group = (IDfGroup) session.getObject(id);
+			final String newUserName = JOptionPane.showInputDialog("Enter New Groupname for: " + group.getGroupName());
+
+			final IDfFolder folder = session.getFolderByPath("/System/Sysadmin/GroupRename");
+			if (folder == null) {
+				final IDfSysObject sobj = (IDfSysObject) session.newObject("dm_folder");
+				sobj.setString("object_name", "GroupRename");
+				sobj.setString("acl_domain", "dm_dbo");
+				sobj.setString("acl_name", "dm_acl_superusers");
+				sobj.link("/System/Sysadmin");
+				sobj.save();
+			}
+
+			final IDfSysObject jrobj = (IDfSysObject) session.newObject("dm_job_request");
+			jrobj.setString("object_name", "GroupRename");
+			jrobj.setString("job_name", "dm_GroupRename");
+			jrobj.setString("method_name", "dm_GroupRename");
+			jrobj.setBoolean("request_completed", false);
+			jrobj.setRepeatingString("arguments_keys", 0, "OldGroupName");
+			jrobj.setRepeatingString("arguments_keys", 1, "NewGroupName");
+			jrobj.setRepeatingString("arguments_keys", 2, "report_only");
+			jrobj.setRepeatingString("arguments_keys", 3, "unlock_locked_obj");
+			jrobj.setRepeatingString("arguments_values", 0, group.getGroupName());
+			jrobj.setRepeatingString("arguments_values", 1, newUserName);
+			jrobj.setRepeatingString("arguments_values", 2, "F");
+			jrobj.setRepeatingString("arguments_values", 3, "T");
+
+			jrobj.link("/System/Sysadmin/GroupRename");
+			jrobj.save();
+
+			final IDfPersistentObject jobobj = session.getObjectByQualification("dm_job where object_name = 'dm_GroupRename'");
+			if (jobobj != null) {
+				jobobj.setInt("run_now", 1);
+				jobobj.save();
+			}
+
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			DfLogger.error(this, ex.getMessage(), null, ex);
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+
+	}// GEN-LAST:event_cmdRenameGroupActionPerformed
+
+	private void cmdSaveGroupActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSaveGroupActionPerformed
+
+		IDfSession session = null;
+		try {
+			session = smanager.getSession();
+			final String groupname = txtGroupName.getText();
+			IDfGroup group = null;
+			if (txtGroupName.isEditable()) {
+				final IDfGroup tempgroup = session.getGroup(groupname);
+				if (tempgroup == null) {
+					group = (IDfGroup) session.newObject("dm_group");
+					group.setGroupName(groupname);
+				} else {
+					JOptionPane.showMessageDialog(null, "Group with name '" + groupname + "' already exists.", "Duplicate name found.", JOptionPane.INFORMATION_MESSAGE);
+					return;
+
+				}
+			} else {
+				group = session.getGroup(groupname);
+			}
+
+			group.setString("group_source", (String) cmbGroupSource.getSelectedItem());
+			group.setGroupAddress(txtGroupAddress.getText());
+			group.setDescription(txtGroupDescription.getText());
+			group.setOwnerName(txtGroupOwner.getText());
+			group.truncate("users_names", 0);
+			for (int i = 0; i < userlistmodel.size(); i++) {
+				group.addUser((String) userlistmodel.get(i));
+			}
+			group.truncate("groups_names", 0);
+			for (int i = 0; i < grouplistmodel.size(); i++) {
+				group.addGroup((String) grouplistmodel.get(i));
+			}
+			group.setPrivate(chkGroupisPrivate.isSelected());
+			group.setDynamic(chkIsDymanic.isSelected());
+			group.save();
+			SwingHelper.showMessage("Group Saved");
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			log.error(ex);
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+		}
+	}// GEN-LAST:event_cmdSaveGroupActionPerformed
+
+	private void cmdSearchUserActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSearchUserActionPerformed
+
+		usertablemodel.setRowCount(0);
+		final String filter = txtUserFilter.getText();
+		IDfSession session = null;
+		IDfCollection col = null;
+		try {
+			session = smanager.getSession();
+			final IDfQuery query = new DfQuery();
+			System.out.println("'" + filter + "'");
+			if (filter.length() < 1) {
+				query.setDQL("select user_state, r_object_id, user_name from dm_user where r_is_group=0 order by user_name ENABLE (RETURN_TOP 1000)");
+			} else {
+				query.setDQL("select user_state, r_object_id, user_name from dm_user where r_is_group=0 and " + "(user_name like '" + filter + "%' or user_os_name like '" + filter + "%' or user_login_name like  '" + filter + "%') " + "order by user_name ENABLE (RETURN_TOP 100)");
+			}
+			col = query.execute(session, IDfQuery.DF_READ_QUERY);
+			while (col.next()) {
+				final Vector<Object> vx = new Vector<Object>();
+				final String state = col.getString("user_state");
+				vx.add(state);
+				final String jep = col.getString("user_name");
+				vx.add(jep);
+				final DokuData data = new DokuData(col.getString("r_object_id"));
+				vx.add(data);
+				usertablemodel.addRow(vx);
+			}
+
+			userTable.setModel(usertablemodel);
+			userTable.validate();
+		} catch (final Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			DfLogger.error(this, ex.getMessage(), null, ex);
+		} finally {
+			if (col != null) {
+				try {
+					col.close();
+				} catch (final DfException ex) {
+				}
+			}
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+
+	}// GEN-LAST:event_cmdSearchUserActionPerformed
+
+	private void cmdSelectACLActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectACLActionPerformed
+
+		final ActionListener a = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				txtUserACL.setText(acldata.getAclName() + "@" + acldata.getAclDomain());
+			}
+		};
+		final ACLBrowserFrame frame = new ACLBrowserFrame(a, acldata, true);
+		frame.setVisible(true);
+
+	}// GEN-LAST:event_cmdSelectACLActionPerformed
+
+	private void cmdSelectDefaultFolderActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectDefaultFolderActionPerformed
+		// TODO add your handling code here:
+
+		// //System.out.println("folderselectordata on call: " +
+		// getFolderselectordata());
+		final ActionListener a = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				txtDefaultFolder.setText(getFolderselectordata().getFolderPath());
+			}
+		};
+		final FolderSelectorFrame frame = new FolderSelectorFrame(a, getFolderselectordata());
+		SwingHelper.centerJFrame(frame);
+		frame.initAll();
+		frame.setVisible(true);
+
+	}// GEN-LAST:event_cmdSelectDefaultFolderActionPerformed
+
+	private void cmdSelectGroupsActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectGroupsActionPerformed
+
+		final GroupsinGroupData gigData = new GroupsinGroupData();
+		final Vector<Object> groupVector = new Vector<Object>();
+		final ListModel model = lstGroups.getModel();
+		final int modelsize = model.getSize();
+		for (int i = 0; i < modelsize; i++) {
+			groupVector.add(model.getElementAt(i));
+		}
+		gigData.setGroupMembers(groupVector);
+		final ActionListener a = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				// //System.out.println(e);
+				// //System.out.println(e.getSource().toString());
+				grouplistmodel.clear();
+				for (int i = 0; i < gigData.getGroupMembers().size(); i++) {
+					final String username = (String) gigData.getGroupMembers().get(i);
+					// //System.out.println(username);
+					grouplistmodel.addElement(username);
+				}
+				lstGroups.validate();
+			}
+		};
+		final GroupEditorGroups frame = new GroupEditorGroups(a, gigData);
+		SwingHelper.centerJFrame(frame);
+		frame.setVisible(true);
+	}// GEN-LAST:event_cmdSelectGroupsActionPerformed
+
+	private void cmdSelectUsersActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectUsersActionPerformed
+		final UsersInGroupData uigData = new UsersInGroupData();
+		final Vector<Object> userVector = new Vector<Object>();
+		final ListModel model = lstUsers.getModel();
+		final int modelsize = model.getSize();
+		for (int i = 0; i < modelsize; i++) {
+			userVector.add(model.getElementAt(i));
+		}
+		uigData.setGroupMembers(userVector);
+		final ActionListener a = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				// //System.out.println(e);
+				// //System.out.println(e.getSource().toString());
+				userlistmodel.clear();
+				for (int i = 0; i < uigData.getGroupMembers().size(); i++) {
+					final String username = (String) uigData.getGroupMembers().get(i);
+					// //System.out.println(username);
+					userlistmodel.addElement(username);
+				}
+				lstGroups.validate();
+			}
+		};
+		final GroupEditorUsers frame = new GroupEditorUsers(a, uigData);
+		// frame.setSession(session);
+		SwingHelper.centerJFrame(frame);
+		frame.setVisible(true);
+	}// GEN-LAST:event_cmdSelectUsersActionPerformed
+
+	private void cmdUserRenameActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdUserRenameActionPerformed
+
+		final int row = userTable.getSelectedRow();
+		final Vector v = (Vector) usertablemodel.getDataVector().elementAt(row);
+		// //System.out.println(v);
+		final DokuData d = (DokuData) v.elementAt(2);
+		final String userid = d.getObjID();
+		IDfSession session = null;
+		try {
+			session = smanager.getSession();
+			final IDfId id = new DfId(userid);
+			final IDfUser user = (IDfUser) session.getObject(id);
+			final String newUserName = JOptionPane.showInputDialog("Enter New User Name for: " + user.getUserName());
+
+			final IDfFolder folder = session.getFolderByPath("/System/Sysadmin/UserRename");
+			if (folder == null) {
+				final IDfSysObject sobj = (IDfSysObject) session.newObject("dm_folder");
+				sobj.setString("object_name", "UserRename");
+				sobj.setString("acl_domain", "dm_dbo");
+				sobj.setString("acl_name", "dm_acl_superusers");
+				sobj.link("/System/Sysadmin");
+				sobj.save();
+			}
+
+			final IDfSysObject jrobj = (IDfSysObject) session.newObject("dm_job_request");
+			jrobj.setString("object_name", "UserRename");
+			jrobj.setString("job_name", "dm_UserRename");
+			jrobj.setString("method_name", "dm_UserRename");
+			jrobj.setBoolean("request_completed", false);
+			jrobj.setRepeatingString("arguments_keys", 0, "OldUserName");
+			jrobj.setRepeatingString("arguments_keys", 1, "NewUserName");
+			jrobj.setRepeatingString("arguments_keys", 2, "report_only");
+			jrobj.setRepeatingString("arguments_keys", 3, "unlock_locked_obj");
+			jrobj.setRepeatingString("arguments_values", 0, user.getUserName());
+			jrobj.setRepeatingString("arguments_values", 1, newUserName);
+			jrobj.setRepeatingString("arguments_values", 2, "F");
+			jrobj.setRepeatingString("arguments_values", 3, "T");
+
+			jrobj.link("/System/Sysadmin/UserRename");
+			jrobj.save();
+
+			final IDfPersistentObject jobobj = session.getObjectByQualification("dm_job where object_name = 'dm_UserRename'");
+			if (jobobj != null) {
+				jobobj.setInt("run_now", 1);
+				jobobj.save();
+			}
+
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			log.error(ex);
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+
+	}// GEN-LAST:event_cmdUserRenameActionPerformed
+
+	private void cmdUserSelectDefaultGroupActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdUserSelectDefaultGroupActionPerformed
+		final ActionListener a = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				// //System.out.println(e);
+				// //System.out.println(e.getSource().toString());
+				txtDefaultGroup.setText(groupselectordata.getGroupName());
+			}
+		};
+		final GroupSelectorFrame frame = new GroupSelectorFrame(a, groupselectordata);
+		SwingHelper.centerJFrame(frame);
+		frame.setVisible(true);
+	}// GEN-LAST:event_cmdUserSelectDefaultGroupActionPerformed
+
+	private void cmdValidateActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdValidateActionPerformed
+	}// GEN-LAST:event_cmdValidateActionPerformed
+
+	private void cmdviewGroupRenameLogActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdviewGroupRenameLogActionPerformed
+		final String objid = getIDfromGroupTable();
+		viewLog(objid);
+	}// GEN-LAST:event_cmdviewGroupRenameLogActionPerformed
+
+	private void cmdviewUserRenameLogActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdviewUserRenameLogActionPerformed
+		final String objid = getIDfromUserTable();
+		viewLog(objid);
+	}// GEN-LAST:event_cmdviewUserRenameLogActionPerformed
+
+	private void deleteLog(final String objid) {
+		IDfSession session = null;
+		try {
+			final int answer = JOptionPane.showConfirmDialog(this, "Delete selected object?", "Confirm", JOptionPane.YES_NO_OPTION);
 			if (answer == JOptionPane.YES_OPTION) {
-				Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+				final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
 
 				setCursor(cur);
 				session = smanager.getSession();
-				IDfId id = new DfId(objid);
-				IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
 				obj.destroy();
 				updateGroupRenameTable();
 				updateUserRenameTable();
 			}
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			log.error(ex);
 			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			if (session != null) {
 				smanager.releaseSession(session);
 			}
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
 
 			setCursor(cur2);
 		}
 	}
+
+	public FolderSelectorData getFolderselectordata() {
+		return folderselectordata;
+	}
+
+	public GroupSelectorData getGroupselectordata() {
+		return groupselectordata;
+	}
+
+	private String getIDfromGroupTable() {
+		final int row = tblGroupRename.getSelectedRow();
+		String objid = "0000000000000000";
+		if (row != -1) {
+			final Vector v = (Vector) grouprenamemodel.getDataVector().elementAt(row);
+			// //System.out.println(v);
+			final DokuData d = (DokuData) v.elementAt(5);
+			objid = d.getObjID();
+		}
+		return objid;
+
+	}
+
+	private String getIDfromUserTable() {
+
+		String objid = "0000000000000000";
+		final int row = tblUserRename.getSelectedRow();
+		if (row != -1) {
+			final Vector v = (Vector) userrenamemodel.getDataVector().elementAt(row);
+			// //System.out.println(v);
+			final DokuData d = (DokuData) v.elementAt(5);
+			objid = d.getObjID();
+
+		}
+		return objid;
+
+	}
+
+	public UserSelectorData getUserselectordata() {
+		return userselectordata;
+	}
+
+	private void groupTableMouseReleased(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_groupTableMouseReleased
+		txtGroupName.setEditable(false);
+		final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+		setCursor(cur);
+		userlistmodel.clear();
+		grouplistmodel.clear();
+		final Vector<String> users = new Vector<String>();
+		final Vector<String> groups = new Vector<String>();
+		final int row = groupTable.getSelectedRow();
+		final Vector v = (Vector) grouptablemodel.getDataVector().elementAt(row);
+		// //System.out.println(v);
+		final DokuData d = (DokuData) v.elementAt(1);
+		final String groupid = d.getObjID();
+		IDfSession session = null;
+		try {
+			final IDfId id = new DfId(groupid);
+			session = smanager.getSession();
+
+			final IDfGroup group = (IDfGroup) session.getObject(id);
+			cmbGroupSource.setSelectedItem(group.getString("group_source"));
+			txtGroupName.setText(group.getString("group_name"));
+			txtGroupDescription.setText(group.getString("description"));
+			txtGroupAddress.setText(group.getString("group_address"));
+			txtGroupOwner.setText(group.getString("owner_name"));
+			final int userCount = group.getValueCount("users_names");
+			for (int i = 0; i < userCount; i++) {
+				users.add(group.getRepeatingString("users_names", i));
+			}
+			Collections.sort(users);
+			for (final String s : users) {
+				userlistmodel.addElement(s);
+			}
+
+			final int groupCount = group.getValueCount("groups_names");
+			for (int j = 0; j < groupCount; j++) {
+				// grouplistmodel.addElement(group.getRepeatingString("groups_names",
+				// j));
+				groups.add(group.getRepeatingString("groups_names", j));
+			}
+			Collections.sort(groups);
+			for (final String s : groups) {
+				grouplistmodel.addElement(s);
+			}
+
+			final boolean isprivate = group.getBoolean("is_private");
+
+			if (isprivate) {
+				chkGroupisPrivate.setSelected(true);
+			} else {
+				chkGroupisPrivate.setSelected(false);
+			}
+
+			final boolean isdynamic = group.getDynamic();
+			if (isdynamic) {
+				chkIsDymanic.setSelected(true);
+			} else {
+				chkIsDymanic.setSelected(false);
+			}
+
+			lstUsers.validate();
+			lstGroups.validate();
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			DfLogger.error(this, ex.getMessage(), null, ex);
+		} finally {
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+			setCursor(cur2);
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+	}// GEN-LAST:event_groupTableMouseReleased
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -266,7 +969,7 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		java.awt.GridBagConstraints gridBagConstraints;
+		final java.awt.GridBagConstraints gridBagConstraints;
 
 		popupUserRename = new javax.swing.JPopupMenu();
 		mnuViewUserRename = new javax.swing.JMenuItem();
@@ -373,7 +1076,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		mnuViewUserRename.setText("View");
 		mnuViewUserRename.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuViewUserRenameActionPerformed(evt);
 			}
 		});
@@ -381,7 +1085,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		mnuDeleteUserRename.setText("Delete");
 		mnuDeleteUserRename.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuDeleteUserRenameActionPerformed(evt);
 			}
 		});
@@ -389,7 +1094,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		mnuViewGroupRename.setText("View");
 		mnuViewGroupRename.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuViewGroupRenameActionPerformed(evt);
 			}
 		});
@@ -397,7 +1103,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		mnuDeleteGroupRename.setText("Delete");
 		mnuDeleteGroupRename.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuDeleteGroupRenameActionPerformed(evt);
 			}
 		});
@@ -407,7 +1114,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		setLocationByPlatform(true);
 
 		jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
-			public void stateChanged(javax.swing.event.ChangeEvent evt) {
+			@Override
+			public void stateChanged(final javax.swing.event.ChangeEvent evt) {
 				jTabbedPane1StateChanged(evt);
 			}
 		});
@@ -415,7 +1123,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Users"));
 
 		jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseReleased(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseReleased(final java.awt.event.MouseEvent evt) {
 				jScrollPane2MouseReleased(evt);
 			}
 		});
@@ -426,7 +1135,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		}, new String[] { "UserName" }) {
 			boolean[] canEdit = new boolean[] { false };
 
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
+			@Override
+			public boolean isCellEditable(final int rowIndex, final int columnIndex) {
 				return canEdit[columnIndex];
 			}
 		});
@@ -435,7 +1145,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		userTable.setShowHorizontalLines(false);
 		userTable.setShowVerticalLines(false);
 		userTable.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseReleased(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseReleased(final java.awt.event.MouseEvent evt) {
 				userTableMouseReleased(evt);
 			}
 		});
@@ -444,7 +1155,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdUserRename.setMnemonic('r');
 		cmdUserRename.setText("Rename");
 		cmdUserRename.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdUserRenameActionPerformed(evt);
 			}
 		});
@@ -452,7 +1164,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdDeleteUser.setMnemonic('d');
 		cmdDeleteUser.setText("Delete");
 		cmdDeleteUser.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdDeleteUserActionPerformed(evt);
 			}
 		});
@@ -460,7 +1173,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdSearchUser.setText("GO");
 		cmdSearchUser.setMargin(new java.awt.Insets(1, 8, 1, 8));
 		cmdSearchUser.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdSearchUserActionPerformed(evt);
 			}
 		});
@@ -469,79 +1183,39 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		cmdNewUser.setText("New User");
 		cmdNewUser.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdNewUserActionPerformed(evt);
 			}
 		});
 
 		jButton1.setText("Close");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
 			}
 		});
 
 		jButton2.setText("Save");
 		jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseClicked(final java.awt.event.MouseEvent evt) {
 				jButton2MouseClicked(evt);
 			}
 		});
 		jButton2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jButton2ActionPerformed(evt);
 			}
 		});
 
 		jPanel7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-		jPanel7.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.UNRELATED_GAP_COLSPEC,
-				ColumnSpec.decode("81px"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("196px:grow"),
-				ColumnSpec.decode("18px"),
-				ColumnSpec.decode("43px"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				RowSpec.decode("21px"),
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("22px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("21px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("21px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("22px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("21px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("22px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("15px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("15px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("15px"),}));
+		jPanel7.setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.UNRELATED_GAP_COLSPEC, ColumnSpec.decode("81px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("196px:grow"), ColumnSpec.decode("18px"), ColumnSpec.decode("43px"), FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, },
+				new RowSpec[] { RowSpec.decode("21px"), RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("22px"),
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("21px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("21px"), FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("22px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("21px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"),
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("22px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("15px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("15px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("15px"), }));
 
 		jLabel1.setLabelFor(txtUserName);
 		jLabel1.setText("User Name:");
@@ -591,11 +1265,11 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		jLabel9.setLabelFor(cmbUserPrivileges);
 		jLabel9.setText("User Privileges:");
 		jPanel7.add(jLabel9, "2, 20, left, top");
-		
-		JLabel lblExtPrivileges = new JLabel("Audit Privileges:");
+
+		final JLabel lblExtPrivileges = new JLabel("Audit Privileges:");
 		jPanel7.add(lblExtPrivileges, "2, 22, left, top");
-		
-		JComboBox cmbXPrivileges = new JComboBox();
+
+		final JComboBox cmbXPrivileges = new JComboBox();
 		jPanel7.add(cmbXPrivileges, "4, 22, 3, 1, fill, default");
 
 		jLabel10.setLabelFor(txtDefaultFolder);
@@ -645,7 +1319,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		jPanel7.add(txtDefaultGroup, "4, 16, fill, top");
 
 		txtUserPassword.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseClicked(final java.awt.event.MouseEvent evt) {
 				txtUserPasswordMouseClicked(evt);
 			}
 		});
@@ -659,7 +1334,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdSelectDefaultFolder.setText("Select");
 		cmdSelectDefaultFolder.setMargin(new java.awt.Insets(1, 4, 1, 4));
 		cmdSelectDefaultFolder.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdSelectDefaultFolderActionPerformed(evt);
 			}
 		});
@@ -668,7 +1344,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdSelectACL.setText("Select");
 		cmdSelectACL.setMargin(new java.awt.Insets(1, 4, 1, 4));
 		cmdSelectACL.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdSelectACLActionPerformed(evt);
 			}
 		});
@@ -677,35 +1354,26 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdUserSelectDefaultGroup.setText("Select");
 		cmdUserSelectDefaultGroup.setMargin(new java.awt.Insets(1, 4, 1, 4));
 		cmdUserSelectDefaultGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdUserSelectDefaultGroupActionPerformed(evt);
 			}
 		});
 		jPanel7.add(cmdUserSelectDefaultGroup, "6, 16, fill, center");
 
-		org.jdesktop.layout.GroupLayout gl_jPanel2 = new org.jdesktop.layout.GroupLayout(jPanel2);
+		final org.jdesktop.layout.GroupLayout gl_jPanel2 = new org.jdesktop.layout.GroupLayout(jPanel2);
 		jPanel2.setLayout(gl_jPanel2);
-		gl_jPanel2.setHorizontalGroup(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				gl_jPanel2
-						.createSequentialGroup()
-						.addContainerGap()
-						.add(gl_jPanel2
-								.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-								.add(gl_jPanel2.createSequentialGroup().add(jPanel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-										.add(jPanel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 370, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap())
-								.add(org.jdesktop.layout.GroupLayout.TRAILING,
-										gl_jPanel2.createSequentialGroup().add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-												.add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap()))));
-		gl_jPanel2.setVerticalGroup(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				org.jdesktop.layout.GroupLayout.TRAILING,
-				gl_jPanel2
-						.createSequentialGroup()
-						.addContainerGap()
-						.add(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
-								.add(jPanel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+		gl_jPanel2.setHorizontalGroup(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+				.add(gl_jPanel2.createSequentialGroup().addContainerGap()
+						.add(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+								.add(gl_jPanel2.createSequentialGroup().add(jPanel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jPanel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 370, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap()).add(
+										org.jdesktop.layout.GroupLayout.TRAILING, gl_jPanel2.createSequentialGroup().add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+												.addContainerGap()))));
+		gl_jPanel2.setVerticalGroup(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(org.jdesktop.layout.GroupLayout.TRAILING,
+				gl_jPanel2.createSequentialGroup().addContainerGap().add(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE).add(jPanel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
 						.add(gl_jPanel2.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(jButton1).add(jButton2)).addContainerGap()));
-		jPanel7.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtUserOsName, txtUserOsDomain, cmbuserSource, txtUserPassword, txtDefaultGroup, txtUserACL, jLabel1, cmbUserPrivileges, txtDefaultFolder, txtUserDbName, txtUserDescription, cmbUserAliasSet, cmbClientCapability,
-				txtUserName, jLabel2, jLabel3, jLabel6, jLabel5, jLabel7, jLabel8, jLabel9, jLabel10, jLabel11, jLabel12, jLabel13, jLabel14, chkWFEnabled, chkUserActive, cmdSelectDefaultFolder, cmdSelectACL, cmdUserSelectDefaultGroup }));
+		jPanel7.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtUserOsName, txtUserOsDomain, cmbuserSource, txtUserPassword, txtDefaultGroup, txtUserACL, jLabel1, cmbUserPrivileges, txtDefaultFolder, txtUserDbName, txtUserDescription, cmbUserAliasSet, cmbClientCapability, txtUserName, jLabel2, jLabel3, jLabel6, jLabel5, jLabel7, jLabel8, jLabel9, jLabel10, jLabel11, jLabel12, jLabel13, jLabel14,
+				chkWFEnabled, chkUserActive, cmdSelectDefaultFolder, cmdSelectACL, cmdUserSelectDefaultGroup }));
 
 		jTabbedPane1.addTab("User Management", jPanel2);
 
@@ -715,7 +1383,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		groupTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null } }, new String[] { "Group Name" }) {
 			boolean[] canEdit = new boolean[] { false };
 
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
+			@Override
+			public boolean isCellEditable(final int rowIndex, final int columnIndex) {
 				return canEdit[columnIndex];
 			}
 		});
@@ -723,7 +1392,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		groupTable.setShowHorizontalLines(false);
 		groupTable.setShowVerticalLines(false);
 		groupTable.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseReleased(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseReleased(final java.awt.event.MouseEvent evt) {
 				groupTableMouseReleased(evt);
 			}
 		});
@@ -732,7 +1402,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdGroupQuery.setText("GO");
 		cmdGroupQuery.setMargin(new java.awt.Insets(1, 8, 1, 8));
 		cmdGroupQuery.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdGroupQueryActionPerformed(evt);
 			}
 		});
@@ -741,74 +1412,48 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		cmdRenameGroup.setText("Rename");
 		cmdRenameGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdRenameGroupActionPerformed(evt);
 			}
 		});
 
 		cmdDeleteGroup.setText("Delete");
 		cmdDeleteGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdDeleteGroupActionPerformed(evt);
 			}
 		});
 
 		cmdNewGroup.setText("New Group");
 		cmdNewGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdNewGroupActionPerformed(evt);
 			}
 		});
 
 		cmdValidate.setText("Validate");
 		cmdValidate.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdValidateActionPerformed(evt);
 			}
 		});
 
-		GroupLayout gl_jPanel1 = new GroupLayout(jPanel1);
-		gl_jPanel1.setHorizontalGroup(
-			gl_jPanel1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_jPanel1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_jPanel1.createParallelGroup(Alignment.LEADING)
-						.addComponent(jScrollPane1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, gl_jPanel1.createSequentialGroup()
-							.addComponent(txtGroupFilter, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cmdGroupQuery))
-						.addGroup(Alignment.TRAILING, gl_jPanel1.createSequentialGroup()
-							.addGroup(gl_jPanel1.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(cmdRenameGroup, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(cmdNewGroup))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_jPanel1.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(cmdValidate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(cmdDeleteGroup, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(jLabel24))
-					.addContainerGap())
-		);
-		gl_jPanel1.setVerticalGroup(
-			gl_jPanel1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_jPanel1.createSequentialGroup()
-					.addComponent(jLabel24)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_jPanel1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cmdGroupQuery)
-						.addComponent(txtGroupFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_jPanel1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cmdRenameGroup)
-						.addComponent(cmdDeleteGroup))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_jPanel1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cmdNewGroup)
-						.addComponent(cmdValidate))
-					.addContainerGap())
-		);
+		final GroupLayout gl_jPanel1 = new GroupLayout(jPanel1);
+		gl_jPanel1.setHorizontalGroup(gl_jPanel1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_jPanel1.createSequentialGroup().addContainerGap()
+						.addGroup(gl_jPanel1.createParallelGroup(Alignment.LEADING).addComponent(jScrollPane1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE).addGroup(Alignment.TRAILING, gl_jPanel1.createSequentialGroup().addComponent(txtGroupFilter, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(cmdGroupQuery))
+								.addGroup(Alignment.TRAILING, gl_jPanel1.createSequentialGroup().addGroup(gl_jPanel1.createParallelGroup(Alignment.TRAILING, false).addComponent(cmdRenameGroup, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(cmdNewGroup)).addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_jPanel1.createParallelGroup(Alignment.LEADING, false).addComponent(cmdValidate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(cmdDeleteGroup, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(jLabel24))
+						.addContainerGap()));
+		gl_jPanel1.setVerticalGroup(gl_jPanel1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_jPanel1.createSequentialGroup().addComponent(jLabel24).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_jPanel1.createParallelGroup(Alignment.BASELINE).addComponent(cmdGroupQuery).addComponent(txtGroupFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_jPanel1.createParallelGroup(Alignment.BASELINE).addComponent(cmdRenameGroup).addComponent(cmdDeleteGroup)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_jPanel1.createParallelGroup(Alignment.BASELINE).addComponent(cmdNewGroup).addComponent(cmdValidate))
+						.addContainerGap()));
 		jPanel1.setLayout(gl_jPanel1);
 
 		jPanel10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -860,21 +1505,24 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		cmdSelectUsers.setText("...");
 		cmdSelectUsers.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdSelectUsersActionPerformed(evt);
 			}
 		});
 
 		cmdSelectGroups.setText("...");
 		cmdSelectGroups.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdSelectGroupsActionPerformed(evt);
 			}
 		});
 
 		jButton10.setText("...");
 		jButton10.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jButton10ActionPerformed(evt);
 			}
 		});
@@ -889,47 +1537,27 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		cmdSaveGroup.setText("Save");
 		cmdSaveGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdSaveGroupActionPerformed(evt);
 			}
 		});
 
 		jButton9.setText("Close");
 		jButton9.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jButton9ActionPerformed(evt);
 			}
 		});
 
-		GroupLayout gl_jPanel3 = new GroupLayout(jPanel3);
-		gl_jPanel3.setHorizontalGroup(
-			gl_jPanel3.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_jPanel3.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_jPanel3.createSequentialGroup()
-							.addComponent(cmdSaveGroup, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(jButton9, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addComponent(jPanel10, 0, 380, Short.MAX_VALUE)))
-		);
-		gl_jPanel3.setVerticalGroup(
-			gl_jPanel3.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_jPanel3.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_jPanel3.createSequentialGroup()
-							.addComponent(jPanel10, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_jPanel3.createParallelGroup(Alignment.BASELINE)
-								.addComponent(jButton9)
-								.addComponent(cmdSaveGroup)))
-						.addComponent(jPanel1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
-					.addContainerGap())
-		);
+		final GroupLayout gl_jPanel3 = new GroupLayout(jPanel3);
+		gl_jPanel3.setHorizontalGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addContainerGap().addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED)
+				.addGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING).addGroup(gl_jPanel3.createSequentialGroup().addComponent(cmdSaveGroup, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(jButton9, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE).addContainerGap()).addComponent(jPanel10, 0, 380, Short.MAX_VALUE))));
+		gl_jPanel3.setVerticalGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_jPanel3.createSequentialGroup().addContainerGap().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_jPanel3.createSequentialGroup().addComponent(jPanel10, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_jPanel3.createParallelGroup(Alignment.BASELINE).addComponent(jButton9).addComponent(cmdSaveGroup))).addComponent(jPanel1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+						.addContainerGap()));
 		jPanel3.setLayout(gl_jPanel3);
 
 		jTabbedPane1.addTab("Group Management", jPanel3);
@@ -939,13 +1567,14 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		}, new String[] { "Old Name", "New Name", "Creation Date", "Modify Date" }));
 		tblUserRename.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseReleased(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseReleased(final java.awt.event.MouseEvent evt) {
 				tblUserRenameMouseReleased(evt);
 			}
 		});
 		jScrollPane3.setViewportView(tblUserRename);
 
-		org.jdesktop.layout.GroupLayout gl_jPanel8 = new org.jdesktop.layout.GroupLayout(jPanel8);
+		final org.jdesktop.layout.GroupLayout gl_jPanel8 = new org.jdesktop.layout.GroupLayout(jPanel8);
 		jPanel8.setLayout(gl_jPanel8);
 		gl_jPanel8.setHorizontalGroup(gl_jPanel8.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE));
 		gl_jPanel8.setVerticalGroup(gl_jPanel8.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE));
@@ -953,27 +1582,26 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		cmdviewUserRenameLog.setMnemonic('v');
 		cmdviewUserRenameLog.setText("View");
 		cmdviewUserRenameLog.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdviewUserRenameLogActionPerformed(evt);
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout gl_jPanel4 = new org.jdesktop.layout.GroupLayout(jPanel4);
+		final org.jdesktop.layout.GroupLayout gl_jPanel4 = new org.jdesktop.layout.GroupLayout(jPanel4);
 		jPanel4.setLayout(gl_jPanel4);
-		gl_jPanel4.setHorizontalGroup(gl_jPanel4.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				gl_jPanel4.createSequentialGroup().addContainerGap()
-						.add(gl_jPanel4.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(org.jdesktop.layout.GroupLayout.TRAILING, cmdviewUserRenameLog))
-						.addContainerGap()));
-		gl_jPanel4.setVerticalGroup(gl_jPanel4.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				gl_jPanel4.createSequentialGroup().addContainerGap().add(jPanel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 34, Short.MAX_VALUE).add(cmdviewUserRenameLog).addContainerGap()));
+		gl_jPanel4.setHorizontalGroup(gl_jPanel4.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+				.add(gl_jPanel4.createSequentialGroup().addContainerGap().add(gl_jPanel4.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(org.jdesktop.layout.GroupLayout.TRAILING, cmdviewUserRenameLog)).addContainerGap()));
+		gl_jPanel4.setVerticalGroup(gl_jPanel4.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+				.add(gl_jPanel4.createSequentialGroup().addContainerGap().add(jPanel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 34, Short.MAX_VALUE).add(cmdviewUserRenameLog).addContainerGap()));
 
 		jTabbedPane1.addTab("User Rename Logs", jPanel4);
 
 		cmdviewGroupRenameLog.setMnemonic('v');
 		cmdviewGroupRenameLog.setText("View");
 		cmdviewGroupRenameLog.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdviewGroupRenameLogActionPerformed(evt);
 			}
 		});
@@ -983,680 +1611,63 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 		}, new String[] { "Old Name", "New Name", "Creation Date", "Modify Date" }));
 		tblGroupRename.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseReleased(java.awt.event.MouseEvent evt) {
+			@Override
+			public void mouseReleased(final java.awt.event.MouseEvent evt) {
 				tblGroupRenameMouseReleased(evt);
 			}
 		});
 		jScrollPane4.setViewportView(tblGroupRename);
 
-		org.jdesktop.layout.GroupLayout gl_jPanel9 = new org.jdesktop.layout.GroupLayout(jPanel9);
+		final org.jdesktop.layout.GroupLayout gl_jPanel9 = new org.jdesktop.layout.GroupLayout(jPanel9);
 		jPanel9.setLayout(gl_jPanel9);
 		gl_jPanel9.setHorizontalGroup(gl_jPanel9.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jScrollPane4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE));
 		gl_jPanel9.setVerticalGroup(gl_jPanel9.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(gl_jPanel9.createSequentialGroup().add(jScrollPane4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE).addContainerGap()));
 
-		org.jdesktop.layout.GroupLayout gl_jPanel5 = new org.jdesktop.layout.GroupLayout(jPanel5);
+		final org.jdesktop.layout.GroupLayout gl_jPanel5 = new org.jdesktop.layout.GroupLayout(jPanel5);
 		jPanel5.setLayout(gl_jPanel5);
-		gl_jPanel5.setHorizontalGroup(gl_jPanel5.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				gl_jPanel5.createSequentialGroup().addContainerGap()
-						.add(gl_jPanel5.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel9, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(org.jdesktop.layout.GroupLayout.TRAILING, cmdviewGroupRenameLog))
-						.addContainerGap()));
-		gl_jPanel5.setVerticalGroup(gl_jPanel5.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				gl_jPanel5.createSequentialGroup().addContainerGap().add(jPanel9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 26, Short.MAX_VALUE).add(cmdviewGroupRenameLog, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap()));
+		gl_jPanel5.setHorizontalGroup(gl_jPanel5.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+				.add(gl_jPanel5.createSequentialGroup().addContainerGap().add(gl_jPanel5.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel9, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(org.jdesktop.layout.GroupLayout.TRAILING, cmdviewGroupRenameLog)).addContainerGap()));
+		gl_jPanel5.setVerticalGroup(gl_jPanel5.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(gl_jPanel5.createSequentialGroup().addContainerGap().add(jPanel9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 26, Short.MAX_VALUE)
+				.add(cmdviewGroupRenameLog, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap()));
 
 		jTabbedPane1.addTab("Group Rename Logs", jPanel5);
 
-		GroupLayout layout = new GroupLayout(getContentPane());
-		layout.setHorizontalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-					.addComponent(jTabbedPane1, GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		layout.setVerticalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-					.addComponent(jTabbedPane1, GroupLayout.PREFERRED_SIZE, 635, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
+		final GroupLayout layout = new GroupLayout(getContentPane());
+		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jTabbedPane1, GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE).addContainerGap()));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jTabbedPane1, GroupLayout.PREFERRED_SIZE, 635, GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		getContentPane().setLayout(layout);
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void cmdUserRenameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdUserRenameActionPerformed
+	private void jButton10ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton10ActionPerformed
+		final ActionListener ax = new ActionListener() {
 
-		int row = userTable.getSelectedRow();
-		Vector v = (Vector) usertablemodel.getDataVector().elementAt(row);
-		// //System.out.println(v);
-		DokuData d = (DokuData) v.elementAt(2);
-		String userid = d.getObjID();
-		IDfSession session = null;
-		try {
-			session = smanager.getSession();
-			IDfId id = new DfId(userid);
-			IDfUser user = (IDfUser) session.getObject(id);
-			String newUserName = (String) JOptionPane.showInputDialog("Enter New User Name for: " + user.getUserName());
-
-			IDfFolder folder = session.getFolderByPath("/System/Sysadmin/UserRename");
-			if (folder == null) {
-				IDfSysObject sobj = (IDfSysObject) session.newObject("dm_folder");
-				sobj.setString("object_name", "UserRename");
-				sobj.setString("acl_domain", "dm_dbo");
-				sobj.setString("acl_name", "dm_acl_superusers");
-				sobj.link("/System/Sysadmin");
-				sobj.save();
-			}
-
-			IDfSysObject jrobj = (IDfSysObject) session.newObject("dm_job_request");
-			jrobj.setString("object_name", "UserRename");
-			jrobj.setString("job_name", "dm_UserRename");
-			jrobj.setString("method_name", "dm_UserRename");
-			jrobj.setBoolean("request_completed", false);
-			jrobj.setRepeatingString("arguments_keys", 0, "OldUserName");
-			jrobj.setRepeatingString("arguments_keys", 1, "NewUserName");
-			jrobj.setRepeatingString("arguments_keys", 2, "report_only");
-			jrobj.setRepeatingString("arguments_keys", 3, "unlock_locked_obj");
-			jrobj.setRepeatingString("arguments_values", 0, user.getUserName());
-			jrobj.setRepeatingString("arguments_values", 1, newUserName);
-			jrobj.setRepeatingString("arguments_values", 2, "F");
-			jrobj.setRepeatingString("arguments_values", 3, "T");
-
-			jrobj.link("/System/Sysadmin/UserRename");
-			jrobj.save();
-
-			IDfPersistentObject jobobj = session.getObjectByQualification("dm_job where object_name = 'dm_UserRename'");
-			if (jobobj != null) {
-				jobobj.setInt("run_now", 1);
-				jobobj.save();
-			}
-
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			log.error(ex);
-		} finally {
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-
-	}// GEN-LAST:event_cmdUserRenameActionPerformed
-
-	private void cmdDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdDeleteUserActionPerformed
-
-		int answer = JOptionPane.showConfirmDialog(this, "Destroy selected user, Are you sure??", "Confirm", JOptionPane.YES_NO_OPTION);
-		if (answer == JOptionPane.YES_OPTION) {
-
-			int row = userTable.getSelectedRow();
-			Vector v = (Vector) usertablemodel.getDataVector().elementAt(row);
-			DokuData d = (DokuData) v.elementAt(2);
-			String userid = d.getObjID();
-			IDfSession session = null;
-			try {
-				session = smanager.getSession();
-				IDfId id = new DfId(userid);
-				IDfUser user = (IDfUser) session.getObject(id);
-				user.destroy();
-				usertablemodel.removeRow(row);
-				userTable.validate();
-			} catch (DfException ex) {
-				JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-				log.error(ex);
-			} finally {
-				if (session != null) {
-					smanager.releaseSession(session);
-				}
-			}
-		}
-
-	}// GEN-LAST:event_cmdDeleteUserActionPerformed
-
-	private void cmdGroupQueryActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdGroupQueryActionPerformed
-		String groupFilter = txtGroupFilter.getText();
-		grouptablemodel.setRowCount(0);
-		IDfCollection col = null;
-		IDfSession session = null;
-		try {
-			session = smanager.getSession();
-			IDfQuery query = new DfQuery();
-			query.setDQL("select group_name, r_object_id from dm_group where group_name like '" + groupFilter + "%' order by group_name ENABLE (RETURN_TOP 1000)");
-			col = query.execute(session, IDfQuery.DF_READ_QUERY);
-			while (col.next()) {
-				Vector<Object> vx = new Vector<Object>();
-				String jep = col.getString("group_name");
-				vx.add(jep);
-				DokuData data = new DokuData(col.getString("r_object_id"));
-				vx.add(data);
-				grouptablemodel.addRow(vx);
-			}
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			log.error(ex);
-		} finally {
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-			if (col != null) {
-				try {
-					col.close();
-				} catch (DfException e) {
-				}
-			}
-		}
-		groupTable.setModel(grouptablemodel);
-		groupTable.validate();
-
-	}// GEN-LAST:event_cmdGroupQueryActionPerformed
-
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-		this.dispose();
-	}// GEN-LAST:event_jButton1ActionPerformed
-
-	private void cmdSaveGroupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSaveGroupActionPerformed
-
-		IDfSession session = null;
-		try {
-			session = smanager.getSession();
-			String groupname = txtGroupName.getText();
-			IDfGroup group = null;
-			if (txtGroupName.isEditable()) {
-				IDfGroup tempgroup = session.getGroup(groupname);
-				if (tempgroup == null) {
-					group = (IDfGroup) session.newObject("dm_group");
-					group.setGroupName(groupname);
-				} else {
-					JOptionPane.showMessageDialog(null, "Group with name '" + groupname + "' already exists.", "Duplicate name found.", JOptionPane.INFORMATION_MESSAGE);
-					return;
-
-				}
-			} else {
-				group = session.getGroup(groupname);
-			}
-
-			group.setString("group_source", (String) cmbGroupSource.getSelectedItem());
-			group.setGroupAddress(txtGroupAddress.getText());
-			group.setDescription(txtGroupDescription.getText());
-			group.setOwnerName(txtGroupOwner.getText());
-			group.truncate("users_names", 0);
-			for (int i = 0; i < userlistmodel.size(); i++) {
-				group.addUser((String) userlistmodel.get(i));
-			}
-			group.truncate("groups_names", 0);
-			for (int i = 0; i < grouplistmodel.size(); i++) {
-				group.addGroup((String) grouplistmodel.get(i));
-			}
-			group.setPrivate(chkGroupisPrivate.isSelected());
-			group.setDynamic(chkIsDymanic.isSelected());
-			group.save();
-			SwingHelper.showMessage("Group Saved");
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			log.error(ex);
-		} finally {
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-		}
-	}// GEN-LAST:event_cmdSaveGroupActionPerformed
-
-	private void cmdSelectGroupsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectGroupsActionPerformed
-
-		final GroupsinGroupData gigData = new GroupsinGroupData();
-		Vector<Object> groupVector = new Vector<Object>();
-		ListModel model = lstGroups.getModel();
-		int modelsize = model.getSize();
-		for (int i = 0; i < modelsize; i++) {
-			groupVector.add(model.getElementAt(i));
-		}
-		gigData.setGroupMembers(groupVector);
-		ActionListener a = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				// //System.out.println(e);
-				// //System.out.println(e.getSource().toString());
-				grouplistmodel.clear();
-				for (int i = 0; i < gigData.getGroupMembers().size(); i++) {
-					String username = (String) gigData.getGroupMembers().get(i);
-					// //System.out.println(username);
-					grouplistmodel.addElement(username);
-				}
-				lstGroups.validate();
-			}
-		};
-		GroupEditorGroups frame = new GroupEditorGroups(a, gigData);
-		SwingHelper.centerJFrame(frame);
-		frame.setVisible(true);
-	}// GEN-LAST:event_cmdSelectGroupsActionPerformed
-
-	private void cmdSelectUsersActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectUsersActionPerformed
-		final UsersInGroupData uigData = new UsersInGroupData();
-		Vector<Object> userVector = new Vector<Object>();
-		ListModel model = lstUsers.getModel();
-		int modelsize = model.getSize();
-		for (int i = 0; i < modelsize; i++) {
-			userVector.add(model.getElementAt(i));
-		}
-		uigData.setGroupMembers(userVector);
-		ActionListener a = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				// //System.out.println(e);
-				// //System.out.println(e.getSource().toString());
-				userlistmodel.clear();
-				for (int i = 0; i < uigData.getGroupMembers().size(); i++) {
-					String username = (String) uigData.getGroupMembers().get(i);
-					// //System.out.println(username);
-					userlistmodel.addElement(username);
-				}
-				lstGroups.validate();
-			}
-		};
-		GroupEditorUsers frame = new GroupEditorUsers(a, uigData);
-		// frame.setSession(session);
-		SwingHelper.centerJFrame(frame);
-		frame.setVisible(true);
-	}// GEN-LAST:event_cmdSelectUsersActionPerformed
-
-	private void cmdviewGroupRenameLogActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdviewGroupRenameLogActionPerformed
-		String objid = getIDfromGroupTable();
-		viewLog(objid);
-	}// GEN-LAST:event_cmdviewGroupRenameLogActionPerformed
-
-	private String getIDfromGroupTable() {
-		int row = tblGroupRename.getSelectedRow();
-		String objid = "0000000000000000";
-		if (row != -1) {
-			Vector v = (Vector) grouprenamemodel.getDataVector().elementAt(row);
-			// //System.out.println(v);
-			DokuData d = (DokuData) v.elementAt(5);
-			objid = d.getObjID();
-		}
-		return objid;
-
-	}
-
-	private String getIDfromUserTable() {
-
-		String objid = "0000000000000000";
-		int row = tblUserRename.getSelectedRow();
-		if (row != -1) {
-			Vector v = (Vector) userrenamemodel.getDataVector().elementAt(row);
-			// //System.out.println(v);
-			DokuData d = (DokuData) v.elementAt(5);
-			objid = d.getObjID();
-
-		}
-		return objid;
-
-	}
-
-	private void cmdviewUserRenameLogActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdviewUserRenameLogActionPerformed
-		String objid = getIDfromUserTable();
-		viewLog(objid);
-	}// GEN-LAST:event_cmdviewUserRenameLogActionPerformed
-
-	private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton10ActionPerformed
-		ActionListener ax = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
 				// //System.out.println(e);
 				// //System.out.println(e.getSource().toString());
 				txtGroupOwner.setText(getUserselectordata().getUsername());
 			}
 		};
-		UserSelectorFrame frame = new UserSelectorFrame(ax, getUserselectordata());
+		final UserSelectorFrame frame = new UserSelectorFrame(ax, getUserselectordata());
 		SwingHelper.centerJFrame(frame);
 		frame.setVisible(true);
 	}// GEN-LAST:event_jButton10ActionPerformed
 
-	public void updateUserRenameTable() {
-		userrenamemodel.setRowCount(0);
-		tblUserRename.setRowHeight(22);
-		tblUserRename.setAutoCreateColumnsFromModel(true);
-		userrenamemodel.setColumnCount(0);
-		userrenamemodel.addColumn(".");
-		userrenamemodel.addColumn("Old Name");
-		userrenamemodel.addColumn("New Name");
-		userrenamemodel.addColumn("Creation Date");
-		userrenamemodel.addColumn("Modify Date");
-		userrenamemodel.addColumn("dd");
-		TableColumn colu = tblUserRename.getColumnModel().getColumn(0);
-		colu.setPreferredWidth(22);
-		colu.setMaxWidth(22);
+	private void jButton1ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
+		this.dispose();
+	}// GEN-LAST:event_jButton1ActionPerformed
 
-		int lastIndex = tblUserRename.getColumnCount();
-		tblUserRename.getColumnModel().removeColumn(tblUserRename.getColumnModel().getColumn(lastIndex - 1));
-		FormatRenderer formatrenderer = new FormatRenderer();
-		formatrenderer.setShowThumbnails(false);
-
-		tblUserRename.getColumnModel().getColumn(0).setCellRenderer(formatrenderer);
-
-		String qry = "select r_object_id, r_creation_date, r_modify_date, a_content_type, arguments_values, arguments_keys from dm_job_request where folder('/System/Sysadmin/UserRename') order by r_creation_date, r_object_id";
-		IDfCollection col = null;
-		IDfSession session = null;
-		IDfQuery query = new DfQuery();
-		query.setDQL(qry);
-		try {
-			session = smanager.getSession();
-			col = query.execute(session, IDfQuery.DF_READ_QUERY);
-			while (col.next()) {
-				String oldName = "";
-				String newName = "";
-				int valcount = col.getValueCount("arguments_values");
-				for (int i = 0; i < valcount; i++) {
-					String argname = col.getRepeatingString("arguments_keys", i);
-					if (argname.equalsIgnoreCase("oldusername")) {
-						oldName = col.getRepeatingString("arguments_values", i);
-					}
-
-					if (argname.equalsIgnoreCase("newusername")) {
-						newName = col.getRepeatingString("arguments_values", i);
-					}
-
-				}
-				Vector joo = new Vector();
-				joo.add(col.getString("a_content_type") + ",dm_document");
-				joo.add(oldName);
-				joo.add(newName);
-				joo.add(col.getString("r_creation_date"));
-				joo.add(col.getString("r_modify_date"));
-				DokuData data = new DokuData(col.getString("r_object_id"));
-				joo.add(data);
-				userrenamemodel.addRow(joo);
-			}
-
-			tblUserRename.setModel(userrenamemodel);
-			tblUserRename.validate();
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			log.error(ex);
-		} finally {
-			if (col != null) {
-				try {
-					col.close();
-				} catch (DfException e) {
-				}
-			}
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-
-	}
-
-	public void updateGroupRenameTable() {
-
-		grouprenamemodel.setRowCount(0);
-		tblGroupRename.setRowHeight(22);
-
-		tblGroupRename.setAutoCreateColumnsFromModel(true);
-		grouprenamemodel.setColumnCount(0);
-		grouprenamemodel.addColumn(".");
-		grouprenamemodel.addColumn("Old Name");
-		grouprenamemodel.addColumn("New Name");
-		grouprenamemodel.addColumn("Creation Date");
-		grouprenamemodel.addColumn("Modify Date");
-		grouprenamemodel.addColumn("dd");
-		TableColumn colu = tblGroupRename.getColumnModel().getColumn(0);
-		colu.setPreferredWidth(22);
-		colu.setMaxWidth(22);
-
-		int lastIndex = tblGroupRename.getColumnCount();
-		tblGroupRename.getColumnModel().removeColumn(tblGroupRename.getColumnModel().getColumn(lastIndex - 1));
-		FormatRenderer formatrenderer = new FormatRenderer();
-		formatrenderer.setShowThumbnails(false);
-
-		tblGroupRename.getColumnModel().getColumn(0).setCellRenderer(formatrenderer);
-
-		String qry = "select r_object_id, r_creation_date, r_modify_date , a_content_type, arguments_values, arguments_keys from dm_job_request where folder('/System/Sysadmin/GroupRename') order by r_creation_date, r_object_id";
-		IDfCollection col = null;
-		IDfSession session = null;
-		IDfQuery query = new DfQuery();
-		query.setDQL(qry);
-		try {
-			session = smanager.getSession();
-			col = query.execute(session, IDfQuery.DF_READ_QUERY);
-			while (col.next()) {
-				String oldName = "";
-				String newName = "";
-				int valcount = col.getValueCount("arguments_values");
-				for (int i = 0; i < valcount; i++) {
-					String argname = col.getRepeatingString("arguments_keys", i);
-					if (argname.equalsIgnoreCase("oldgroupname")) {
-						oldName = col.getRepeatingString("arguments_values", i);
-					}
-
-					if (argname.equalsIgnoreCase("newgroupname")) {
-						newName = col.getRepeatingString("arguments_values", i);
-					}
-
-				}
-				Vector<Object> joo = new Vector<Object>();
-				joo.add(col.getString("a_content_type") + ",dm_document");
-
-				joo.add(oldName);
-				joo.add(newName);
-				joo.add(col.getString("r_creation_date"));
-				joo.add(col.getString("r_modify_date"));
-				DokuData data = new DokuData(col.getString("r_object_id"));
-				joo.add(data);
-				grouprenamemodel.addRow(joo);
-			}
-
-			tblGroupRename.validate();
-
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			log.error(ex);
-		} finally {
-			if (col != null) {
-				try {
-					col.close();
-				} catch (DfException e) {
-				}
-			}
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-	}
-
-	private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {// GEN-FIRST:event_jTabbedPane1StateChanged
-		int indexi = jTabbedPane1.getSelectedIndex();
-		if (indexi == 2) {
-			this.updateUserRenameTable();
-		}
-
-		if (indexi == 3) {
-			this.updateGroupRenameTable();
-
-		}
-
-	}// GEN-LAST:event_jTabbedPane1StateChanged
-
-	private void cmdUserSelectDefaultGroupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdUserSelectDefaultGroupActionPerformed
-		ActionListener a = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				// //System.out.println(e);
-				// //System.out.println(e.getSource().toString());
-				txtDefaultGroup.setText(groupselectordata.getGroupName());
-			}
-		};
-		GroupSelectorFrame frame = new GroupSelectorFrame(a, groupselectordata);
-		SwingHelper.centerJFrame(frame);
-		frame.setVisible(true);
-	}// GEN-LAST:event_cmdUserSelectDefaultGroupActionPerformed
-
-	private void cmdSelectACLActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectACLActionPerformed
-
-		ActionListener a = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				txtUserACL.setText(acldata.getAclName() + "@" + acldata.getAclDomain());
-			}
-		};
-		ACLBrowserFrame frame = new ACLBrowserFrame(a, acldata, true);
-		frame.setVisible(true);
-
-	}// GEN-LAST:event_cmdSelectACLActionPerformed
-
-	private void cmdSelectDefaultFolderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectDefaultFolderActionPerformed
-	// TODO add your handling code here:
-
-		// //System.out.println("folderselectordata on call: " +
-		// getFolderselectordata());
-		ActionListener a = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				txtDefaultFolder.setText(getFolderselectordata().getFolderPath());
-			}
-		};
-		FolderSelectorFrame frame = new FolderSelectorFrame(a, getFolderselectordata());
-		SwingHelper.centerJFrame(frame);
-		frame.initAll();
-		frame.setVisible(true);
-
-	}// GEN-LAST:event_cmdSelectDefaultFolderActionPerformed
-
-	private void groupTableMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_groupTableMouseReleased
-		txtGroupName.setEditable(false);
-		Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-		setCursor(cur);
-		userlistmodel.clear();
-		grouplistmodel.clear();
-		Vector<String> users = new Vector<String>();
-		Vector<String> groups = new Vector<String>();
-		int row = groupTable.getSelectedRow();
-		Vector v = (Vector) grouptablemodel.getDataVector().elementAt(row);
-		// //System.out.println(v);
-		DokuData d = (DokuData) v.elementAt(1);
-		String groupid = d.getObjID();
-		IDfSession session = null;
-		try {
-			IDfId id = new DfId(groupid);
-			session = smanager.getSession();
-
-			IDfGroup group = (IDfGroup) session.getObject(id);
-			cmbGroupSource.setSelectedItem(group.getString("group_source"));
-			txtGroupName.setText(group.getString("group_name"));
-			txtGroupDescription.setText(group.getString("description"));
-			txtGroupAddress.setText(group.getString("group_address"));
-			txtGroupOwner.setText(group.getString("owner_name"));
-			int userCount = group.getValueCount("users_names");
-			for (int i = 0; i < userCount; i++) {
-				users.add(group.getRepeatingString("users_names", i));
-			}
-			Collections.sort(users);
-			for (String s : users) {
-				userlistmodel.addElement(s);
-			}
-
-			int groupCount = group.getValueCount("groups_names");
-			for (int j = 0; j < groupCount; j++) {
-				// grouplistmodel.addElement(group.getRepeatingString("groups_names",
-				// j));
-				groups.add(group.getRepeatingString("groups_names", j));
-			}
-			Collections.sort(groups);
-			for (String s : groups) {
-				grouplistmodel.addElement(s);
-			}
-
-			boolean isprivate = group.getBoolean("is_private");
-
-			if (isprivate) {
-				chkGroupisPrivate.setSelected(true);
-			} else {
-				chkGroupisPrivate.setSelected(false);
-			}
-
-			boolean isdynamic = group.getDynamic();
-			if (isdynamic) {
-				chkIsDymanic.setSelected(true);
-			} else {
-				chkIsDymanic.setSelected(false);
-			}
-
-			lstUsers.validate();
-			lstGroups.validate();
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			DfLogger.error(this, ex.getMessage(), null, ex);
-		} finally {
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-			setCursor(cur2);
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-	}// GEN-LAST:event_groupTableMouseReleased
-
-	private void cmdSearchUserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSearchUserActionPerformed
-
-		usertablemodel.setRowCount(0);
-		String filter = txtUserFilter.getText();
-		IDfSession session = null;
-		IDfCollection col = null;
-		try {
-			session = smanager.getSession();
-			IDfQuery query = new DfQuery();
-			System.out.println("'" + filter + "'");
-			if (filter.length() < 1) {
-				query.setDQL("select user_state, r_object_id, user_name from dm_user where r_is_group=0 order by user_name ENABLE (RETURN_TOP 1000)");
-			} else {
-				query.setDQL("select user_state, r_object_id, user_name from dm_user where r_is_group=0 and " +
-						"(user_name like '" + filter + "%' or user_os_name like '" + filter + "%' or user_login_name like  '" + filter + "%') " +
-								"order by user_name ENABLE (RETURN_TOP 100)");
-			}
-			col = query.execute(session, IDfQuery.DF_READ_QUERY);
-			while (col.next()) {
-				Vector<Object> vx = new Vector<Object>();
-				String state = col.getString("user_state");
-				vx.add(state);
-				String jep = col.getString("user_name");
-				vx.add(jep);
-				DokuData data = new DokuData(col.getString("r_object_id"));
-				vx.add(data);
-				usertablemodel.addRow(vx);
-			}
-
-			userTable.setModel(usertablemodel);
-			userTable.validate();
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			DfLogger.error(this, ex.getMessage(), null, ex);
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			DfLogger.error(this, ex.getMessage(), null, ex);
-		} finally {
-			if (col != null) {
-				try {
-					col.close();
-				} catch (DfException ex) {
-				}
-			}
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-
-	}// GEN-LAST:event_cmdSearchUserActionPerformed
-
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
-	// TODO add your handling code here:
-		String username = txtUserName.getText();
+	private void jButton2ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
+		// TODO add your handling code here:
+		final String username = txtUserName.getText();
 		IDfSession session = null;
 		IDfUser user = null;
 		try {
 			session = smanager.getSession();
 			if (txtUserName.isEditable()) {
-				IDfUser tempuser = session.getUser(username);
+				final IDfUser tempuser = session.getUser(username);
 				if (tempuser == null) {
 					user = (IDfUser) session.newObject("dm_user");
 					user.setUserName(username);
@@ -1693,7 +1704,7 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 				user.setWorkflowDisabled(true);
 			}
 
-			String cmbValue = (String) cmbClientCapability.getSelectedItem();
+			final String cmbValue = (String) cmbClientCapability.getSelectedItem();
 			if (cmbValue.equalsIgnoreCase("consumer")) {
 				user.setClientCapability(DfUser.DF_CAPABILITY_CONSUMER);
 			}
@@ -1716,7 +1727,7 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 			user.save();
 			SwingHelper.showMessage("User Saved");
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
 			log.error(ex);
 		} finally {
@@ -1727,24 +1738,259 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_jButton2ActionPerformed
 
-	private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton2MouseClicked
-	// add your handling code here:
+	private void jButton2MouseClicked(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton2MouseClicked
+		// add your handling code here:
 	}// GEN-LAST:event_jButton2MouseClicked
 
-	private void userTableMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_userTableMouseReleased
+	private void jButton9ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton9ActionPerformed
+		this.dispose();
+	}// GEN-LAST:event_jButton9ActionPerformed
+
+	private void jScrollPane2MouseReleased(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jScrollPane2MouseReleased
+
+	}// GEN-LAST:event_jScrollPane2MouseReleased
+
+	private void jTabbedPane1StateChanged(final javax.swing.event.ChangeEvent evt) {// GEN-FIRST:event_jTabbedPane1StateChanged
+		final int indexi = jTabbedPane1.getSelectedIndex();
+		if (indexi == 2) {
+			this.updateUserRenameTable();
+		}
+
+		if (indexi == 3) {
+			this.updateGroupRenameTable();
+
+		}
+
+	}// GEN-LAST:event_jTabbedPane1StateChanged
+
+	private void mnuDeleteGroupRenameActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuDeleteGroupRenameActionPerformed
+		final String objid = getIDfromGroupTable();
+		if (!objid.equals("0000000000000000")) {
+			deleteLog(objid);
+		}
+
+	}// GEN-LAST:event_mnuDeleteGroupRenameActionPerformed
+
+	private void mnuDeleteUserRenameActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuDeleteUserRenameActionPerformed
+		final String objid = getIDfromUserTable();
+		if (!objid.equals("0000000000000000")) {
+			deleteLog(objid);
+		}
+	}// GEN-LAST:event_mnuDeleteUserRenameActionPerformed
+
+	private void mnuViewGroupRenameActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuViewGroupRenameActionPerformed
+		final String objid = getIDfromGroupTable();
+		if (!objid.equals("0000000000000000")) {
+			viewLog(objid);
+		}
+	}// GEN-LAST:event_mnuViewGroupRenameActionPerformed
+
+	private void mnuViewUserRenameActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuViewUserRenameActionPerformed
+		final String objid = getIDfromUserTable();
+		if (!objid.equals("0000000000000000")) {
+			viewLog(objid);
+		}
+	}// GEN-LAST:event_mnuViewUserRenameActionPerformed
+
+	public void setFolderselectordata(final FolderSelectorData folderselectordata) {
+		this.folderselectordata = folderselectordata;
+	}
+
+	public void setGroupselectordata(final GroupSelectorData groupselectordata) {
+		this.groupselectordata = groupselectordata;
+	}
+
+	public void setUserselectordata(final UserSelectorData userselectordata) {
+		this.userselectordata = userselectordata;
+	}
+
+	private void tblGroupRenameMouseReleased(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblGroupRenameMouseReleased
+		final int butt = evt.getButton();
+		if (butt == MouseEvent.BUTTON3) {
+			popupGruopRename.show(evt.getComponent(), evt.getX(), evt.getY());
+		}
+
+	}// GEN-LAST:event_tblGroupRenameMouseReleased
+
+	private void tblUserRenameMouseReleased(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblUserRenameMouseReleased
+		final int butt = evt.getButton();
+		if (butt == MouseEvent.BUTTON3) {
+			popupUserRename.show(evt.getComponent(), evt.getX(), evt.getY());
+		}
+	}// GEN-LAST:event_tblUserRenameMouseReleased
+
+	private void txtUserPasswordMouseClicked(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_txtUserPasswordMouseClicked
+		// add your handling code here:
+	}// GEN-LAST:event_txtUserPasswordMouseClicked
+
+	public void updateGroupRenameTable() {
+
+		grouprenamemodel.setRowCount(0);
+		tblGroupRename.setRowHeight(22);
+
+		tblGroupRename.setAutoCreateColumnsFromModel(true);
+		grouprenamemodel.setColumnCount(0);
+		grouprenamemodel.addColumn(".");
+		grouprenamemodel.addColumn("Old Name");
+		grouprenamemodel.addColumn("New Name");
+		grouprenamemodel.addColumn("Creation Date");
+		grouprenamemodel.addColumn("Modify Date");
+		grouprenamemodel.addColumn("dd");
+		final TableColumn colu = tblGroupRename.getColumnModel().getColumn(0);
+		colu.setPreferredWidth(22);
+		colu.setMaxWidth(22);
+
+		final int lastIndex = tblGroupRename.getColumnCount();
+		tblGroupRename.getColumnModel().removeColumn(tblGroupRename.getColumnModel().getColumn(lastIndex - 1));
+		final FormatRenderer formatrenderer = new FormatRenderer();
+		formatrenderer.setShowThumbnails(false);
+
+		tblGroupRename.getColumnModel().getColumn(0).setCellRenderer(formatrenderer);
+
+		final String qry = "select r_object_id, r_creation_date, r_modify_date , a_content_type, arguments_values, arguments_keys from dm_job_request where folder('/System/Sysadmin/GroupRename') order by r_creation_date, r_object_id";
+		IDfCollection col = null;
+		IDfSession session = null;
+		final IDfQuery query = new DfQuery();
+		query.setDQL(qry);
+		try {
+			session = smanager.getSession();
+			col = query.execute(session, IDfQuery.DF_READ_QUERY);
+			while (col.next()) {
+				String oldName = "";
+				String newName = "";
+				final int valcount = col.getValueCount("arguments_values");
+				for (int i = 0; i < valcount; i++) {
+					final String argname = col.getRepeatingString("arguments_keys", i);
+					if (argname.equalsIgnoreCase("oldgroupname")) {
+						oldName = col.getRepeatingString("arguments_values", i);
+					}
+
+					if (argname.equalsIgnoreCase("newgroupname")) {
+						newName = col.getRepeatingString("arguments_values", i);
+					}
+
+				}
+				final Vector<Object> joo = new Vector<Object>();
+				joo.add(col.getString("a_content_type") + ",dm_document");
+
+				joo.add(oldName);
+				joo.add(newName);
+				joo.add(col.getString("r_creation_date"));
+				joo.add(col.getString("r_modify_date"));
+				final DokuData data = new DokuData(col.getString("r_object_id"));
+				joo.add(data);
+				grouprenamemodel.addRow(joo);
+			}
+
+			tblGroupRename.validate();
+
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			log.error(ex);
+		} finally {
+			if (col != null) {
+				try {
+					col.close();
+				} catch (final DfException e) {
+				}
+			}
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+	}
+
+	public void updateUserRenameTable() {
+		userrenamemodel.setRowCount(0);
+		tblUserRename.setRowHeight(22);
+		tblUserRename.setAutoCreateColumnsFromModel(true);
+		userrenamemodel.setColumnCount(0);
+		userrenamemodel.addColumn(".");
+		userrenamemodel.addColumn("Old Name");
+		userrenamemodel.addColumn("New Name");
+		userrenamemodel.addColumn("Creation Date");
+		userrenamemodel.addColumn("Modify Date");
+		userrenamemodel.addColumn("dd");
+		final TableColumn colu = tblUserRename.getColumnModel().getColumn(0);
+		colu.setPreferredWidth(22);
+		colu.setMaxWidth(22);
+
+		final int lastIndex = tblUserRename.getColumnCount();
+		tblUserRename.getColumnModel().removeColumn(tblUserRename.getColumnModel().getColumn(lastIndex - 1));
+		final FormatRenderer formatrenderer = new FormatRenderer();
+		formatrenderer.setShowThumbnails(false);
+
+		tblUserRename.getColumnModel().getColumn(0).setCellRenderer(formatrenderer);
+
+		final String qry = "select r_object_id, r_creation_date, r_modify_date, a_content_type, arguments_values, arguments_keys from dm_job_request where folder('/System/Sysadmin/UserRename') order by r_creation_date, r_object_id";
+		IDfCollection col = null;
+		IDfSession session = null;
+		final IDfQuery query = new DfQuery();
+		query.setDQL(qry);
+		try {
+			session = smanager.getSession();
+			col = query.execute(session, IDfQuery.DF_READ_QUERY);
+			while (col.next()) {
+				String oldName = "";
+				String newName = "";
+				final int valcount = col.getValueCount("arguments_values");
+				for (int i = 0; i < valcount; i++) {
+					final String argname = col.getRepeatingString("arguments_keys", i);
+					if (argname.equalsIgnoreCase("oldusername")) {
+						oldName = col.getRepeatingString("arguments_values", i);
+					}
+
+					if (argname.equalsIgnoreCase("newusername")) {
+						newName = col.getRepeatingString("arguments_values", i);
+					}
+
+				}
+				final Vector joo = new Vector();
+				joo.add(col.getString("a_content_type") + ",dm_document");
+				joo.add(oldName);
+				joo.add(newName);
+				joo.add(col.getString("r_creation_date"));
+				joo.add(col.getString("r_modify_date"));
+				final DokuData data = new DokuData(col.getString("r_object_id"));
+				joo.add(data);
+				userrenamemodel.addRow(joo);
+			}
+
+			tblUserRename.setModel(userrenamemodel);
+			tblUserRename.validate();
+		} catch (final DfException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			log.error(ex);
+		} finally {
+			if (col != null) {
+				try {
+					col.close();
+				} catch (final DfException e) {
+				}
+			}
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+
+		}
+
+	}
+
+	private void userTableMouseReleased(final java.awt.event.MouseEvent evt) {// GEN-FIRST:event_userTableMouseReleased
 
 		txtUserName.setEditable(false);
-		Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+		final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
 		setCursor(cur);
-		int row = userTable.getSelectedRow();
-		Vector v = (Vector) usertablemodel.getDataVector().elementAt(row);
-		DokuData d = (DokuData) v.elementAt(2);
-		String userid = d.getObjID();
+		final int row = userTable.getSelectedRow();
+		final Vector v = (Vector) usertablemodel.getDataVector().elementAt(row);
+		final DokuData d = (DokuData) v.elementAt(2);
+		final String userid = d.getObjID();
 		IDfSession session = null;
 		try {
 			session = smanager.getSession();
-			IDfId id = new DfId(userid);
-			IDfUser user = (IDfUser) session.getObject(id);
+			final IDfId id = new DfId(userid);
+			final IDfUser user = (IDfUser) session.getObject(id);
 			txtUserPassword.setText("");
 			txtUserName.setText(user.getUserName());
 			txtUserOsName.setText(user.getUserOSName());
@@ -1759,7 +2005,7 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 			txtUserDbName.setText(user.getUserDBName());
 			txtUserDescription.setText(user.getDescription());
 			txtLoginName.setText(user.getUserLoginName());
-			int userPrivileges = user.getUserPrivileges();
+			final int userPrivileges = user.getUserPrivileges();
 			switch (userPrivileges) {
 			case 0:
 				cmbUserPrivileges.setSelectedIndex(0);
@@ -1787,8 +2033,8 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 
 			}
 
-			int userstate = user.getUserState();
-			boolean workflow_disabled = user.getBoolean("workflow_disabled");
+			final int userstate = user.getUserState();
+			final boolean workflow_disabled = user.getBoolean("workflow_disabled");
 			if (userstate == 1) {
 				chkUserActive.setSelected(false);
 			} else {
@@ -1801,14 +2047,14 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 				chkWFEnabled.setSelected(true);
 			}
 
-			String joo = user.getUserSourceAsString();
+			final String joo = user.getUserSourceAsString();
 			if (joo.length() < 2) {
 				this.cmbuserSource.setSelectedItem(" ");
 			} else {
 				this.cmbuserSource.setSelectedItem(joo);
 			}
 
-			int cc = user.getClientCapability();
+			final int cc = user.getClientCapability();
 			switch (cc) {
 			case 0:
 				cmbClientCapability.setSelectedIndex(0);
@@ -1835,12 +2081,12 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 			// dumpTextArea.setBounds(400,400,400,400);
 			// dumpFrame.setVisible(true);
 
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			log.error(ex);
 			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
 
 		} finally {
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
 			setCursor(cur2);
 			if (session != null) {
 				smanager.releaseSession(session);
@@ -1849,344 +2095,26 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_userTableMouseReleased
 
-	private void jScrollPane2MouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jScrollPane2MouseReleased
-
-	}// GEN-LAST:event_jScrollPane2MouseReleased
-
-	private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton9ActionPerformed
-		this.dispose();
-	}// GEN-LAST:event_jButton9ActionPerformed
-
-	private void tblGroupRenameMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblGroupRenameMouseReleased
-		int butt = evt.getButton();
-		if (butt == MouseEvent.BUTTON3) {
-			popupGruopRename.show(evt.getComponent(), evt.getX(), evt.getY());
-		}
-
-	}// GEN-LAST:event_tblGroupRenameMouseReleased
-
-	private void tblUserRenameMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblUserRenameMouseReleased
-		int butt = evt.getButton();
-		if (butt == MouseEvent.BUTTON3) {
-			popupUserRename.show(evt.getComponent(), evt.getX(), evt.getY());
-		}
-	}// GEN-LAST:event_tblUserRenameMouseReleased
-
-	private void mnuViewGroupRenameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuViewGroupRenameActionPerformed
-		String objid = getIDfromGroupTable();
-		if (!objid.equals("0000000000000000")) {
-			viewLog(objid);
-		}
-	}// GEN-LAST:event_mnuViewGroupRenameActionPerformed
-
-	private void mnuDeleteGroupRenameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuDeleteGroupRenameActionPerformed
-		String objid = getIDfromGroupTable();
-		if (!objid.equals("0000000000000000")) {
-			deleteLog(objid);
-		}
-
-	}// GEN-LAST:event_mnuDeleteGroupRenameActionPerformed
-
-	private void mnuViewUserRenameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuViewUserRenameActionPerformed
-		String objid = getIDfromUserTable();
-		if (!objid.equals("0000000000000000")) {
-			viewLog(objid);
-		}
-	}// GEN-LAST:event_mnuViewUserRenameActionPerformed
-
-	private void mnuDeleteUserRenameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuDeleteUserRenameActionPerformed
-		String objid = getIDfromUserTable();
-		if (!objid.equals("0000000000000000")) {
-			deleteLog(objid);
-		}
-	}// GEN-LAST:event_mnuDeleteUserRenameActionPerformed
-
-	private void cmdNewUserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdNewUserActionPerformed
-
-		txtUserName.setEditable(true);
-
-		txtUserName.setText("");
-
-		txtDefaultFolder.setText("");
-		txtDefaultGroup.setText("docu");
-		txtUserAddress.setText("replaceme@test");
-		txtUserDbName.setText("");
-		txtLoginName.setText("");
-		txtUserDescription.setText("");
-		txtUserOsDomain.setText("");
-		txtUserOsName.setText("");
-		acldata.setAclDomain("dm_dbo");
-		acldata.setAclName("Global User Default ACL");
-		txtLoginName.setText("");
-		txtUserACL.setText(acldata.getAclName() + "@" + acldata.getAclDomain());
-		cmbUserPrivileges.setSelectedIndex(0);
-
-		chkUserActive.setSelected(true);
-		chkWFEnabled.setSelected(true);
-
-	}// GEN-LAST:event_cmdNewUserActionPerformed
-
-	private void cmdValidateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdValidateActionPerformed
-	}// GEN-LAST:event_cmdValidateActionPerformed
-
-	private void cmdRenameGroupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdRenameGroupActionPerformed
-
-		int row = groupTable.getSelectedRow();
-		Vector v = (Vector) grouptablemodel.getDataVector().elementAt(row);
-		// //System.out.println(v);
-		DokuData d = (DokuData) v.elementAt(1);
-		String userid = d.getObjID();
-		IDfSession session = null;
-		try {
-			session = smanager.getSession();
-			IDfId id = new DfId(userid);
-			IDfGroup group = (IDfGroup) session.getObject(id);
-			String newUserName = (String) JOptionPane.showInputDialog("Enter New Groupname for: " + group.getGroupName());
-
-			IDfFolder folder = session.getFolderByPath("/System/Sysadmin/GroupRename");
-			if (folder == null) {
-				IDfSysObject sobj = (IDfSysObject) session.newObject("dm_folder");
-				sobj.setString("object_name", "GroupRename");
-				sobj.setString("acl_domain", "dm_dbo");
-				sobj.setString("acl_name", "dm_acl_superusers");
-				sobj.link("/System/Sysadmin");
-				sobj.save();
-			}
-
-			IDfSysObject jrobj = (IDfSysObject) session.newObject("dm_job_request");
-			jrobj.setString("object_name", "GroupRename");
-			jrobj.setString("job_name", "dm_GroupRename");
-			jrobj.setString("method_name", "dm_GroupRename");
-			jrobj.setBoolean("request_completed", false);
-			jrobj.setRepeatingString("arguments_keys", 0, "OldGroupName");
-			jrobj.setRepeatingString("arguments_keys", 1, "NewGroupName");
-			jrobj.setRepeatingString("arguments_keys", 2, "report_only");
-			jrobj.setRepeatingString("arguments_keys", 3, "unlock_locked_obj");
-			jrobj.setRepeatingString("arguments_values", 0, group.getGroupName());
-			jrobj.setRepeatingString("arguments_values", 1, newUserName);
-			jrobj.setRepeatingString("arguments_values", 2, "F");
-			jrobj.setRepeatingString("arguments_values", 3, "T");
-
-			jrobj.link("/System/Sysadmin/GroupRename");
-			jrobj.save();
-
-			IDfPersistentObject jobobj = session.getObjectByQualification("dm_job where object_name = 'dm_GroupRename'");
-			if (jobobj != null) {
-				jobobj.setInt("run_now", 1);
-				jobobj.save();
-			}
-
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			DfLogger.error(this, ex.getMessage(), null, ex);
-		} finally {
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-
-	}// GEN-LAST:event_cmdRenameGroupActionPerformed
-
-	private void cmdNewGroupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdNewGroupActionPerformed
-		txtGroupName.setEditable(true);
-	}// GEN-LAST:event_cmdNewGroupActionPerformed
-
-	private void cmdDeleteGroupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdDeleteGroupActionPerformed
-		int row = groupTable.getSelectedRow();
-		Vector v = (Vector) grouptablemodel.getDataVector().elementAt(row);
-		// //System.out.println(v);
-		DokuData d = (DokuData) v.elementAt(1);
-		String userid = d.getObjID();
-		IDfSession session = null;
-		try {
-			session = smanager.getSession();
-			IDfId id = new DfId(userid);
-			IDfGroup group = (IDfGroup) session.getObject(id);
-			group.destroy();
-			grouptablemodel.removeRow(row);
-			groupTable.validate();
-		} catch (DfException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			DfLogger.error(this, ex.getMessage(), null, ex);
-		} finally {
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-
-		}
-	}// GEN-LAST:event_cmdDeleteGroupActionPerformed
-
-	private void txtUserPasswordMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_txtUserPasswordMouseClicked
-		// add your handling code here:
-	}// GEN-LAST:event_txtUserPasswordMouseClicked
-
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JCheckBox chkGroupisPrivate;
-	private javax.swing.JCheckBox chkIsDymanic;
-	private javax.swing.JCheckBox chkUserActive;
-	private javax.swing.JCheckBox chkWFEnabled;
-	private javax.swing.JComboBox cmbAliasSet;
-	private javax.swing.JComboBox cmbClientCapability;
-	private javax.swing.JComboBox cmbGroupClass;
-	private javax.swing.JComboBox cmbGroupSource;
-	private javax.swing.JComboBox cmbUserAliasSet;
-	private javax.swing.JComboBox cmbUserPrivileges;
-	private javax.swing.JComboBox cmbuserSource;
-	private javax.swing.JButton cmdDeleteGroup;
-	private javax.swing.JButton cmdDeleteUser;
-	private javax.swing.JButton cmdGroupQuery;
-	private javax.swing.JButton cmdNewGroup;
-	private javax.swing.JButton cmdNewUser;
-	private javax.swing.JButton cmdRenameGroup;
-	private javax.swing.JButton cmdSaveGroup;
-	private javax.swing.JButton cmdSearchUser;
-	private javax.swing.JButton cmdSelectACL;
-	private javax.swing.JButton cmdSelectDefaultFolder;
-	private javax.swing.JButton cmdSelectGroups;
-	private javax.swing.JButton cmdSelectUsers;
-	private javax.swing.JButton cmdUserRename;
-	private javax.swing.JButton cmdUserSelectDefaultGroup;
-	private javax.swing.JButton cmdValidate;
-	private javax.swing.JButton cmdviewGroupRenameLog;
-	private javax.swing.JButton cmdviewUserRenameLog;
-	private javax.swing.JTable groupTable;
-	private javax.swing.JButton jButton1;
-	private javax.swing.JButton jButton10;
-	private javax.swing.JButton jButton2;
-	private javax.swing.JButton jButton9;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel10;
-	private javax.swing.JLabel jLabel11;
-	private javax.swing.JLabel jLabel12;
-	private javax.swing.JLabel jLabel13;
-	private javax.swing.JLabel jLabel14;
-	private javax.swing.JLabel jLabel15;
-	private javax.swing.JLabel jLabel16;
-	private javax.swing.JLabel jLabel17;
-	private javax.swing.JLabel jLabel18;
-	private javax.swing.JLabel jLabel19;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel20;
-	private javax.swing.JLabel jLabel21;
-	private javax.swing.JLabel jLabel22;
-	private javax.swing.JLabel jLabel23;
-	private javax.swing.JLabel jLabel24;
-	private javax.swing.JLabel jLabel25;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel6;
-	private javax.swing.JLabel jLabel7;
-	private javax.swing.JLabel jLabel8;
-	private javax.swing.JLabel jLabel9;
-	private javax.swing.JPanel jPanel1;
-	private javax.swing.JPanel jPanel10;
-	private javax.swing.JPanel jPanel2;
-	private javax.swing.JPanel jPanel3;
-	private javax.swing.JPanel jPanel4;
-	private javax.swing.JPanel jPanel5;
-	private javax.swing.JPanel jPanel6;
-	private javax.swing.JPanel jPanel7;
-	private javax.swing.JPanel jPanel8;
-	private javax.swing.JPanel jPanel9;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane jScrollPane2;
-	private javax.swing.JScrollPane jScrollPane3;
-	private javax.swing.JScrollPane jScrollPane4;
-	private javax.swing.JScrollPane jScrollPane5;
-	private javax.swing.JScrollPane jScrollPane6;
-	private javax.swing.JScrollPane jScrollPane7;
-	private javax.swing.JTabbedPane jTabbedPane1;
-	private javax.swing.JList lstGroups;
-	private javax.swing.JList lstUsers;
-	private javax.swing.JMenuItem mnuDeleteGroupRename;
-	private javax.swing.JMenuItem mnuDeleteUserRename;
-	private javax.swing.JMenuItem mnuViewGroupRename;
-	private javax.swing.JMenuItem mnuViewUserRename;
-	private javax.swing.JPopupMenu popupGruopRename;
-	private javax.swing.JPopupMenu popupUserRename;
-	private javax.swing.JTable tblGroupRename;
-	private javax.swing.JTable tblUserRename;
-	private javax.swing.JTextField txtDefaultFolder;
-	private javax.swing.JTextField txtDefaultGroup;
-	private javax.swing.JTextField txtGroupAddress;
-	private ExJTextArea txtGroupDescription;
-	private javax.swing.JTextField txtGroupFilter;
-	private javax.swing.JTextField txtGroupName;
-	private javax.swing.JTextField txtGroupOwner;
-	private javax.swing.JTextField txtUserACL;
-	private javax.swing.JTextField txtUserDbName;
-	private javax.swing.JTextField txtUserDescription;
-	private javax.swing.JTextField txtUserFilter;
-	private javax.swing.JTextField txtUserName;
-	private javax.swing.JTextField txtUserOsDomain;
-	private javax.swing.JTextField txtUserOsName;
-	private javax.swing.JTextField txtUserPassword;
-	private javax.swing.JTable userTable;
-	// End of variables declaration//GEN-END:variables
-	private DefaultTableModel usertablemodel;
-	private FolderSelectorData folderselectordata;
-	private DefaultTableModel grouptablemodel;
-	private DefaultListModel userlistmodel;
-	private DefaultListModel grouplistmodel;
-	private AclBrowserData acldata;
-	private GroupSelectorData groupselectordata;
-	private UserSelectorData userselectordata;
-	private DefaultTableModel grouprenamemodel;
-	private DefaultTableModel userrenamemodel;
-	private JLabel label;
-	private ExJTextField txtUserAddress;
-	private JLabel label_1;
-	private ExJTextField txtLoginName;
-
-	public FolderSelectorData getFolderselectordata() {
-		return folderselectordata;
-	}
-
-	public void setFolderselectordata(FolderSelectorData folderselectordata) {
-		this.folderselectordata = folderselectordata;
-	}
-
-	public GroupSelectorData getGroupselectordata() {
-		return groupselectordata;
-	}
-
-	public void setGroupselectordata(GroupSelectorData groupselectordata) {
-		this.groupselectordata = groupselectordata;
-	}
-
-	public UserSelectorData getUserselectordata() {
-		return userselectordata;
-	}
-
-	public void setUserselectordata(UserSelectorData userselectordata) {
-		this.userselectordata = userselectordata;
-	}
-
-	private void viewLog(String objid) {
+	private void viewLog(final String objid) {
 		// //System.out.println("objid:" + objid);
 		IDfSession session = null;
-		Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+		final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
 
 		setCursor(cur);
 		try {
 			session = smanager.getSession();
-			IDfId id = new DfId(objid);
-			IDfSysObject obj = (IDfSysObject) session.getObject(id);
+			final IDfId id = new DfId(objid);
+			final IDfSysObject obj = (IDfSysObject) session.getObject(id);
 
-			String filePath = obj.getFile(null);
-			File fileToOpen = new File(filePath);
+			final String filePath = obj.getFile(null);
+			final File fileToOpen = new File(filePath);
 			try {
 				Desktop.getDesktop().open(fileToOpen);
-			} catch (IOException ex) {
+			} catch (final IOException ex) {
 				log.error(ex);
 			}
 
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			log.error(ex);
 			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
 		} finally {
@@ -2194,7 +2122,7 @@ public class UsergroupManagementFrame extends javax.swing.JFrame {
 				smanager.releaseSession(session);
 			}
 
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
 
 			setCursor(cur2);
 		}

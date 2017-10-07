@@ -1,10 +1,13 @@
 package org.quickclient.actions;
 
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import org.quickclient.classes.DocuSessionManager;
+import org.quickclient.classes.DokuData;
 import org.quickclient.classes.SwingHelper;
 
 import com.documentum.com.DfClientX;
@@ -16,6 +19,7 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
+import com.documentum.fc.common.IDfList;
 import com.documentum.operations.IDfCancelCheckoutNode;
 import com.documentum.operations.IDfCancelCheckoutOperation;
 
@@ -38,9 +42,7 @@ public class CancelCheckoutAction implements IQuickAction {
 					final IDfCancelCheckoutOperation operation = clientx.getCancelCheckoutOperation();
 					operation.setKeepLocalFile(false);
 
-					if (obj.isCheckedOut() == false) {
-						// //System.out.println("Object is not checked out.");
-					} else {
+					if (obj.isCheckedOut()) {
 						IDfCancelCheckoutNode node;
 						if (obj.isVirtualDocument()) {
 							final IDfVirtualDocument vDoc = obj.asVirtualDocument("CURRENT", false);
@@ -49,9 +51,20 @@ public class CancelCheckoutAction implements IQuickAction {
 							node = (IDfCancelCheckoutNode) operation.add(obj);
 						}
 						operation.execute();
-						final int row = t.getSelectedRow();
-						t.setValueAt("", row, 0);
-						t.validate();
+						final IDfList errors = operation.getErrors();
+						if (errors != null && errors.getCount() == 0) {
+							final int rowcount = t.getRowCount();
+							final DefaultTableModel tablemodel = (DefaultTableModel) t.getModel();
+							for (int j = 0; j < rowcount; j++) {
+								final Vector v = (Vector) tablemodel.getDataVector().elementAt(j);
+								final DokuData d = (DokuData) v.lastElement();
+								if (obj.getObjectId().getId().equals(d.getObjID())) {
+									t.setValueAt("", j, 0);
+									t.validate();
+								}
+							}
+
+						}
 
 					}
 				} catch (final DfException ex) {

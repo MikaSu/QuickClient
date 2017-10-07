@@ -1,88 +1,106 @@
 package org.quickclient.gui;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.event.*;
-import java.beans.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 /**
  * Menu component that handles the functionality expected of a standard
  * "Windows" menu for MDI applications.
  */
 public class WindowMenu extends JMenu {
-    private JDesktopPane desktop;
-    private JMenuItem cascade=new JMenuItem("Cascade");
-    private JMenuItem tile=new JMenuItem("Tile");
+	/*
+	 * This JCheckBoxMenuItem descendant is used to track the child frame that
+	 * corresponds to a give menu.
+	 */
+	class ChildMenuItem extends JCheckBoxMenuItem {
+		private final JInternalFrame frame;
 
-    public WindowMenu(JDesktopPane desktop) {
-        this.desktop=desktop;
-        setText("Window");
-        cascade.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-//                WindowMenu.this.desktop.cascadeFrames();
-            }
-        });
-        tile.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-  //              WindowMenu.this.desktop.tileFrames();
-            }
-        });
-        addMenuListener(new MenuListener() {
-            public void menuCanceled (MenuEvent e) {}
+		public ChildMenuItem(final JInternalFrame frame) {
+			super(frame.getTitle());
+			this.frame = frame;
+		}
 
-            public void menuDeselected (MenuEvent e) {
-                removeAll();
-            }
+		public JInternalFrame getFrame() {
+			return frame;
+		}
+	}
 
-            public void menuSelected (MenuEvent e) {
-                buildChildMenus();
-            }
-        });
-    }
+	private final JDesktopPane desktop;
+	private final JMenuItem cascade = new JMenuItem("Cascade");
 
-    /* Sets up the children menus depending on the current desktop state */
-    private void buildChildMenus() {
-        int i;
-        ChildMenuItem menu;
-        JInternalFrame[] array = desktop.getAllFrames();
+	private final JMenuItem tile = new JMenuItem("Tile");
 
-        add(cascade);
-        add(tile);
-        if (array.length > 0) addSeparator();
-        cascade.setEnabled(array.length > 0);
-        tile.setEnabled(array.length > 0);
+	public WindowMenu(final JDesktopPane desktop) {
+		this.desktop = desktop;
+		setText("Window");
+		cascade.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent ae) {
 
-        for (i = 0; i < array.length; i++) {
-            menu = new ChildMenuItem(array[i]);
-            menu.setState(i == 0);
-            menu.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent ae) {
-                    JInternalFrame frame = ((ChildMenuItem)ae.getSource()).getFrame();
-                    frame.moveToFront();
-                    try {
-                        frame.setSelected(true);
-                    } catch (PropertyVetoException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            menu.setIcon(array[i].getFrameIcon());
-            add(menu);
-        }
-    }
+			}
+		});
+		tile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent ae) {
+			}
+		});
+		addMenuListener(new MenuListener() {
+			@Override
+			public void menuCanceled(final MenuEvent e) {
+			}
 
-    /* This JCheckBoxMenuItem descendant is used to track the child frame that corresponds
-       to a give menu. */
-    class ChildMenuItem extends JCheckBoxMenuItem {
-        private JInternalFrame frame;
+			@Override
+			public void menuDeselected(final MenuEvent e) {
+				removeAll();
+			}
 
-        public ChildMenuItem(JInternalFrame frame) {
-            super(frame.getTitle());
-            this.frame=frame;
-        }
+			@Override
+			public void menuSelected(final MenuEvent e) {
+				buildChildMenus();
+			}
+		});
+	}
 
-        public JInternalFrame getFrame() {
-            return frame;
-        }
-    }
+	/* Sets up the children menus depending on the current desktop state */
+	private void buildChildMenus() {
+		int i;
+		ChildMenuItem menu;
+		final JInternalFrame[] array = desktop.getAllFrames();
+
+		add(cascade);
+		add(tile);
+		if (array.length > 0) {
+			addSeparator();
+		}
+		cascade.setEnabled(array.length > 0);
+		tile.setEnabled(array.length > 0);
+
+		for (i = 0; i < array.length; i++) {
+			menu = new ChildMenuItem(array[i]);
+			menu.setState(i == 0);
+			menu.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent ae) {
+					final JInternalFrame frame = ((ChildMenuItem) ae.getSource()).getFrame();
+					frame.moveToFront();
+					try {
+						frame.setSelected(true);
+					} catch (final PropertyVetoException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			menu.setIcon(array[i].getFrameIcon());
+			add(menu);
+		}
+	}
 }

@@ -6,6 +6,7 @@
 package org.quickclient.gui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
@@ -45,6 +46,20 @@ import com.documentum.fc.common.IDfId;
  */
 @SuppressWarnings("serial")
 public class ACLBrowserFrame extends javax.swing.JFrame {
+
+	private static final String SELECT_OBJECT_NAME_DESCRIPTION_R_OBJECT_ID_FROM_DM_ACL_WHERE = "select object_name, description, r_object_id from dm_acl where ";
+
+	private static final String ERROR_OCCURED = "Error occured!";
+
+	private static final String EXTENDED_PERMIT = "Extended Permit";
+
+	private static final String DESCRIPTION = "Description";
+
+	private static final String PERMIT = "Permit";
+
+	private static final String OBJECT_NAME_LIKE = " object_name like '";
+
+	private static final String ACCESSOR = "Accessor";
 
 	DocuSessionManager smanager;
 	Logger log = Logger.getLogger(ACLBrowserFrame.class);
@@ -108,7 +123,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 		initComponents();
 		smanager = DocuSessionManager.getInstance();
 		final UserorGroupSelectorData s = new UserorGroupSelectorData();
-		// //System.out.println("UserorGroupSelectorData: " + s);
+
 		setUserorgroupselectordata(s);
 		cmdSelect.addActionListener(actionlistener);
 		setAclbrowserdata(data);
@@ -127,14 +142,14 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			}
 		};
 		acllistmodel.addColumn("acl_name");
-		acllistmodel.addColumn("Description");
+		acllistmodel.addColumn(DESCRIPTION);
 		acllistmodel.addColumn("dokudata");
 		tblAclList.setModel(acllistmodel);
 
 		permissionlistmodel.addColumn(".");
-		permissionlistmodel.addColumn("Accessor");
-		permissionlistmodel.addColumn("Permit");
-		permissionlistmodel.addColumn("Extended Permit");
+		permissionlistmodel.addColumn(ACCESSOR);
+		permissionlistmodel.addColumn(PERMIT);
+		permissionlistmodel.addColumn(EXTENDED_PERMIT);
 
 		tblPermissionDetails.setAutoCreateColumnsFromModel(true);
 		tblPermissionDetails.setModel(permissionlistmodel);
@@ -166,7 +181,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 		initComponents();
 		smanager = DocuSessionManager.getInstance();
 		final UserorGroupSelectorData s = new UserorGroupSelectorData();
-		// //System.out.println("UserorGroupSelectorData: " + s);
+
 		setUserorgroupselectordata(s);
 		acllistmodel = new DefaultTableModel() {
 
@@ -183,14 +198,14 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			}
 		};
 		acllistmodel.addColumn("acl_name");
-		acllistmodel.addColumn("Description");
+		acllistmodel.addColumn(DESCRIPTION);
 		acllistmodel.addColumn("dokudata");
 		tblAclList.setModel(acllistmodel);
 
 		permissionlistmodel.addColumn(".");
-		permissionlistmodel.addColumn("Accessor");
-		permissionlistmodel.addColumn("Permit");
-		permissionlistmodel.addColumn("Extended Permit");
+		permissionlistmodel.addColumn(ACCESSOR);
+		permissionlistmodel.addColumn(PERMIT);
+		permissionlistmodel.addColumn(EXTENDED_PERMIT);
 
 		tblPermissionDetails.setAutoCreateColumnsFromModel(true);
 		tblPermissionDetails.setModel(permissionlistmodel);
@@ -245,7 +260,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			frame.setVisible(true);
 		} catch (final DfException ex) {
 			log.error(ex);
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, ex.getMessage(), ERROR_OCCURED, JOptionPane.ERROR_MESSAGE);
 
 		} finally {
 			if (session != null) {
@@ -276,7 +291,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			frame.setVisible(true);
 		} catch (final DfException ex) {
 			log.error(ex);
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, ex.getMessage(), ERROR_OCCURED, JOptionPane.ERROR_MESSAGE);
 		}
 
 	}// GEN-LAST:event_cmdNewACLActionPerformed
@@ -308,16 +323,16 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			}
 
 			if (radSystem.isSelected()) {
-				aquery = "select object_name, description, r_object_id from dm_acl where " + additionalpredicate + " object_name like '" + aclFilter + "%' and owner_name = '" + docbaseOnwer + "' order by object_name";
+				aquery = SELECT_OBJECT_NAME_DESCRIPTION_R_OBJECT_ID_FROM_DM_ACL_WHERE + additionalpredicate + OBJECT_NAME_LIKE + aclFilter + "%' and owner_name = '" + docbaseOnwer + "' order by object_name";
 			}
 			if (radCurrentUser.isSelected()) {
-				aquery = "select object_name, description, r_object_id from dm_acl where " + additionalpredicate + " object_name like '" + aclFilter + "%' and owner_name = USER order by object_name";
+				aquery = SELECT_OBJECT_NAME_DESCRIPTION_R_OBJECT_ID_FROM_DM_ACL_WHERE + additionalpredicate + OBJECT_NAME_LIKE + aclFilter + "%' and owner_name = USER order by object_name";
 			}
 			if (radAny.isSelected()) {
-				aquery = "select object_name, description, r_object_id from dm_acl where " + additionalpredicate + " object_name like '" + aclFilter + "%' order by object_name";
+				aquery = SELECT_OBJECT_NAME_DESCRIPTION_R_OBJECT_ID_FROM_DM_ACL_WHERE + additionalpredicate + OBJECT_NAME_LIKE + aclFilter + "%' order by object_name";
 			}
 			if (radSelectedUser.isSelected()) {
-				aquery = "select object_name, description, r_object_id from dm_acl where " + additionalpredicate + " object_name like '" + aclFilter + "%' and owner_name = '" + userFilter + "' order by object_name";
+				aquery = SELECT_OBJECT_NAME_DESCRIPTION_R_OBJECT_ID_FROM_DM_ACL_WHERE + additionalpredicate + OBJECT_NAME_LIKE + aclFilter + "%' and owner_name = '" + userFilter + "' order by object_name";
 			}
 
 			final IDfQuery query = new DfQuery();
@@ -335,7 +350,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 
 		} catch (final DfException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, ex.getMessage(), ERROR_OCCURED, JOptionPane.ERROR_MESSAGE);
 
 		} finally {
 			if (col != null) {
@@ -359,8 +374,13 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 	}// GEN-LAST:event_cmdSelectActionPerformed
 
 	private void cmdSelectUserNameActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdSelectUserNameActionPerformed
-		final ActionListener a = e -> txtUserNameilter.setText(userorgroupselectordata.getUserorGroupname());
-		// //System.out.println(this.userorgroupselectordata);
+		final ActionListener a = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				txtUserNameilter.setText(userorgroupselectordata.getUserorGroupname());
+			}
+		};
+
 		final UserorGroupSelectorFrame frame = new UserorGroupSelectorFrame(a, this.getUserorgroupselectordata());
 		SwingHelper.centerJFrame(frame);
 		frame.setVisible(true);
@@ -416,7 +436,12 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 
 		cmdQuery.setText("Query");
 		cmdQuery.setMargin(new java.awt.Insets(0, 8, 0, 8));
-		cmdQuery.addActionListener(evt -> cmdQueryActionPerformed(evt));
+		cmdQuery.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				cmdQueryActionPerformed(evt);
+			}
+		});
 
 		chkIncludeInternal.setText("Include Internal");
 		chkIncludeInternal.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -462,7 +487,12 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 
 		cmdSelectUserName.setText("Select");
 		cmdSelectUserName.setMargin(new java.awt.Insets(0, 8, 0, 8));
-		cmdSelectUserName.addActionListener(evt -> cmdSelectUserNameActionPerformed(evt));
+		cmdSelectUserName.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				cmdSelectUserNameActionPerformed(evt);
+			}
+		});
 
 		final org.jdesktop.layout.GroupLayout gl_jPanel2 = new org.jdesktop.layout.GroupLayout(jPanel2);
 		jPanel2.setLayout(gl_jPanel2);
@@ -477,7 +507,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 
 		tblPermissionDetails.setAutoCreateColumnsFromModel(false);
 		tblPermissionDetails.setAutoCreateRowSorter(true);
-		tblPermissionDetails.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null }, { null, null, null }, { null, null, null }, { null, null, null } }, new String[] { "Accessor", "Permit", "Extended permit" }));
+		tblPermissionDetails.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null }, { null, null, null }, { null, null, null }, { null, null, null } }, new String[] { ACCESSOR, PERMIT, "Extended permit" }));
 		tblPermissionDetails.setGridColor(new java.awt.Color(0, 0, 0));
 		tblPermissionDetails.setShowHorizontalLines(false);
 		jScrollPane2.setViewportView(tblPermissionDetails);
@@ -493,7 +523,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 		tblAclList.setAutoCreateRowSorter(true);
 		tblAclList.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 
-		}, new String[] { "ACL Name", "Description" }));
+		}, new String[] { "ACL Name", DESCRIPTION }));
 		tblAclList.setGridColor(new java.awt.Color(0, 0, 0));
 		tblAclList.setShowHorizontalLines(false);
 		tblAclList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -517,17 +547,37 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 
 		cmdSelect.setMnemonic('s');
 		cmdSelect.setText("Select");
-		cmdSelect.addActionListener(evt -> cmdSelectActionPerformed(evt));
+		cmdSelect.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				cmdSelectActionPerformed(evt);
+			}
+		});
 
 		cmdEditACL.setMnemonic('e');
 		cmdEditACL.setText("Edit");
-		cmdEditACL.addActionListener(evt -> cmdEditACLActionPerformed(evt));
+		cmdEditACL.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				cmdEditACLActionPerformed(evt);
+			}
+		});
 
 		cmdClose.setText("Close");
-		cmdClose.addActionListener(evt -> cmdCloseActionPerformed(evt));
+		cmdClose.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				cmdCloseActionPerformed(evt);
+			}
+		});
 
 		cmdNewACL.setText("Create New Acl");
-		cmdNewACL.addActionListener(evt -> cmdNewACLActionPerformed(evt));
+		cmdNewACL.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				cmdNewACLActionPerformed(evt);
+			}
+		});
 
 		final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -586,10 +636,8 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			final IDfACL acl = (IDfACL) session.getObject(id);
 			aclname = acl.getObjectName();
 			aclDomain = acl.getString("owner_name");
-			boolean i_has_required_groups = false;
-			boolean i_has_required_group_set = false;
-			i_has_required_groups = acl.getBoolean("i_has_required_groups");
-			i_has_required_group_set = acl.getBoolean("i_has_required_group_set");
+			final boolean i_has_required_groups = acl.getBoolean("i_has_required_groups");
+			final boolean i_has_required_group_set = acl.getBoolean("i_has_required_group_set");
 			final int accessorcount = acl.getAccessorCount();
 			final Utils utils = new Utils();
 			for (int i = 0; i < accessorcount; i++) {
@@ -609,7 +657,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 					jeps.add(utils.intToPermit(permit));
 					jeps.add(acl.getAccessorXPermitNames(i));
 				} else if (permittype == 1) {
-					jeps.add("Extended Permit");
+					jeps.add(EXTENDED_PERMIT);
 					jeps.add(acl.getAccessorXPermitNames(i));
 				} else if (permittype == 2) {
 					jeps.add("Application Permit");
@@ -634,7 +682,7 @@ public class ACLBrowserFrame extends javax.swing.JFrame {
 			}
 		} catch (final DfException ex) {
 			log.error(ex);
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, ex.getMessage(), ERROR_OCCURED, JOptionPane.ERROR_MESSAGE);
 
 		} finally {
 			tblPermissionDetails.validate();

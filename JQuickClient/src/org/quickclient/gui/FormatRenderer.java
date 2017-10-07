@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class FormatRenderer extends DefaultTableCellRenderer {
 
-	private static String GIF_SUFFIX = "_16.gif";
+	private static final String GIF_SUFFIX = "_16.gif";
 	private boolean showThumbnails;
 
 	/*
@@ -66,15 +66,9 @@ public class FormatRenderer extends DefaultTableCellRenderer {
 			try {
 				icon = new ImageIcon(new java.net.URL(xx));
 			} catch (final MalformedURLException ex) {
-				;
+				// TODO logging
 			}
 		}
-		/*
-		 * if(format.length()>1) icon = new ImageIcon("icons/format/f_" + format
-		 * + GIF_SUFFIX"); if(type.length()>1 && format.length()==0)
-		 *
-		 * icon = new ImageIcon("icons/type/t_" + type + GIF_SUFFIX");
-		 */
 		setText("");
 		setIcon(icon);
 		return this;

@@ -7,6 +7,8 @@ package org.quickclient.gui;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -61,21 +64,151 @@ import com.documentum.fc.client.IDfSessionManager;
 import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfLogger;
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
-import java.awt.Insets;
-import java.awt.Dimension;
 
 /**
- * 
+ *
  * @author Administrator
  */
 public class MDIMainFrame extends javax.swing.JFrame {
 
-	DocuSessionManager smanager;
-	DefaultTableModel model;
-	private boolean showThumbnails;
-	Logger log = Logger.getLogger(MDIMainFrame.class);
 	public static MDIMainFrame me;
+	static String docbroker = "";
+	static String docbase = "";
+	static String user = "";
+	static String pass = "";
+
+	public static MDIMainFrame getInstance() {
+		return me;
+	}
+
+	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(final String args[]) {
+
+		int ind = 0;
+
+		final ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+
+		// Get the URLs
+		final URL[] urls = ((URLClassLoader) sysClassLoader).getURLs();
+
+		for (final URL url : urls) {
+			System.out.println(url.getFile());
+		}
+
+		for (final String arg : args) {
+			if (arg.equals("-docbroker")) {
+				docbroker = args[ind + 1];
+			}
+			if (arg.equals("-docbase")) {
+				docbase = args[ind + 1];
+			}
+			if (arg.equals("-user")) {
+				user = args[ind + 1];
+			}
+			if (arg.equals("-pass")) {
+				pass = args[ind + 1];
+			}
+			ind++;
+		}
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				final MDIMainFrame m = new MDIMainFrame();
+				SwingHelper.centerJFrame(m);
+				m.setVisible(true);
+			}
+		});
+	}
+
+	DocuSessionManager smanager;
+
+	DefaultTableModel model;
+
+	private boolean showThumbnails;
+
+	Logger log = Logger.getLogger(MDIMainFrame.class);
+
+	private Vector<ListAttribute> listattributes;
+
+	private javax.swing.JInternalFrame bframe;
+
+	private final String standardqueryattributes = "object_name, r_object_id, r_link_cnt, r_object_type, a_content_type, i_is_replica, r_lock_owner, r_is_virtual_doc, i_is_reference";
+
+	private String additionalqueryattributes = "";
+
+	private javax.swing.JButton cmdAdvSearch;
+
+	private javax.swing.JButton cmdNewBrowser;
+
+	private javax.swing.JButton cmdQuickSearch;
+
+	public javax.swing.JDesktopPane desktopPane;
+
+	private javax.swing.JMenuItem exitMenuItem;
+
+	private javax.swing.JMenu fileMenu;
+
+	private javax.swing.JButton jButton1;
+
+	private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+
+	private javax.swing.JLabel jLabel1;
+
+	private javax.swing.JMenu jMenu1;
+
+	private javax.swing.JMenu jMenu2;
+
+	private javax.swing.JMenu jMenu3;
+
+	private javax.swing.JMenu jMenu4;
+
+	private javax.swing.JMenuItem jMenuItem1;
+
+	private javax.swing.JMenuItem jMenuItem10;
+
+	private javax.swing.JMenuItem jMenuItem11;
+
+	private javax.swing.JMenuItem jMenuItem6;
+
+	private javax.swing.JMenuItem jMenuItem7;
+
+	private javax.swing.JMenuItem jMenuItem8;
+
+	private javax.swing.JMenuItem jMenuItem9;
+
+	private javax.swing.JSeparator jSeparator1;
+
+	private javax.swing.JToolBar toolbar;
+
+	private javax.swing.JMenuBar menuBar;
+
+	private javax.swing.JMenuItem mnuLocations;
+
+	private javax.swing.JMenu mnuOptions;
+
+	private javax.swing.JMenuItem mnuRelatedDoc;
+
+	private javax.swing.JMenuItem mnuSearchACL;
+
+	private javax.swing.JMenuItem mnuSearchChronId;
+
+	private javax.swing.JMenuItem mnuSearchCustom;
+
+	private javax.swing.JMenuItem mnuSearchOwner;
+
+	private javax.swing.JMenuItem mnuSerachObjId;
+	private javax.swing.JMenuItem mnuServices;
+	private javax.swing.JMenuItem mnuShowSessions1;
+	private javax.swing.JMenuItem mnuTypeEdit;
+
+	private javax.swing.JMenuItem mnuUserMgmt;
+	private javax.swing.JMenuItem mnuVisibleAttributes;
+	private javax.swing.JTextField txtSearch;
+	private JMenuItem mntmDisconnect;
+	private JMenuItem mntmUtilities;
 
 	/** Creates new form MDIMainFrame */
 	public MDIMainFrame() {
@@ -84,36 +217,197 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		try {
 			log.debug("start");
 			UIManager.setLookAndFeel(new com.jgoodies.looks.plastic.PlasticXPLookAndFeel());
-			//			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-		} catch (Exception e) {
+			// UIManager.setLookAndFeel(new WindowsLookAndFeel());
+		} catch (final Exception e) {
 			log.error(e);
 		}
-		ConfigService cs = ConfigService.getInstance();
+		final ConfigService cs = ConfigService.getInstance();
 		showThumbnails = false;
 		initComponents();
 		menuBar.add(new WindowMenu(desktopPane));
 		cs.setDesktop(desktopPane);
 		initDocbaseConnection();
 		smanager = DocuSessionManager.getInstance();
-		if (smanager.getDocbasename() != null)
+		if (smanager.getDocbasename() != null) {
 			this.setTitle(smanager.getUserName() + "@" + smanager.getDocbasename());
+		}
 		cs.saveProperties();
 
-		Enumeration enumx = Logger.getRootLogger().getAllAppenders();
+		final Enumeration enumx = Logger.getRootLogger().getAllAppenders();
 		while (enumx.hasMoreElements()) {
-			Appender app = (Appender) enumx.nextElement();
+			final Appender app = (Appender) enumx.nextElement();
 			if (app instanceof FileAppender) {
 				System.out.println("Logging to file=" + ((FileAppender) app).getFile());
 			}
 		}
 	}
 
-	public static MDIMainFrame getInstance() {
-		return me;
+	private void checkForUpdates(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem6ActionPerformed
+
+		final HTTPClient client = new HTTPClient();
+		final String s = client.getBuildNumber("http://quickclient.org/build.txt");
+		log.debug(s);
+		if (s == null || s.length() == 0) {
+			JOptionPane.showMessageDialog(null, "Error, occurred during check, sorry", "", JOptionPane.PLAIN_MESSAGE);
+			return;
+		}
+		final String[] cc = s.split("-");
+		String ee = cc[1];
+		ee = ee.replaceAll("b", "");
+		log.debug(ee);
+
+		final String currentVersion = MDIMainFrame.class.getPackage().getImplementationVersion();
+		final String[] ccx = currentVersion.split("-");
+		String eex = ccx[1];
+		eex = eex.replaceAll("b", "");
+
+		final int webversion = Integer.parseInt(ee);
+		final int myversion = Integer.parseInt(eex);
+		if (webversion > myversion) {
+			JOptionPane.showMessageDialog(null, "Your version: " + currentVersion + "\nAvailable Version: " + s, "Version Info", JOptionPane.PLAIN_MESSAGE);
+		} else if (webversion == myversion) {
+			JOptionPane.showMessageDialog(null, "Your version: " + currentVersion + "\nAvailable Version: " + s, "Version Info", JOptionPane.PLAIN_MESSAGE);
+		} else if (webversion < myversion) {
+			JOptionPane.showMessageDialog(null, "?? Fatal ??" + currentVersion, "Oh no", JOptionPane.PLAIN_MESSAGE);
+		}
+
+	}// GEN-LAST:event_jMenuItem6ActionPerformed
+
+	private void cmdAdvSearchActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdAdvSearchActionPerformed
+		final AdvSearchFrameExpr search = new AdvSearchFrameExpr();
+
+		SwingHelper.centerJFrame(search);
+		search.setVisible(true);
+		search.setDesktop(desktopPane);
+	}// GEN-LAST:event_cmdAdvSearchActionPerformed
+
+	private void cmdNewBrowserActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdNewBrowserActionPerformed
+		final MainJFrame bf = new MainJFrame();
+		desktopPane.add(bf);
+		// bf.setSize(600, 400);
+		bf.setVisible(true);
+		bf.setResizable(true);
+	}// GEN-LAST:event_cmdNewBrowserActionPerformed
+
+	private void cmdQuickSearchActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdQuickSearchActionPerformed
+		doQuickSearch();
+
+	}// GEN-LAST:event_cmdQuickSearchActionPerformed
+
+	private void doQuickSearch() {
+		IDfCollection col = null;
+		IDfSession session = null;
+		DefaultTableModel quicksearchtablemodel = new DefaultTableModel();
+		quicksearchtablemodel.addColumn(".");
+		quicksearchtablemodel.addColumn(".");
+		quicksearchtablemodel.addColumn("object_name");
+		// additional column values
+		final int listsize = listattributes.size();
+		for (int i = 0; i < listsize; i++) {
+			quicksearchtablemodel.addColumn(listattributes.get(i));
+		}
+		quicksearchtablemodel.addColumn("data");
+		quicksearchtablemodel.setRowCount(0);
+		String queryStr = "";
+
+		if (showThumbnails) {
+			queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url  from dm_document SEARCH DOCUMENT CONTAINS '";
+		} else {
+			queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_document SEARCH DOCUMENT CONTAINS '";
+		}
+		final String quickString = txtSearch.getText();
+		queryStr = queryStr + quickString + "'";
+		final String tempvalue = "";
+		final String repvalue = "";
+		try {
+			final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+			setCursor(cur);
+			final IDfQuery query = new DfQuery();
+			query.setDQL(queryStr);
+			session = smanager.getSession();
+			col = query.execute(session, DfQuery.DF_READ_QUERY);
+			final Utils util = new Utils();
+			quicksearchtablemodel = util.getModelFromCollection(session, null, col, showThumbnails, quicksearchtablemodel, null, null);
+			final SearchFrame sf = new SearchFrame(quicksearchtablemodel, showThumbnails);
+			desktopPane.add(sf);
+			sf.setSize(400, 400);
+			sf.setVisible(true);
+		} catch (final DfException ex) {
+			log.error(ex);
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+			setCursor(cur2);
+		} finally {
+			if (col != null) {
+				try {
+					col.close();
+				} catch (final DfException ex) {
+					log.error(ex);
+				}
+			}
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+			setCursor(cur2);
+		}
+	}
+
+	public void executeCustomSearch(final String whereClause, final String title, final boolean showallversions) {
+		String queryStr = "";
+		String allVersion = "";
+		if (showallversions) {
+			allVersion = "(ALL)";
+		}
+		if (showThumbnails) {
+			queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject" + allVersion + " " + whereClause;
+		} else {
+			queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject" + allVersion + " " + whereClause;
+		}
+		final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+		setCursor(cur);
+		new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Related documents", showThumbnails);
+
+		// executeCustomQuery(queryStr, "Result of custom query: " + cp);
+		final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+		setCursor(cur2);
+	}
+
+	private void exitMenuItemActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_exitMenuItemActionPerformed
+		try {
+			IDfSession session = null;
+			session = smanager.getSession();
+			session.purgeLocalFiles();
+			System.exit(0);// GEN-LAST:event_exitMenuItemActionPerformed
+		} catch (final DfException ex) {
+			// Logger.getLogger(MDIMainFrame.class.getName()).log(Level.SEVERE,
+			// null, ex);
+		}
 	}
 
 	private JInternalFrame[] getAllFrames() {
 		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	public JDesktopPane getDesktopPane() {
+		return desktopPane;
+	}
+
+	public void initAfterConnection() {
+		final ConfigService cs = ConfigService.getInstance();
+		listattributes = cs.getAttributes(cs.getCurrentListConfigName()).get();
+		for (int i = 0; i < listattributes.size(); i++) {
+			final ListAttribute a = listattributes.get(i);
+			if (a.type.equals("dm_sysobject")) {
+				additionalqueryattributes = additionalqueryattributes + ", " + listattributes.get(i).attribute;
+			}
+		}
+		initializeColumns();
 	}
 
 	/**
@@ -141,9 +435,10 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		txtSearch = new javax.swing.JTextField();
 		txtSearch.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+			public void keyPressed(final KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					doQuickSearch();
+				}
 			}
 		});
 		jLabel1.setLabelFor(txtSearch);
@@ -185,11 +480,12 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		toolbar.setFloatable(false);
 		toolbar.setRollover(true);
 
-		URL iUrl = getClass().getResource("/52.gif");
+		final URL iUrl = getClass().getResource("/52.gif");
 		if (iUrl != null) {
-			ImageIcon i = new javax.swing.ImageIcon(iUrl);
-			if (i != null)
+			final ImageIcon i = new javax.swing.ImageIcon(iUrl);
+			if (i != null) {
 				cmdNewBrowser.setIcon(i); // NOI18N
+			}
 		}
 		cmdNewBrowser.setText("Browser");
 		cmdNewBrowser.setToolTipText("Opens new Docbase browser");
@@ -197,17 +493,19 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		cmdNewBrowser.setFocusable(false);
 		cmdNewBrowser.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		cmdNewBrowser.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdNewBrowserActionPerformed(evt);
 			}
 		});
 		toolbar.add(cmdNewBrowser);
 
-		URL aUrl = getClass().getResource("");
+		final URL aUrl = getClass().getResource("");
 		if (aUrl != null) {
-			ImageIcon a = new javax.swing.ImageIcon(aUrl);
-			if (a != null)
+			final ImageIcon a = new javax.swing.ImageIcon(aUrl);
+			if (a != null) {
 				jButton1.setIcon(a); // NOI18N
+			}
 		}
 		jButton1.setText("Inbox");
 		jButton1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -215,30 +513,31 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 		jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
 			}
 		});
 		toolbar.add(jButton1);
 
-		URL sUrl = getClass().getResource("/search.gif");
+		final URL sUrl = getClass().getResource("/search.gif");
 		if (sUrl != null) {
-			ImageIcon s = new javax.swing.ImageIcon(sUrl); // NOI18N
-			if (s != null)
+			final ImageIcon s = new javax.swing.ImageIcon(sUrl); // NOI18N
+			if (s != null) {
 				cmdAdvSearch.setIcon(s); // NOI18N
+			}
 		}
 		cmdAdvSearch.setText("Search");
 		cmdAdvSearch.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		cmdAdvSearch.setFocusable(false);
 		cmdAdvSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		cmdAdvSearch.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdAdvSearchActionPerformed(evt);
 			}
 		});
 		toolbar.add(cmdAdvSearch);
-
-
 
 		jLabel1.setText("                                          Quick Search: ");
 		toolbar.add(jLabel1);
@@ -250,7 +549,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		cmdQuickSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		cmdQuickSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		cmdQuickSearch.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				cmdQuickSearchActionPerformed(evt);
 			}
 		});
@@ -260,14 +560,16 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		exitMenuItem.setText("Exit");
 		exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				exitMenuItemActionPerformed(evt);
 			}
 		});
 
 		mntmDisconnect = new JMenuItem("Disconnect");
 		mntmDisconnect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
 				smanager.setSMgr(null);
 			}
 		});
@@ -282,7 +584,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuSerachObjId.setText("using r_object_id");
 		mnuSerachObjId.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuSerachObjIdActionPerformed(evt);
 			}
 		});
@@ -290,7 +593,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuSearchCustom.setText("using custom predicate");
 		mnuSearchCustom.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuSearchCustomActionPerformed(evt);
 			}
 		});
@@ -298,7 +602,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuSearchChronId.setText("using i_chronicle_id");
 		mnuSearchChronId.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuSearchChronIdActionPerformed(evt);
 			}
 		});
@@ -306,7 +611,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuSearchACL.setText("using acl name");
 		mnuSearchACL.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuSearchACLActionPerformed(evt);
 			}
 		});
@@ -314,7 +620,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuSearchOwner.setText("using owner name");
 		mnuSearchOwner.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuSearchOwnerActionPerformed(evt);
 			}
 		});
@@ -322,7 +629,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuRelatedDoc.setText("Related Documents");
 		mnuRelatedDoc.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuRelatedDocActionPerformed(evt);
 			}
 		});
@@ -330,7 +638,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jMenuItem1.setText("Images without Thumbnail");
 		jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jMenuItem1ActionPerformed(evt);
 			}
 		});
@@ -344,7 +653,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuVisibleAttributes.setText("Visible Attributes");
 		mnuVisibleAttributes.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuVisibleAttributesActionPerformed(evt);
 			}
 		});
@@ -352,7 +662,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jCheckBoxMenuItem1.setText("Show Thumbnails in Search Results");
 		jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jCheckBoxMenuItem1ActionPerformed(evt);
 			}
 		});
@@ -362,42 +673,49 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jMenu4.setText("Admin Tools");
 
-		URL groupUrl = getClass().getResource("/group.gif");
-		if (groupUrl != null)
+		final URL groupUrl = getClass().getResource("/group.gif");
+		if (groupUrl != null) {
 			mnuUserMgmt.setIcon(new javax.swing.ImageIcon(groupUrl)); // NOI18N
+		}
 		mnuUserMgmt.setText("User Management");
 		mnuUserMgmt.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuUserMgmtActionPerformed(evt);
 			}
 		});
 		jMenu4.add(mnuUserMgmt);
 
-		URL jobUrl = getClass().getResource("/job.gif");
-		if (jobUrl != null)
+		final URL jobUrl = getClass().getResource("/job.gif");
+		if (jobUrl != null) {
 			jMenuItem10.setIcon(new javax.swing.ImageIcon(jobUrl)); // NOI18N
+		}
 		jMenuItem10.setText("Job Management");
 		jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jMenuItem10ActionPerformed(evt);
 			}
 		});
-		
-		JMenuItem mntmAclEditor = new JMenuItem("ACL Editor");
+
+		final JMenuItem mntmAclEditor = new JMenuItem("ACL Editor");
 		mntmAclEditor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
 				mntmAclEditorActionPerformed(evt);
 			}
 		});
 		jMenu4.add(mntmAclEditor);
 		jMenu4.add(jMenuItem10);
 
-		URL job2Url = getClass().getResource("/job.gif");
-		if (job2Url != null)
+		final URL job2Url = getClass().getResource("/job.gif");
+		if (job2Url != null) {
 			jMenuItem8.setIcon(new javax.swing.ImageIcon(job2Url)); // NOI18N
+		}
 		jMenuItem8.setText("Method Editor");
 		jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jMenuItem8ActionPerformed(evt);
 			}
 		});
@@ -405,7 +723,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jMenuItem9.setText("DQL Editor");
 		jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jMenuItem9ActionPerformed(evt);
 			}
 		});
@@ -413,14 +732,16 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jMenuItem11.setText("API");
 		jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jMenuItem11ActionPerformed(evt);
 			}
 		});
 
-		JMenuItem mntmDqlScript = new JMenuItem("DQL Script");
+		final JMenuItem mntmDqlScript = new JMenuItem("DQL Script");
 		mntmDqlScript.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
 				mnuDQLScriptActionPerformed(arg0);
 			}
 		});
@@ -429,14 +750,16 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuShowSessions1.setText("Show Sessions");
 		mnuShowSessions1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuShowSessions1ActionPerformed(evt);
 			}
 		});
 
-		JMenuItem mntmApiScript = new JMenuItem("API Script");
+		final JMenuItem mntmApiScript = new JMenuItem("API Script");
 		mntmApiScript.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
 				mnuApiScriptActionPerformed(evt);
 			}
 		});
@@ -445,7 +768,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuServices.setText("Start / Stop Services");
 		mnuServices.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuServicesActionPerformed(evt);
 			}
 		});
@@ -453,7 +777,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuLocations.setText("Locations / Mount Points");
 		mnuLocations.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuLocationsActionPerformed(evt);
 			}
 		});
@@ -461,7 +786,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mnuTypeEdit.setText("Type Editor");
 		mnuTypeEdit.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				mnuTypeEditActionPerformed(evt);
 			}
 		});
@@ -469,9 +795,10 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		menuBar.add(jMenu4);
 
-		JMenuItem mntmLogViewer = new JMenuItem("Log Viewer");
+		final JMenuItem mntmLogViewer = new JMenuItem("Log Viewer");
 		mntmLogViewer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
 				mntmLogViewerActionPerformed(e);
 			}
 		});
@@ -479,16 +806,18 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		mntmUtilities = new JMenuItem("Utilities");
 		mntmUtilities.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
 				mntmUtilitiesActionPerformed(e);
 			}
 		});
 		jMenu4.add(mntmUtilities);
 
-		JMenuItem mntmLdap = new JMenuItem("LDAP");
+		final JMenuItem mntmLdap = new JMenuItem("LDAP");
 		mntmLdap.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				LDAPFrame frame = new LDAPFrame();
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				final LDAPFrame frame = new LDAPFrame();
 				frame.setVisible(true);
 			}
 		});
@@ -498,7 +827,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jMenuItem6.setText("Check for Updates..");
 		jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				checkForUpdates(evt);
 			}
 		});
@@ -507,7 +837,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		jMenuItem7.setText("About..");
 		jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
 				jMenuItem7ActionPerformed(evt);
 			}
 		});
@@ -517,63 +848,13 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		setJMenuBar(menuBar);
 
-		GroupLayout layout = new GroupLayout(getContentPane());
+		final GroupLayout layout = new GroupLayout(getContentPane());
 		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(toolbar, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE).addComponent(desktopPane, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE));
-		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(
-				layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(desktopPane, GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(desktopPane, GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)));
 		getContentPane().setLayout(layout);
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
-
-	protected void mntmAclEditorActionPerformed(ActionEvent evt) {
-		
-		ACLBrowserFrame aclbrowser = new ACLBrowserFrame(false);
-		SwingHelper.centerJFrame(aclbrowser);
-		aclbrowser.setVisible(true);
-	}
-
-	protected void mnuApiScriptActionPerformed(ActionEvent evt) {
-		APIScriptFrame api = new APIScriptFrame();
-		SwingHelper.centerJFrame(api);
-		api.setVisible(true);
-
-	}
-
-	protected void mnuDQLScriptActionPerformed(ActionEvent arg0) {
-		// Auto-generated method stub
-
-		DQLScript dqlscript = new DQLScript();
-		SwingHelper.centerJFrame(dqlscript);
-		dqlscript.setVisible(true);
-	}
-
-	protected void mntmUtilitiesActionPerformed(ActionEvent e) {
-		AdminUtils f = new AdminUtils();
-		f.setVisible(true);
-		SwingHelper.centerJFrame(f);
-
-	}
-
-	protected void mntmLogViewerActionPerformed(ActionEvent e) {
-
-		LogViewerFrame f = new LogViewerFrame();
-		f.setVisible(true);
-		SwingHelper.centerJFrame(f);
-
-	}
-
-	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_exitMenuItemActionPerformed
-		try {
-			IDfSession session = null;
-			session = smanager.getSession();
-			session.purgeLocalFiles();
-			System.exit(0);// GEN-LAST:event_exitMenuItemActionPerformed
-		} catch (DfException ex) {
-			// Logger.getLogger(MDIMainFrame.class.getName()).log(Level.SEVERE,
-			// null, ex);
-		}
-	}
 
 	private void initDocbaseConnection() {
 		LoginFrame lf;
@@ -591,9 +872,9 @@ public class MDIMainFrame extends javax.swing.JFrame {
 						h = ouh[0];
 						p = ouh[1];
 					}
-					IDfClientX clientx = new DfClientX();
-					IDfClient client = clientx.getLocalClient();
-					IDfTypedObject config = client.getClientConfig();
+					final IDfClientX clientx = new DfClientX();
+					final IDfClient client = clientx.getLocalClient();
+					final IDfTypedObject config = client.getClientConfig();
 					config.setString("primary_host", h);
 					config.setString("primary_port", p);
 				}
@@ -601,7 +882,7 @@ public class MDIMainFrame extends javax.swing.JFrame {
 				IDfSessionManager sessionmanager;
 				IDfSession session = null;
 
-				Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+				final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
 				setCursor(cur);
 				sessionmanager = LoginFrame.createSessionManager(docbase, user, pass, h, p);
 				session = sessionmanager.getSession(docbase);
@@ -612,7 +893,7 @@ public class MDIMainFrame extends javax.swing.JFrame {
 					DocuSessionManager.getInstance().setUserName(session.getLoginUserName());
 					this.setVisible(false);
 					ConfigService.getInstance().setLoggedInUser(session.getUser(session.getLoginUserName()));
-					String defFolder = session.getUser(session.getLoginUserName()).getDefaultFolder();
+					final String defFolder = session.getUser(session.getLoginUserName()).getDefaultFolder();
 					IDfPersistentObject po = null;
 					po = session.getObjectByPath(defFolder);
 					ConfigService.getInstance().setHomeFolderId(po.getString("r_object_id"));
@@ -622,10 +903,10 @@ public class MDIMainFrame extends javax.swing.JFrame {
 					sessionmanager.release(session);
 					initAfterConnection();
 				}
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				JOptionPane.showMessageDialog(null, ex.getMessage(), "Login Failed!", JOptionPane.ERROR_MESSAGE);
 			} finally {
-				Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+				final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
 				setCursor(cur2);
 			}
 		} else {
@@ -635,7 +916,7 @@ public class MDIMainFrame extends javax.swing.JFrame {
 				lf.setVisible(true);
 				lf.setAlwaysOnTop(true);
 				lf.setpointer(this);
-			} catch (DfException ex) {
+			} catch (final DfException ex) {
 				SwingHelper.showErrorMessage(ex.getMessage(), ex.getMessage());
 				DfLogger.error(this, ex.getMessage(), null, ex);
 			}
@@ -646,7 +927,7 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		model = new DefaultTableModel() {
 
 			@Override
-			public boolean isCellEditable(int row, int column) {
+			public boolean isCellEditable(final int row, final int column) {
 				return false;
 			}
 		};
@@ -656,345 +937,16 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		model.addColumn(".");
 		model.addColumn("object_name");
 		// additional column values
-		int xx = listattributes.size();
+		final int xx = listattributes.size();
 		for (int i = 0; i < xx; i++) {
 			model.addColumn(listattributes.get(i));
 		}
 		model.addColumn("data");
 	}
 
-	private void cmdAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdAdvSearchActionPerformed
-		AdvSearchFrameExpr search = new AdvSearchFrameExpr();
+	private void jButton1ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
 
-		SwingHelper.centerJFrame(search);
-		search.setVisible(true);
-		search.setDesktop(desktopPane);
-	}// GEN-LAST:event_cmdAdvSearchActionPerformed
-
-	private void cmdNewBrowserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdNewBrowserActionPerformed
-		MainJFrame bf = new MainJFrame();
-		desktopPane.add(bf);
-		// bf.setSize(600, 400);
-		bf.setVisible(true);
-		bf.setResizable(true);
-	}// GEN-LAST:event_cmdNewBrowserActionPerformed
-
-	private void doQuickSearch() {
-		IDfCollection col = null;
-		IDfSession session = null;
-		DefaultTableModel quicksearchtablemodel = new DefaultTableModel();
-		quicksearchtablemodel.addColumn(".");
-		quicksearchtablemodel.addColumn(".");
-		quicksearchtablemodel.addColumn("object_name");
-		// additional column values
-		int listsize = listattributes.size();
-		for (int i = 0; i < listsize; i++) {
-			quicksearchtablemodel.addColumn(listattributes.get(i));
-		}
-		quicksearchtablemodel.addColumn("data");
-		quicksearchtablemodel.setRowCount(0);
-		String queryStr = "";
-
-		if (showThumbnails) {
-			queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url  from dm_document SEARCH DOCUMENT CONTAINS '";
-		} else {
-			queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_document SEARCH DOCUMENT CONTAINS '";
-		}
-		String quickString = txtSearch.getText();
-		queryStr = queryStr + quickString + "'";
-		String tempvalue = "";
-		String repvalue = "";
-		try {
-			Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-			setCursor(cur);
-			IDfQuery query = new DfQuery();
-			query.setDQL(queryStr);
-			session = smanager.getSession();
-			col = query.execute(session, DfQuery.DF_READ_QUERY);
-			Utils util = new Utils();
-			quicksearchtablemodel = util.getModelFromCollection(session, null, col, showThumbnails, quicksearchtablemodel, null, null);
-			SearchFrame sf = new SearchFrame(quicksearchtablemodel, showThumbnails);
-			desktopPane.add(sf);
-			sf.setSize(400, 400);
-			sf.setVisible(true);
-		} catch (DfException ex) {
-			log.error(ex);
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-			setCursor(cur2);
-		} finally {
-			if (col != null) {
-				try {
-					col.close();
-				} catch (DfException ex) {
-					log.error(ex);
-				}
-			}
-			if (session != null) {
-				smanager.releaseSession(session);
-			}
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-			setCursor(cur2);
-		}
-	}
-
-	private void cmdQuickSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmdQuickSearchActionPerformed
-		doQuickSearch();
-
-	}// GEN-LAST:event_cmdQuickSearchActionPerformed
-
-	private void mnuVisibleAttributesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuVisibleAttributesActionPerformed
-		AttributeSelectorFrame frame = new AttributeSelectorFrame();
-		SwingHelper.centerJFrame(frame);
-		frame.setVisible(true);
-
-	}// GEN-LAST:event_mnuVisibleAttributesActionPerformed
-
-	private void mnuSerachObjIdActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSerachObjIdActionPerformed
-		String id = JOptionPane.showInputDialog("Enter r_object_id");
-		String queryStr = "";
-		if (id != null) {
-			if (showThumbnails) {
-				queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject(ALL) where r_object_id  ='" + id + "'";
-			} else {
-				queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject(ALL) where r_object_id  ='" + id + "'";
-			}
-
-			if (id.length() == 16) {
-				Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-				setCursor(cur);
-				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "ObjectId search with ID: " + id, showThumbnails);
-
-				// executeCustomQuery(queryStr,"");
-				Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-				setCursor(cur2);
-			}
-		}
-	}// GEN-LAST:event_mnuSerachObjIdActionPerformed
-
-	private void mnuSearchCustomActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchCustomActionPerformed
-		String cp = JOptionPane.showInputDialog("Enter Custom predicate i.e. \"where object_name like '%foo%'\"");
-		if (cp != null) {
-			String queryStr = "";
-			if (showThumbnails) {
-				queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject " + cp;
-			} else {
-				queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject " + cp;
-			}
-			Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-			setCursor(cur);
-			new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Custom predicate: " + cp, showThumbnails);
-
-			// executeCustomQuery(queryStr, "Result of custom query: " + cp);
-			Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-			setCursor(cur2);
-		}
-
-	}// GEN-LAST:event_mnuSearchCustomActionPerformed
-
-	public void executeCustomSearch(String whereClause, String title, boolean showallversions) {
-		String queryStr = "";
-		String allVersion = "";
-		if (showallversions)
-			allVersion = "(ALL)";
-		if (showThumbnails) {
-			queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject" + allVersion + " " + whereClause;
-		} else {
-			queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject" + allVersion + " " + whereClause;
-		}
-		Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-		setCursor(cur);
-		new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Related documents", showThumbnails);
-
-		// executeCustomQuery(queryStr, "Result of custom query: " + cp);
-		Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-		setCursor(cur2);
-	}
-
-	private void mnuSearchChronIdActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchChronIdActionPerformed
-		String id = JOptionPane.showInputDialog("Enter i_chronicle_id");
-		if (id != null) {
-			String queryStr = "select r_lock_owner, a_content_type, r_object_type, object_name, owner_name, r_object_id from dm_document where i_chronicle_id  ='" + id + "'";
-			if (showThumbnails) {
-				queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject where i_chronicle_id  ='" + id + "'";
-			} else {
-				queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject where i_chronicle_id  ='" + id + "'";
-			}
-			if (id.length() == 16) {
-				Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-				setCursor(cur);
-				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Search with chronicle ID: " + id, showThumbnails);
-
-				// executeCustomQuery(queryStr, "");
-				Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-				setCursor(cur2);
-			}
-		}
-	}// GEN-LAST:event_mnuSearchChronIdActionPerformed
-
-	private void mnuSearchACLActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchACLActionPerformed
-		final AclBrowserData abd = new AclBrowserData();
-		ActionListener al = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				String acldomain = abd.getAclDomain();
-				String aclname = abd.getAclName();
-				String queryStr = "select r_lock_owner, a_content_type, r_object_type, object_name, owner_name, r_object_id from dm_document where acl_name = '" + aclname + "' and acl_domain = '" + acldomain + "'";
-				if (showThumbnails) {
-					queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject where acl_name = '" + aclname + "' and acl_domain = '" + acldomain + "'";
-				} else {
-					queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject where acl_name = '" + aclname + "' and acl_domain = '" + acldomain + "'";
-				}
-				Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-				setCursor(cur);
-				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "search with acl: " + aclname, showThumbnails);
-
-				// executeCustomQuery(queryStr, "Documents with acl: " +
-				// aclname);
-				Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-				setCursor(cur2);
-			}
-		};
-		ACLBrowserFrame abf = new ACLBrowserFrame(al, abd, true);
-		SwingHelper.centerJFrame(abf);
-		abf.setVisible(true);
-		abf.setAclbrowserdata(abd);
-
-	}// GEN-LAST:event_mnuSearchACLActionPerformed
-
-	private void mnuSearchOwnerActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchOwnerActionPerformed
-		// TODO add your handling code here:
-
-		final UserorGroupSelectorData x = new UserorGroupSelectorData();
-		ActionListener al = new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				String ownerName = x.getUserorGroupname();
-				String queryStr = "";
-				if (showThumbnails) {
-					queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject where owner_name = '" + ownerName + "'";
-				} else {
-					queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject where owner_name = '" + ownerName + "'";
-				}
-				Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
-
-				setCursor(cur);
-				// executeCustomQuery(queryStr, "Documents owned by: " +
-				// ownerName);
-				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Documents where owner is: " + ownerName, showThumbnails);
-
-				Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
-
-				setCursor(cur2);
-			}
-		};
-		UserorGroupSelectorFrame frame = new UserorGroupSelectorFrame(al, x);
-		SwingHelper.centerJFrame(frame);
-		frame.setVisible(true);
-
-	}// GEN-LAST:event_mnuSearchOwnerActionPerformed
-
-	private void checkForUpdates(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem6ActionPerformed
-
-		HTTPClient client = new HTTPClient();
-		String s = client.getBuildNumber("http://quickclient.org/build.txt");
-		log.debug(s);
-		if (s==null || s.length() == 0) {
-			JOptionPane.showMessageDialog(null, "Error, occurred during check, sorry","", JOptionPane.PLAIN_MESSAGE);
-			return;
-		}
-		String[] cc = s.split("-");
-		String ee = cc[1];
-		ee = ee.replaceAll("b", "");
-		log.debug(ee);
-
-		String currentVersion = MDIMainFrame.class.getPackage().getImplementationVersion();
-		String[] ccx = currentVersion.split("-");
-		String eex = ccx[1];
-		eex = eex.replaceAll("b", "");
-
-		int webversion = Integer.parseInt(ee);
-		int myversion = Integer.parseInt(eex);
-		if (webversion > myversion) {
-			JOptionPane.showMessageDialog(null, "Your version: " + currentVersion + "\nAvailable Version: " + s, "Version Info", JOptionPane.PLAIN_MESSAGE);
-		} else if (webversion == myversion) {
-			JOptionPane.showMessageDialog(null, "Your version: " + currentVersion + "\nAvailable Version: " + s, "Version Info", JOptionPane.PLAIN_MESSAGE);
-		} else if (webversion < myversion) {
-			JOptionPane.showMessageDialog(null, "?? Fatal ??" + currentVersion, "Oh no", JOptionPane.PLAIN_MESSAGE);
-		}
-
-	}// GEN-LAST:event_jMenuItem6ActionPerformed
-
-	private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-		if (showThumbnails) {
-			showThumbnails = false;
-		} else {
-			showThumbnails = true;
-		}
-	}// GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
-
-	private void mnuUserMgmtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuUserMgmtActionPerformed
-		UsergroupManagementFrame ugFrame = new UsergroupManagementFrame();
-		SwingHelper.centerJFrame(ugFrame);
-		ugFrame.setVisible(true);
-
-	}// GEN-LAST:event_mnuUserMgmtActionPerformed
-
-	private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem10ActionPerformed
-		JobListFrame joblist = new JobListFrame();
-		SwingHelper.centerJFrame(joblist);
-		joblist.setVisible(true);
-
-	}// GEN-LAST:event_jMenuItem10ActionPerformed
-
-	private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem8ActionPerformed
-
-		MethodFrame ff = new MethodFrame();
-		SwingHelper.centerJFrame(ff);
-		ff.setVisible(true);
-	}// GEN-LAST:event_jMenuItem8ActionPerformed
-
-	private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem9ActionPerformed
-		// TODO add your handling code here:
-
-		DqlFrameSyntax dql = new DqlFrameSyntax();
-		SwingHelper.centerJFrame(dql);
-		dql.setVisible(true);
-		dql.initDQLList();
-
-	}// GEN-LAST:event_jMenuItem9ActionPerformed
-
-	private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem11ActionPerformed
-
-		ApiFrameSyntax api = new ApiFrameSyntax();
-		SwingHelper.centerJFrame(api);
-		api.setVisible(true);
-
-	}// GEN-LAST:event_jMenuItem11ActionPerformed
-
-	private void mnuShowSessions1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuShowSessions1ActionPerformed
-		// TODO add your handling code here:
-		SessionsFrame sf = new SessionsFrame();
-		SwingHelper.centerJFrame(sf);
-		sf.setVisible(true);
-	}// GEN-LAST:event_mnuShowSessions1ActionPerformed
-
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-		// TODO add your handling code here:
-		InboxFrame inf = new InboxFrame();
+		final InboxFrame inf = new InboxFrame();
 
 		desktopPane.add(inf);
 		// bf.setSize(600, 400);
@@ -1002,90 +954,36 @@ public class MDIMainFrame extends javax.swing.JFrame {
 		inf.setResizable(true);
 	}// GEN-LAST:event_jButton1ActionPerformed
 
-	private void mnuRelatedDocActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuRelatedDocActionPerformed
-		// TODO
-		String queryStr = "";
+	private void jCheckBoxMenuItem1ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
 		if (showThumbnails) {
-			// queryStr = "select " + standardqueryattributes +
-			// additionalqueryattributes +
-			// " from dm_sysobject where owner_name = '" + ownerName + "'";
+			showThumbnails = false;
 		} else {
-			// queryStr = "select " + standardqueryattributes +
-			// additionalqueryattributes +
-			// ",thumbnail_url from dm_sysobject where owner_name = '" +
-			// ownerName + "'";
+			showThumbnails = true;
 		}
-		Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+	}// GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
-		setCursor(cur);
-		// executeCustomQuery(queryStr, "Documents owned by: " + ownerName);
-		// new CustomQueryHelper().executeCustomQuery(model, desktopPane, me,
-		// queryStr, "Related Docs of: ", showThumbnails);
+	private void jMenuItem10ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem10ActionPerformed
+		final JobListFrame joblist = new JobListFrame();
+		SwingHelper.centerJFrame(joblist);
+		joblist.setVisible(true);
 
-		Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+	}// GEN-LAST:event_jMenuItem10ActionPerformed
 
-		setCursor(cur2);
+	private void jMenuItem11ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem11ActionPerformed
 
-	}// GEN-LAST:event_mnuRelatedDocActionPerformed
+		final ApiFrameSyntax api = new ApiFrameSyntax();
+		SwingHelper.centerJFrame(api);
+		api.setVisible(true);
 
-	private void mnuServicesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuServicesActionPerformed
+	}// GEN-LAST:event_jMenuItem11ActionPerformed
 
-		IDfSession session = smanager.getSession();
-		try {
-			String serverhost = session.getServerConfig().getString("r_host_name");
-			String serverversion = session.getServerConfig().getString("r_server_version");
-			if (serverversion.toLowerCase().contains("win32")) {
-				List<String> command = new ArrayList<String>();
-				command.add("cmd.exe");
-				command.add("/C");
-				command.add("c:\\softa\\sysinternals\\psservice.exe");
-				command.add("\\\\" + serverhost);
-				command.add("-u");
-				command.add("dmadmin");
-				command.add("-p");
-				command.add("dmadmin");
-				ProcessBuilder builder = new ProcessBuilder(command);
-				Map<String, String> environ = builder.environment();
-				final Process process = builder.start();
-				InputStream is = process.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				String line;
-				while ((line = br.readLine()) != null) {
-					// System.out.println(line);
-				}
-			}
-		} catch (IOException ex) {
-			log.error(ex);
-		} catch (DfException ex) {
-			log.error(ex);
-		}
+	private void jMenuItem1ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem1ActionPerformed
 
-	}// GEN-LAST:event_mnuServicesActionPerformed
-
-	private void mnuLocationsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuLocationsActionPerformed
-
-		LocationFrame locations = new LocationFrame();
-		SwingHelper.centerJFrame(locations);
-		locations.setVisible(true);
-
-	}// GEN-LAST:event_mnuLocationsActionPerformed
-
-	private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem7ActionPerformed
-
-		String xx = MDIMainFrame.class.getPackage().getImplementationVersion();
-
-		JOptionPane.showMessageDialog(null, "QuickClient, build no: " + xx + "\n This application uses free icons from http://www.aha-soft.com/", "About...", JOptionPane.INFORMATION_MESSAGE);
-
-	}// GEN-LAST:event_jMenuItem7ActionPerformed
-
-	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem1ActionPerformed
-
-		String imageformats = ConfigService.getInstance().getParameter("imageformats");
-		StringBuffer formatpart = new StringBuffer();
+		final String imageformats = ConfigService.getInstance().getParameter("imageformats");
+		final StringBuffer formatpart = new StringBuffer();
 		if (imageformats != null) {
 			if (imageformats.length() > 3) {
-				String splitted[] = imageformats.split(",");
+				final String splitted[] = imageformats.split(",");
 				for (int i = 0; i < splitted.length; i++) {
 					formatpart.append("'");
 					formatpart.append(splitted[i]);
@@ -1098,120 +996,313 @@ public class MDIMainFrame extends javax.swing.JFrame {
 				formatpart.append("'gif','jpg','jpeg'");
 			}
 		}
-		String queryStr = "select r_lock_owner, a_content_type, r_object_type, object_name, owner_name, r_object_id from dm_document c WHERE a_content_type in (" + formatpart.toString()
-				+ ") and NOT EXISTS (SELECT r_object_id FROM dmr_content WHERE ANY parent_id = c.r_object_id AND full_format = 'jpeg_th')";
+		String queryStr = "select r_lock_owner, a_content_type, r_object_type, object_name, owner_name, r_object_id from dm_document c WHERE a_content_type in (" + formatpart.toString() + ") and NOT EXISTS (SELECT r_object_id FROM dmr_content WHERE ANY parent_id = c.r_object_id AND full_format = 'jpeg_th')";
 		if (showThumbnails) {
 			queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_document c WHERE a_content_type in (" + formatpart.toString() + ") and NOT EXISTS (SELECT r_object_id FROM dmr_content WHERE ANY parent_id = c.r_object_id AND full_format = 'jpeg_th')";
 		} else {
 			queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_document c WHERE a_content_type in (" + formatpart.toString() + ") and NOT EXISTS (SELECT r_object_id FROM dmr_content WHERE ANY parent_id = c.r_object_id AND full_format = 'jpeg_th')";
 		}
 
-		Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+		final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
 		setCursor(cur);
 		new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Missing Thumbnails", showThumbnails);
-		Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+		final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
 		setCursor(cur2);
 
 	}// GEN-LAST:event_jMenuItem1ActionPerformed
 
-	private void mnuTypeEditActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuTypeEditActionPerformed
+	private void jMenuItem7ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem7ActionPerformed
 
-		TypeEditor t = new TypeEditor();
+		final String xx = MDIMainFrame.class.getPackage().getImplementationVersion();
+
+		JOptionPane.showMessageDialog(null, "QuickClient, build no: " + xx + "\n This application uses free icons from http://www.aha-soft.com/", "About...", JOptionPane.INFORMATION_MESSAGE);
+
+	}// GEN-LAST:event_jMenuItem7ActionPerformed
+
+	private void jMenuItem8ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem8ActionPerformed
+
+		final MethodFrame ff = new MethodFrame();
+		SwingHelper.centerJFrame(ff);
+		ff.setVisible(true);
+	}// GEN-LAST:event_jMenuItem8ActionPerformed
+
+	private void jMenuItem9ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem9ActionPerformed
+		// TODO add your handling code here:
+
+		final DqlFrameSyntax dql = new DqlFrameSyntax();
+		SwingHelper.centerJFrame(dql);
+		dql.setVisible(true);
+		dql.initDQLList();
+
+	}// GEN-LAST:event_jMenuItem9ActionPerformed
+
+	protected void mntmAclEditorActionPerformed(final ActionEvent evt) {
+
+		final ACLBrowserFrame aclbrowser = new ACLBrowserFrame(false);
+		SwingHelper.centerJFrame(aclbrowser);
+		aclbrowser.setVisible(true);
+	}
+
+	protected void mntmLogViewerActionPerformed(final ActionEvent e) {
+
+		final LogViewerFrame f = new LogViewerFrame();
+		f.setVisible(true);
+		SwingHelper.centerJFrame(f);
+
+	}
+
+	protected void mntmUtilitiesActionPerformed(final ActionEvent e) {
+		final AdminUtils f = new AdminUtils();
+		f.setVisible(true);
+		SwingHelper.centerJFrame(f);
+
+	}
+
+	protected void mnuApiScriptActionPerformed(final ActionEvent evt) {
+		final APIScriptFrame api = new APIScriptFrame();
+		SwingHelper.centerJFrame(api);
+		api.setVisible(true);
+
+	}
+
+	protected void mnuDQLScriptActionPerformed(final ActionEvent arg0) {
+		// Auto-generated method stub
+
+		final DQLScript dqlscript = new DQLScript();
+		SwingHelper.centerJFrame(dqlscript);
+		dqlscript.setVisible(true);
+	}
+
+	private void mnuLocationsActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuLocationsActionPerformed
+
+		final LocationFrame locations = new LocationFrame();
+		SwingHelper.centerJFrame(locations);
+		locations.setVisible(true);
+
+	}// GEN-LAST:event_mnuLocationsActionPerformed
+
+	private void mnuRelatedDocActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuRelatedDocActionPerformed
+		// TODO
+		final String queryStr = "";
+		if (showThumbnails) {
+			// queryStr = "select " + standardqueryattributes +
+			// additionalqueryattributes +
+			// " from dm_sysobject where owner_name = '" + ownerName + "'";
+		} else {
+			// queryStr = "select " + standardqueryattributes +
+			// additionalqueryattributes +
+			// ",thumbnail_url from dm_sysobject where owner_name = '" +
+			// ownerName + "'";
+		}
+		final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+		setCursor(cur);
+		// executeCustomQuery(queryStr, "Documents owned by: " + ownerName);
+		// new CustomQueryHelper().executeCustomQuery(model, desktopPane, me,
+		// queryStr, "Related Docs of: ", showThumbnails);
+
+		final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+		setCursor(cur2);
+
+	}// GEN-LAST:event_mnuRelatedDocActionPerformed
+
+	private void mnuSearchACLActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchACLActionPerformed
+		final AclBrowserData abd = new AclBrowserData();
+		final ActionListener al = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final String acldomain = abd.getAclDomain();
+				final String aclname = abd.getAclName();
+				String queryStr = "select r_lock_owner, a_content_type, r_object_type, object_name, owner_name, r_object_id from dm_document where acl_name = '" + aclname + "' and acl_domain = '" + acldomain + "'";
+				if (showThumbnails) {
+					queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject where acl_name = '" + aclname + "' and acl_domain = '" + acldomain + "'";
+				} else {
+					queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject where acl_name = '" + aclname + "' and acl_domain = '" + acldomain + "'";
+				}
+				final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+				setCursor(cur);
+				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "search with acl: " + aclname, showThumbnails);
+
+				// executeCustomQuery(queryStr, "Documents with acl: " +
+				// aclname);
+				final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+				setCursor(cur2);
+			}
+		};
+		final ACLBrowserFrame abf = new ACLBrowserFrame(al, abd, true);
+		SwingHelper.centerJFrame(abf);
+		abf.setVisible(true);
+		abf.setAclbrowserdata(abd);
+
+	}// GEN-LAST:event_mnuSearchACLActionPerformed
+
+	private void mnuSearchChronIdActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchChronIdActionPerformed
+		final String id = JOptionPane.showInputDialog("Enter i_chronicle_id");
+		if (id != null) {
+			String queryStr = "select r_lock_owner, a_content_type, r_object_type, object_name, owner_name, r_object_id from dm_document where i_chronicle_id  ='" + id + "'";
+			if (showThumbnails) {
+				queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject where i_chronicle_id  ='" + id + "'";
+			} else {
+				queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject where i_chronicle_id  ='" + id + "'";
+			}
+			if (id.length() == 16) {
+				final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+				setCursor(cur);
+				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Search with chronicle ID: " + id, showThumbnails);
+
+				// executeCustomQuery(queryStr, "");
+				final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+				setCursor(cur2);
+			}
+		}
+	}// GEN-LAST:event_mnuSearchChronIdActionPerformed
+
+	private void mnuSearchCustomActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchCustomActionPerformed
+		final String cp = JOptionPane.showInputDialog("Enter Custom predicate i.e. \"where object_name like '%foo%'\"");
+		if (cp != null) {
+			String queryStr = "";
+			if (showThumbnails) {
+				queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject " + cp;
+			} else {
+				queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject " + cp;
+			}
+			final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+			setCursor(cur);
+			new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Custom predicate: " + cp, showThumbnails);
+
+			// executeCustomQuery(queryStr, "Result of custom query: " + cp);
+			final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+			setCursor(cur2);
+		}
+
+	}// GEN-LAST:event_mnuSearchCustomActionPerformed
+
+	private void mnuSearchOwnerActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSearchOwnerActionPerformed
+		// TODO add your handling code here:
+
+		final UserorGroupSelectorData x = new UserorGroupSelectorData();
+		final ActionListener al = new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final String ownerName = x.getUserorGroupname();
+				String queryStr = "";
+				if (showThumbnails) {
+					queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject where owner_name = '" + ownerName + "'";
+				} else {
+					queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject where owner_name = '" + ownerName + "'";
+				}
+				final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+				setCursor(cur);
+				// executeCustomQuery(queryStr, "Documents owned by: " +
+				// ownerName);
+				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "Documents where owner is: " + ownerName, showThumbnails);
+
+				final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+				setCursor(cur2);
+			}
+		};
+		final UserorGroupSelectorFrame frame = new UserorGroupSelectorFrame(al, x);
+		SwingHelper.centerJFrame(frame);
+		frame.setVisible(true);
+
+	}// GEN-LAST:event_mnuSearchOwnerActionPerformed
+
+	private void mnuSerachObjIdActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuSerachObjIdActionPerformed
+		final String id = JOptionPane.showInputDialog("Enter r_object_id");
+		String queryStr = "";
+		if (id != null) {
+			if (showThumbnails) {
+				queryStr = "select " + standardqueryattributes + additionalqueryattributes + " from dm_sysobject(ALL) where r_object_id  ='" + id + "'";
+			} else {
+				queryStr = "select " + standardqueryattributes + additionalqueryattributes + ",thumbnail_url from dm_sysobject(ALL) where r_object_id  ='" + id + "'";
+			}
+
+			if (id.length() == 16) {
+				final Cursor cur = new Cursor(Cursor.WAIT_CURSOR);
+
+				setCursor(cur);
+				new CustomQueryHelper().executeCustomQuery(model, desktopPane, me, queryStr, "ObjectId search with ID: " + id, showThumbnails);
+
+				// executeCustomQuery(queryStr,"");
+				final Cursor cur2 = new Cursor(Cursor.DEFAULT_CURSOR);
+
+				setCursor(cur2);
+			}
+		}
+	}// GEN-LAST:event_mnuSerachObjIdActionPerformed
+
+	private void mnuServicesActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuServicesActionPerformed
+
+		final IDfSession session = smanager.getSession();
+		try {
+			final String serverhost = session.getServerConfig().getString("r_host_name");
+			final String serverversion = session.getServerConfig().getString("r_server_version");
+			if (serverversion.toLowerCase().contains("win32")) {
+				final List<String> command = new ArrayList<String>();
+				command.add("cmd.exe");
+				command.add("/C");
+				command.add("c:\\softa\\sysinternals\\psservice.exe");
+				command.add("\\\\" + serverhost);
+				command.add("-u");
+				command.add("dmadmin");
+				command.add("-p");
+				command.add("dmadmin");
+				final ProcessBuilder builder = new ProcessBuilder(command);
+				final Map<String, String> environ = builder.environment();
+				final Process process = builder.start();
+				final InputStream is = process.getInputStream();
+				final InputStreamReader isr = new InputStreamReader(is);
+				final BufferedReader br = new BufferedReader(isr);
+				String line;
+				while ((line = br.readLine()) != null) {
+					// System.out.println(line);
+				}
+			}
+		} catch (final IOException ex) {
+			log.error(ex);
+		} catch (final DfException ex) {
+			log.error(ex);
+		}
+
+	}// GEN-LAST:event_mnuServicesActionPerformed
+
+	private void mnuShowSessions1ActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuShowSessions1ActionPerformed
+
+		final SessionsFrame sf = new SessionsFrame();
+		SwingHelper.centerJFrame(sf);
+		sf.setVisible(true);
+	}// GEN-LAST:event_mnuShowSessions1ActionPerformed
+
+	private void mnuTypeEditActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuTypeEditActionPerformed
+
+		final TypeEditor t = new TypeEditor();
 		SwingHelper.centerJFrame(t);
 		t.setVisible(true);
 
 	}// GEN-LAST:event_mnuTypeEditActionPerformed
 
-	public JDesktopPane getDesktopPane() {
-		return desktopPane;
-	}
+	private void mnuUserMgmtActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuUserMgmtActionPerformed
+		final UsergroupManagementFrame ugFrame = new UsergroupManagementFrame();
+		SwingHelper.centerJFrame(ugFrame);
+		ugFrame.setVisible(true);
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	public static void main(String args[]) {
+	}// GEN-LAST:event_mnuUserMgmtActionPerformed
 
-		int ind = 0;
+	private void mnuVisibleAttributesActionPerformed(final java.awt.event.ActionEvent evt) {// GEN-FIRST:event_mnuVisibleAttributesActionPerformed
+		final AttributeSelectorFrame frame = new AttributeSelectorFrame();
+		SwingHelper.centerJFrame(frame);
+		frame.setVisible(true);
 
-		for (String arg : args) {
-			if (arg.equals("-docbroker"))
-				docbroker = args[ind + 1];
-			if (arg.equals("-docbase"))
-				docbase = args[ind + 1];
-			if (arg.equals("-user"))
-				user = args[ind + 1];
-			if (arg.equals("-pass")) {
-				pass = args[ind + 1];
-			}
-			ind++;
-		}
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				MDIMainFrame m = new MDIMainFrame();
-				SwingHelper.centerJFrame(m);
-				m.setVisible(true);
-			}
-		});
-	}
-
-	static String docbroker = "";
-	static String docbase = "";
-	static String user = "";
-	static String pass = "";
-
-	private Vector<ListAttribute> listattributes;
-	private javax.swing.JInternalFrame bframe;
-	private String standardqueryattributes = "object_name, r_object_id, r_link_cnt, r_object_type, a_content_type, i_is_replica, r_lock_owner, r_is_virtual_doc, i_is_reference";
-	private String additionalqueryattributes = "";
-	private javax.swing.JButton cmdAdvSearch;
-	private javax.swing.JButton cmdNewBrowser;
-	private javax.swing.JButton cmdQuickSearch;
-	public javax.swing.JDesktopPane desktopPane;
-	private javax.swing.JMenuItem exitMenuItem;
-	private javax.swing.JMenu fileMenu;
-	private javax.swing.JButton jButton1;
-	private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JMenu jMenu1;
-	private javax.swing.JMenu jMenu2;
-	private javax.swing.JMenu jMenu3;
-	private javax.swing.JMenu jMenu4;
-	private javax.swing.JMenuItem jMenuItem1;
-	private javax.swing.JMenuItem jMenuItem10;
-	private javax.swing.JMenuItem jMenuItem11;
-	private javax.swing.JMenuItem jMenuItem6;
-	private javax.swing.JMenuItem jMenuItem7;
-	private javax.swing.JMenuItem jMenuItem8;
-	private javax.swing.JMenuItem jMenuItem9;
-	private javax.swing.JSeparator jSeparator1;
-	private javax.swing.JToolBar toolbar;
-	private javax.swing.JMenuBar menuBar;
-	private javax.swing.JMenuItem mnuLocations;
-	private javax.swing.JMenu mnuOptions;
-	private javax.swing.JMenuItem mnuRelatedDoc;
-	private javax.swing.JMenuItem mnuSearchACL;
-	private javax.swing.JMenuItem mnuSearchChronId;
-	private javax.swing.JMenuItem mnuSearchCustom;
-	private javax.swing.JMenuItem mnuSearchOwner;
-	private javax.swing.JMenuItem mnuSerachObjId;
-	private javax.swing.JMenuItem mnuServices;
-	private javax.swing.JMenuItem mnuShowSessions1;
-	private javax.swing.JMenuItem mnuTypeEdit;
-	private javax.swing.JMenuItem mnuUserMgmt;
-	private javax.swing.JMenuItem mnuVisibleAttributes;
-	private javax.swing.JTextField txtSearch;
-	private JMenuItem mntmDisconnect;
-	private JMenuItem mntmUtilities;
-
-	public void initAfterConnection() {
-		ConfigService cs = ConfigService.getInstance();
-		listattributes = cs.getAttributes(cs.getCurrentListConfigName()).get();
-		for (int i = 0; i < listattributes.size(); i++) {
-			ListAttribute a = listattributes.get(i);
-			if (a.type.equals("dm_sysobject"))
-				additionalqueryattributes = additionalqueryattributes + ", " + listattributes.get(i).attribute;
-		}
-		initializeColumns();
-	}
+	}// GEN-LAST:event_mnuVisibleAttributesActionPerformed
 }

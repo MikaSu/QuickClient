@@ -82,6 +82,7 @@ import com.documentum.xerces_2_8_0.xml.serialize.XMLSerializer;
 import com.documentum.xml.xdql.DfXmlQuery;
 import com.documentum.xml.xdql.IDfXmlQuery;
 
+@Deprecated
 public class DqlFrame extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	DocuSessionManager smanager;
@@ -1268,7 +1269,8 @@ public class DqlFrame extends javax.swing.JFrame {
 				myCell = myRow.createCell(j);
 				final HSSFCellStyle cellStyle = myWorkBook.createCellStyle();
 				final HSSFFont font = myWorkBook.createFont();
-				font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+				// font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+				font.setBold(true);
 				cellStyle.setFont(font);
 				myCell.setCellStyle(cellStyle);
 				myCell.setCellType(Cell.CELL_TYPE_STRING);

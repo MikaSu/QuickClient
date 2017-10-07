@@ -33,7 +33,6 @@ public class Queue implements IQuickAction {
 		try {
 			session = smanager.getSession();
 			for (int i = 0; i < idlist.size(); i++) {
-				final String newOwner = "";
 				final UserorGroupSelectorData x = new UserorGroupSelectorData();
 
 				final String objid = idlist.get(i);
@@ -45,8 +44,6 @@ public class Queue implements IQuickAction {
 
 					@Override
 					public void actionPerformed(final ActionEvent e) {
-						// //System.out.println(e);
-						// //System.out.println(e.getSource().toString());
 						try {
 							final Calendar cal = Calendar.getInstance();
 							cal.add(Calendar.WEEK_OF_YEAR, 4);
@@ -82,7 +79,7 @@ public class Queue implements IQuickAction {
 
 	@Override
 	public void setTable(final JTable t) {
-
+		// a
 	}
 
 }
