@@ -40,7 +40,6 @@ import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfType;
-import com.documentum.fc.client.IDfValidator;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
@@ -384,7 +383,6 @@ public class TypeEditor extends javax.swing.JFrame {
 		final String dql = txtDQL.getText();
 		IDfCollection col = null;
 		IDfSession session = null;
-		final String rval = "";
 		session = smanager.getSession();
 
 		final IDfQuery query = new DfQuery();
@@ -448,7 +446,6 @@ public class TypeEditor extends javax.swing.JFrame {
 			final IDfQuery query = new DfQuery();
 			query.setDQL("select attr_name, attr_repeating, attr_type, attr_length from dm_type where name = '" + typename + "'");
 			col = query.execute(session, IDfQuery.DF_QUERY);
-			final IDfValidator validator;
 
 			while (col.next()) {
 
@@ -1022,8 +1019,7 @@ public class TypeEditor extends javax.swing.JFrame {
 		for (int i = 0; i < ccount; i++) {
 			myVector.add(currNode.getChildAt(i));
 		}
-		// QuickClientMutableTreeNode currNode2 = (QuickClientMutableTreeNode)
-		// currNode.getLastLeaf();
+
 		final String nodename = currNode.getSpecialString();
 		IDfSession session = null;
 		IDfCollection col = null;

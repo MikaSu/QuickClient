@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class FormatRenderer extends DefaultTableCellRenderer {
 
-	private static String GIF_SUFFIX = "_16.gif";
+	private static final String GIF_SUFFIX = "_16.gif";
 	private boolean showThumbnails;
 
 	/*

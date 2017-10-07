@@ -50,15 +50,11 @@ public class ExportAction implements IQuickAction {
 					exportName = obj.getObjectName();
 					final IDfFormat format = obj.getFormat();
 					final String strFormat = format.getDOSExtension();
-					// //System.out.println(strFormat);
 					if (!exportName.endsWith("." + strFormat)) {
 						exportName = exportName + "." + strFormat;
 					}
 
 					final JFileChooser chooser = new JFileChooser();
-
-					// chooser.setDialogTitle("Documentum Export");
-					// chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 					chooser.setSelectedFile(new File(exportName));
 					final int returnVal = chooser.showSaveDialog(null);
 
@@ -67,9 +63,6 @@ public class ExportAction implements IQuickAction {
 						final FileExport fex = new FileExport(selFile, obj);
 						fex.start();
 					}
-					/*
-					 * obj.getFile(selFile.toString());
-					 */
 				}
 
 			} catch (final DfException ex) {

@@ -20,53 +20,43 @@ import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 public class ShowFilesystemPath implements IQuickAction {
 
 	private List<String> idlist;
 
 	@Override
-	public void setIdList(List<String> idlist) {
-		this.idlist = idlist;
-
-	}
-
-	@Override
 	public void execute() throws QCActionException {
-		DocuSessionManager smanager = DocuSessionManager.getInstance();
+		final DocuSessionManager smanager = DocuSessionManager.getInstance();
 		IDfSession session = null;
 		try {
 			session = smanager.getSession();
-			String username = session.getUser(null).getUserName();
+			final String username = session.getUser(null).getUserName();
 			for (int i = 0; i < idlist.size(); i++) {
 				IDfCollection col = null;
-				String objid = idlist.get(i);
-				IDfId id = new DfId(objid);
-				IDfSysObject obj = (IDfSysObject) session.getObject(id);
-				String contentID = obj.getString("i_contents_id");
-				IDfQuery qry = new DfQuery();
+				final String objid = idlist.get(i);
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				final String contentID = obj.getString("i_contents_id");
+				final IDfQuery qry = new DfQuery();
 				qry.setDQL("execute get_path for '" + contentID + "'");
 				col = qry.execute(session, DfQuery.DF_QUERY);
-				String value = col.getString("_names");
+				final String value = col.getString("_names");
 
 				while (col.next()) {
-					String result = col.getString(value);
-					// JOptionPane.showMessageDialog(null, result,
-					// "File located in:", JOptionPane.INFORMATION_MESSAGE);
-					TxtPopup popup = new TxtPopup(500, 200, result);
+					final String result = col.getString(value);
+					final TxtPopup popup = new TxtPopup(500, 200, result);
 					popup.setVisible(true);
 					SwingHelper.centerJFrame(popup);
 				}
-				if (col != null) {
-					try {
-						col.close();
-					} catch (DfException ex) {
-						DfLogger.error(this,null,null,ex);
-					}
 
+				try {
+					col.close();
+				} catch (final DfException ex) {
+					DfLogger.error(this, null, null, ex);
 				}
+
 			}
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
 		} finally {
@@ -78,8 +68,14 @@ public class ShowFilesystemPath implements IQuickAction {
 	}
 
 	@Override
-	public void setTable(JTable t) {
+	public void setIdList(final List<String> idlist) {
+		this.idlist = idlist;
 
+	}
+
+	@Override
+	public void setTable(final JTable t) {
+		// a
 	}
 
 }

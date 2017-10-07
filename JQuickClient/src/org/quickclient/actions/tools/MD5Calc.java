@@ -19,45 +19,38 @@ import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 public class MD5Calc implements IQuickAction {
 
 	private List<String> idlist;
 
 	@Override
-	public void setIdList(List<String> idlist) {
-		this.idlist = idlist;
-
-	}
-
-	@Override
 	public void execute() throws QCActionException {
-		DocuSessionManager smanager = DocuSessionManager.getInstance();
+		final DocuSessionManager smanager = DocuSessionManager.getInstance();
 		IDfSession session = null;
-		StringBuffer sb = new StringBuffer();
+		final StringBuilder sb = new StringBuilder();
 		try {
 			session = smanager.getSession();
 			for (int i = 0; i < idlist.size(); i++) {
-				String objid = idlist.get(i);
-				IDfId id = new DfId(objid);
-				IDfSysObject obj = (IDfSysObject) session.getObject(id);
-				if (obj!=null) {
-					String objname = obj.getObjectName();
-					ByteArrayInputStream bais = obj.getContent();
-					String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(bais);
+				final String objid = idlist.get(i);
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				if (obj != null) {
+					final String objname = obj.getObjectName();
+					final ByteArrayInputStream bais = obj.getContent();
+					final String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(bais);
 					sb.append(objname);
 					sb.append(": ");
 					sb.append(md5);
 					sb.append("\n");
 				}
 			}
-			TextViewer tv = new TextViewer(false, "MD5Sums");
+			final TextViewer tv = new TextViewer(false, "MD5Sums");
 			tv.setText(sb.toString());
 			tv.setVisible(true);
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
 		} finally {
@@ -69,8 +62,14 @@ public class MD5Calc implements IQuickAction {
 	}
 
 	@Override
-	public void setTable(JTable t) {
+	public void setIdList(final List<String> idlist) {
+		this.idlist = idlist;
 
+	}
+
+	@Override
+	public void setTable(final JTable t) {
+		// a
 	}
 
 }

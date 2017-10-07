@@ -18,29 +18,22 @@ import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 public class ImportPDF implements IQuickAction {
 
 	private List<String> idlist;
 
 	@Override
-	public void setIdList(List<String> idlist) {
-		this.idlist = idlist;
-
-	}
-
-	@Override
 	public void execute() throws QCActionException {
-		DocuSessionManager smanager = DocuSessionManager.getInstance();
+		final DocuSessionManager smanager = DocuSessionManager.getInstance();
 		IDfSession session = null;
 		try {
 			session = smanager.getSession();
 			for (int i = 0; i < idlist.size(); i++) {
-				String objid = idlist.get(i);
-				IDfId id = new DfId(objid);
-				IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				final String objid = idlist.get(i);
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
 				File selFile;
-				JFileChooser fc = new JFileChooser();
+				final JFileChooser fc = new JFileChooser();
 				fc.showOpenDialog(null);
 				selFile = fc.getSelectedFile();
 				selFile.getPath();
@@ -51,7 +44,7 @@ public class ImportPDF implements IQuickAction {
 					obj.save();
 				}
 			}
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
 		} finally {
@@ -63,8 +56,14 @@ public class ImportPDF implements IQuickAction {
 	}
 
 	@Override
-	public void setTable(JTable t) {
-		// TODO Auto-generated method stub
+	public void setIdList(final List<String> idlist) {
+		this.idlist = idlist;
+
+	}
+
+	@Override
+	public void setTable(final JTable t) {
+		// Auto-generated method stub
 
 	}
 

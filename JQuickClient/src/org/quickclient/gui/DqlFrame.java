@@ -82,6 +82,7 @@ import com.documentum.xerces_2_8_0.xml.serialize.XMLSerializer;
 import com.documentum.xml.xdql.DfXmlQuery;
 import com.documentum.xml.xdql.IDfXmlQuery;
 
+@Deprecated
 public class DqlFrame extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	DocuSessionManager smanager;

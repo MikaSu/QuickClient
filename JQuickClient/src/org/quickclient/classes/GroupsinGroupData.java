@@ -16,20 +16,15 @@ import java.util.Vector;
  * @author Administrator
  */
 public class GroupsinGroupData {
-    
-    /** Creates a new instance of GroupsinGroupsData */
-    public GroupsinGroupData() {
-        
-    }
-    
-    private Vector groupMembers;
-    
-    public Vector getGroupMembers() {
-        return groupMembers;
-    }
-    
-    public void setGroupMembers(Vector groupmembers) {
-        this.groupMembers = groupmembers;
-    }
-    
+
+	private Vector groupMembers;
+
+	public Vector getGroupMembers() {
+		return groupMembers;
+	}
+
+	public void setGroupMembers(final Vector groupmembers) {
+		this.groupMembers = groupmembers;
+	}
+
 }

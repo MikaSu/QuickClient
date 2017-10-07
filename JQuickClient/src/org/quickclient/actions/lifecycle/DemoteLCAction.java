@@ -16,30 +16,23 @@ import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.DfLogger;
 import com.documentum.fc.common.IDfId;
 
-
 public class DemoteLCAction implements IQuickAction {
 
 	private List<String> idlist;
 
 	@Override
-	public void setIdList(List<String> idlist) {
-		this.idlist = idlist;
-
-	}
-
-	@Override
 	public void execute() throws QCActionException {
-		DocuSessionManager smanager = DocuSessionManager.getInstance();
+		final DocuSessionManager smanager = DocuSessionManager.getInstance();
 		IDfSession session = null;
 		try {
 			session = smanager.getSession();
 			for (int i = 0; i < idlist.size(); i++) {
-				String objid = (String) idlist.get(i);
-				IDfId id = new DfId(objid);
-				IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				final String objid = idlist.get(i);
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
 				obj.demote(null, false);
 			}
-		} catch (DfException ex) {
+		} catch (final DfException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());
 		} finally {
@@ -50,8 +43,14 @@ public class DemoteLCAction implements IQuickAction {
 	}
 
 	@Override
-	public void setTable(JTable t) {
+	public void setIdList(final List<String> idlist) {
+		this.idlist = idlist;
 
+	}
+
+	@Override
+	public void setTable(final JTable t) {
+		//
 	}
 
 }

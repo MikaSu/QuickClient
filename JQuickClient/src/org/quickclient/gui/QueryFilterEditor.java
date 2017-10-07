@@ -31,6 +31,12 @@ import com.documentum.fc.common.DfLogger;
 
 public class QueryFilterEditor extends JFrame {
 
+	private static final String REGULAR_EXPRESSION = "Regular Expression";
+	private static final String ENDS_WITH = "Ends With";
+	private static final String EXACT_MATCH = "Exact Match";
+	private static final String MAX_ROWS = "Max Rows";
+	private static final String CONTAINS = "Contains";
+
 	public static void main(final String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -104,7 +110,7 @@ public class QueryFilterEditor extends JFrame {
 
 		comboValidationType = new JComboBox();
 		comboValidationType.setToolTipText("Type of validation");
-		comboValidationType.setModel(new DefaultComboBoxModel(new String[] { "Contains", "Exact Match", "Begins With", "Ends With", "Regular Expression", "Max Rows" }));
+		comboValidationType.setModel(new DefaultComboBoxModel(new String[] { CONTAINS, EXACT_MATCH, "Begins With", ENDS_WITH, REGULAR_EXPRESSION, MAX_ROWS }));
 		comboValidationType.setBounds(98, 93, 176, 22);
 		contentPane.add(comboValidationType);
 
@@ -128,17 +134,17 @@ public class QueryFilterEditor extends JFrame {
 
 				filter.setFiltertype(QueryFilter.FILTER_TYPE_EXACT_MATCH);
 
-				if (validaationtyyppi.equals("Exact Match")) {
+				if (validaationtyyppi.equals(EXACT_MATCH)) {
 					filter.setFiltertype(QueryFilter.FILTER_TYPE_EXACT_MATCH);
 				} else if (validaationtyyppi.equals("Begins With")) {
 					filter.setFiltertype(QueryFilter.FILTER_TYPE_BEGINS_WITH);
-				} else if (validaationtyyppi.equals("Contains")) {
+				} else if (validaationtyyppi.equals(CONTAINS)) {
 					filter.setFiltertype(QueryFilter.FILTER_TYPE_CONTAINS);
-				} else if (validaationtyyppi.equals("Ends With")) {
+				} else if (validaationtyyppi.equals(ENDS_WITH)) {
 					filter.setFiltertype(QueryFilter.FILTER_TYPE_ENDS_WITH);
-				} else if (validaationtyyppi.equals("Regular Expression")) {
+				} else if (validaationtyyppi.equals(REGULAR_EXPRESSION)) {
 					filter.setFiltertype(QueryFilter.FILTER_TYPE_REGEX);
-				} else if (validaationtyyppi.equals("Max Rows")) {
+				} else if (validaationtyyppi.equals(MAX_ROWS)) {
 					filter.setFiltertype(QueryFilter.FILTER_TYPE_MAX_ROWS);
 				}
 				if (countText.length() > 0) {
@@ -216,7 +222,7 @@ public class QueryFilterEditor extends JFrame {
 		txtCount.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				comboValidationType.setSelectedItem("Max Rows");
+				comboValidationType.setSelectedItem(MAX_ROWS);
 			}
 		});
 		txtCount.setBounds(98, 126, 176, 20);
@@ -238,19 +244,19 @@ public class QueryFilterEditor extends JFrame {
 				filterString = "Starts With";
 			}
 			if (filtertype == QueryFilter.FILTER_TYPE_CONTAINS) {
-				filterString = "Contains";
+				filterString = CONTAINS;
 			}
 			if (filtertype == QueryFilter.FILTER_TYPE_ENDS_WITH) {
-				filterString = "Ends With";
+				filterString = ENDS_WITH;
 			}
 			if (filtertype == QueryFilter.FILTER_TYPE_EXACT_MATCH) {
-				filterString = "Exact Match";
+				filterString = EXACT_MATCH;
 			}
 			if (filtertype == QueryFilter.FILTER_TYPE_REGEX) {
-				filterString = "Regular Expression";
+				filterString = REGULAR_EXPRESSION;
 			}
 			if (filtertype == QueryFilter.FILTER_TYPE_MAX_ROWS) {
-				filterString = "Max Rows";
+				filterString = MAX_ROWS;
 			}
 			v.add(filterString);
 			v.add(filter.getMaxcount());
