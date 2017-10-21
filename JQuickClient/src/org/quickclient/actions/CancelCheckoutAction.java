@@ -41,7 +41,6 @@ public class CancelCheckoutAction implements IQuickAction {
 					final IDfClientX clientx = new DfClientX();
 					final IDfCancelCheckoutOperation operation = clientx.getCancelCheckoutOperation();
 					operation.setKeepLocalFile(false);
-
 					if (obj.isCheckedOut()) {
 						IDfCancelCheckoutNode node;
 						if (obj.isVirtualDocument()) {
@@ -50,20 +49,11 @@ public class CancelCheckoutAction implements IQuickAction {
 						} else {
 							node = (IDfCancelCheckoutNode) operation.add(obj);
 						}
+						node.setKeepLocalFile(false);
 						operation.execute();
 						final IDfList errors = operation.getErrors();
 						if (errors != null && errors.getCount() == 0) {
-							final int rowcount = t.getRowCount();
-							final DefaultTableModel tablemodel = (DefaultTableModel) t.getModel();
-							for (int j = 0; j < rowcount; j++) {
-								final Vector v = (Vector) tablemodel.getDataVector().elementAt(j);
-								final DokuData d = (DokuData) v.lastElement();
-								if (obj.getObjectId().getId().equals(d.getObjID())) {
-									t.setValueAt("", j, 0);
-									t.validate();
-								}
-							}
-
+							updateTable(obj);
 						}
 
 					}
@@ -88,6 +78,20 @@ public class CancelCheckoutAction implements IQuickAction {
 	@Override
 	public void setTable(final JTable t) {
 		this.t = t;
+	}
+
+	private void updateTable(final IDfSysObject obj) throws DfException {
+		final int rowcount = t.getRowCount();
+		final DefaultTableModel tablemodel = (DefaultTableModel) t.getModel();
+		for (int j = 0; j < rowcount; j++) {
+			final Vector v = (Vector) tablemodel.getDataVector().elementAt(j);
+			final DokuData d = (DokuData) v.lastElement();
+			if (obj.getObjectId().getId().equals(d.getObjID())) {
+				t.setValueAt("", j, 0);
+				t.validate();
+			}
+		}
+
 	}
 
 }

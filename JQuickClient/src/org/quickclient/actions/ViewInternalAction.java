@@ -30,21 +30,20 @@ public class ViewInternalAction implements IQuickAction {
 				final IDfId id = new DfId((String) objid);
 				session = smanager.getSession();
 				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
-
 				final ByteArrayInputStream bais = obj.getContent();
 				final String contentType = obj.getContentType();
 				final int length = bais.available();
 				final byte[] buff = new byte[length];
-				bais.read(buff);
-				final String joo = new String(buff);
-				final TextViewer viewer = new TextViewer(true);
-
-				SwingHelper.centerJFrame(viewer);
-				viewer.setText(joo);
-				viewer.setObjid(objid);
-				viewer.setContentType(contentType);
-				viewer.setVisible(true);
-
+				final int bytesread = bais.read(buff);
+				if (bytesread >= 0) {
+					final String joo = new String(buff);
+					final TextViewer viewer = new TextViewer(true);
+					SwingHelper.centerJFrame(viewer);
+					viewer.setText(joo);
+					viewer.setObjid(objid);
+					viewer.setContentType(contentType);
+					viewer.setVisible(true);
+				}
 			} catch (final DfException ex) {
 				DfLogger.error(ex.getMessage(), null, null, ex);
 				SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());

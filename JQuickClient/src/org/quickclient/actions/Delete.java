@@ -1,6 +1,5 @@
 package org.quickclient.actions;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,7 +26,6 @@ import com.documentum.operations.IDfOperationNode;
 public class Delete implements IQuickAction {
 
 	private List<String> idlist;
-	private final List<String> deletedidlist = new ArrayList<>();
 	private JTable table;
 
 	private boolean deleteFolder(final IDfSysObject obj) throws DfException {
@@ -44,8 +42,9 @@ public class Delete implements IQuickAction {
 			deleop.add(obj);
 			success = deleop.execute();
 			final IDfList errors = deleop.getErrors();
-			if (errors.getCount() > 0) {
-				success = false;
+			if (errors != null && errors.getCount() > 0) {
+				deleteFromTable(obj.getObjectId().getId());
+
 			}
 		} else {
 			final IDfClientX clientx = new DfClientX();
@@ -55,11 +54,27 @@ public class Delete implements IQuickAction {
 			deleop.add(obj);
 			success = deleop.execute();
 			final IDfList errors = deleop.getErrors();
-			if (errors.getCount() > 0) {
-				success = false;
+			if (errors != null && errors.getCount() > 0) {
+				deleteFromTable(obj.getObjectId().getId());
+
 			}
 		}
 		return success;
+	}
+
+	private void deleteFromTable(final String id) {
+		final int rowcount = table.getRowCount();
+		final DefaultTableModel tablemodel = (DefaultTableModel) table.getModel();
+		for (int i = 0; i < rowcount; i++) {
+			final Vector v = (Vector) tablemodel.getDataVector().elementAt(i);
+			final DokuData d = (DokuData) v.lastElement();
+			if (id.equals(d.getObjID())) {
+				tablemodel.removeRow(i);
+				break;
+			}
+		}
+		table.validate();
+
 	}
 
 	@Override
@@ -70,18 +85,13 @@ public class Delete implements IQuickAction {
 		try {
 			session = smanager.getSession();
 			for (final String objid : idlist) {
-				// for (int i = 0; i < idlist.size(); i++) {
-				// final String objid = idlist.get(i);
 				final IDfSysObject obj = (IDfSysObject) session.getObject(new DfId(objid));
 				if (objid.startsWith("0b") || objid.startsWith("0c")) {
 					final int answer2 = JOptionPane.showConfirmDialog(null, "Delete Folder " + obj.getObjectName() + " ?", "Choose", JOptionPane.YES_NO_OPTION);
 					if (answer2 == JOptionPane.YES_OPTION) {
-						if (deleteFolder(obj)) {
-							deletedidlist.add(objid);
-						}
+						deleteFolder(obj);
 					}
 				} else {
-
 					final IDfClientX clientx = new DfClientX();
 					final IDfDeleteOperation deleop = clientx.getDeleteOperation();
 					final IDfOperationNode node = deleop.add(obj);
@@ -94,21 +104,13 @@ public class Delete implements IQuickAction {
 					deleop.setOperationMonitor(new OperationMonitor());
 					deleop.execute();
 					final IDfList errors = deleop.getErrors();
-					if (errors.getCount() == 0) {
-						deletedidlist.add(objid);
+					if (errors != null && errors.getCount() == 0) {
+
+						deleteFromTable(obj.getObjectId().getId());
 					}
 				}
 			}
-			final int rowcount = table.getRowCount();
-			final DefaultTableModel tablemodel = (DefaultTableModel) table.getModel();
-			for (int i = 0; i < rowcount; i++) {
-				final Vector v = (Vector) tablemodel.getDataVector().elementAt(i);
-				final DokuData d = (DokuData) v.lastElement();
-				if (this.deletedidlist.contains(d.getObjID())) {
-					tablemodel.removeRow(i);
-				}
-			}
-			table.validate();
+
 		} catch (final DfException ex) {
 			DfLogger.error(this, ex.getMessage(), null, ex);
 			SwingHelper.showErrorMessage("Error occurred!", ex.getMessage());

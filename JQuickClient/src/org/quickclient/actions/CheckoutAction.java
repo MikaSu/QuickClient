@@ -66,7 +66,7 @@ public class CheckoutAction implements IQuickAction {
 							} else {
 								node = (IDfCheckoutNode) operation.add(obj);
 							}
-
+							node.setDownloadContent(true);
 							operation.execute();
 							checkedoutlist.add(obj.getObjectId().getId());
 							final IDfList list = operation.getErrors();

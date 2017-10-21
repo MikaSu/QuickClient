@@ -56,15 +56,12 @@ public class ViewAction implements IQuickAction {
 					}
 					if (sl.getQueryDefinitionType().equals(IDfSmartList.TYPE_QUERY_BUILDER)) {
 						final IDfSearchService ss = new DfSearchService(smanager.getSMgr(), smanager.getDocbasename());
-						final long startmillis = System.currentTimeMillis();
 						final IDfQueryDefinition query = QueryUtils.loadQueryDefinitionFromSmartList(new DfId(objid), smanager.getSMgr(), smanager.getDocbasename());
 						IDfResultsSet results = null;
 						final IDfQueryProcessor process = ss.newQueryProcessor(query, false);
 						process.blockingSearch(10000);
 						results = process.getResults();
 						final IDfQueryStatus status = process.getQueryStatus();
-						final long stopmillis = System.currentTimeMillis();
-						final double time = stopmillis - startmillis;
 						final Utils u = new Utils();
 						DefaultTableModel model = new DefaultTableModelCreator().createModel();
 						model = u.getModelFromResultSet(session, results, ConfigService.getInstance().isShowThumbnails(), model, null);
@@ -97,6 +94,7 @@ public class ViewAction implements IQuickAction {
 			SwingHelper.showErrorMessage("Error..", e.getMessage());
 		} catch (final InterruptedException e) {
 			SwingHelper.showErrorMessage("Your query timed out", e.getMessage());
+			Thread.currentThread().interrupt();
 		}
 	}
 
