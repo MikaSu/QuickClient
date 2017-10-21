@@ -41,6 +41,10 @@ public class CancelCheckoutAction implements IQuickAction {
 					final IDfClientX clientx = new DfClientX();
 					final IDfCancelCheckoutOperation operation = clientx.getCancelCheckoutOperation();
 					operation.setKeepLocalFile(false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/MikaSu/QuickClient.git
 					if (obj.isCheckedOut()) {
 						IDfCancelCheckoutNode node;
 						if (obj.isVirtualDocument()) {
@@ -53,7 +57,21 @@ public class CancelCheckoutAction implements IQuickAction {
 						operation.execute();
 						final IDfList errors = operation.getErrors();
 						if (errors != null && errors.getCount() == 0) {
+<<<<<<< HEAD
 							updateTable(obj);
+=======
+							final int rowcount = t.getRowCount();
+							final DefaultTableModel tablemodel = (DefaultTableModel) t.getModel();
+							for (int j = 0; j < rowcount; j++) {
+								final Vector v = (Vector) tablemodel.getDataVector().elementAt(j);
+								final DokuData d = (DokuData) v.lastElement();
+								if (obj.getObjectId().getId().equals(d.getObjID())) {
+									t.setValueAt("", j, 0);
+									t.validate();
+								}
+							}
+
+>>>>>>> branch 'master' of https://github.com/MikaSu/QuickClient.git
 						}
 
 					}

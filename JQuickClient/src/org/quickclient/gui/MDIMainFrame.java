@@ -89,6 +89,7 @@ public class MDIMainFrame extends javax.swing.JFrame {
 
 		int ind = 0;
 
+<<<<<<< HEAD
 		final ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
 
 		// Get the URLs
@@ -98,6 +99,8 @@ public class MDIMainFrame extends javax.swing.JFrame {
 			System.out.println(url.getFile());
 		}
 
+=======
+>>>>>>> branch 'master' of https://github.com/MikaSu/QuickClient.git
 		for (final String arg : args) {
 			if (arg.equals("-docbroker")) {
 				docbroker = args[ind + 1];

@@ -195,8 +195,13 @@ public class AttributeSelectorFrame extends javax.swing.JFrame {
 		lstAll = new JList();
 		scrollPane.setViewportView(lstAll);
 		panel_1.setLayout(gl_panel_1);
+<<<<<<< HEAD
 		panel.setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("69px"), FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("148px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("69px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("18px"), ColumnSpec.decode("18px"), ColumnSpec.decode("220px"), },
 				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("23px"), FormSpecs.LINE_GAP_ROWSPEC, RowSpec.decode("104px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("177px"), }));
+=======
+		panel.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("69px"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("148px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("69px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("18px"), ColumnSpec.decode("18px"), ColumnSpec.decode("220px"), },
+				new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, RowSpec.decode("23px"), FormFactory.LINE_GAP_ROWSPEC, RowSpec.decode("104px"), FormFactory.RELATED_GAP_ROWSPEC, RowSpec.decode("177px"), }));
+>>>>>>> branch 'master' of https://github.com/MikaSu/QuickClient.git
 		panel.add(lblNewLabel, "2, 2, left, center");
 		panel.add(cmbConfig, "4, 2, fill, top");
 		panel.add(panel_1, "2, 4, 3, 3, left, top");
@@ -253,7 +258,23 @@ public class AttributeSelectorFrame extends javax.swing.JFrame {
 			saveDocument(document);
 
 			readConfig();
+<<<<<<< HEAD
 		} catch (final SAXException | XPathExpressionException | TransformerFactoryConfigurationError | TransformerException | IOException | ParserConfigurationException e) {
+=======
+		} catch (final SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final TransformerException e) {
+>>>>>>> branch 'master' of https://github.com/MikaSu/QuickClient.git
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
