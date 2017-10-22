@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -88,19 +87,6 @@ public class MDIMainFrame extends javax.swing.JFrame {
 	public static void main(final String args[]) {
 
 		int ind = 0;
-
-<<<<<<< HEAD
-		final ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
-
-		// Get the URLs
-		final URL[] urls = ((URLClassLoader) sysClassLoader).getURLs();
-
-		for (final URL url : urls) {
-			System.out.println(url.getFile());
-		}
-
-=======
->>>>>>> branch 'master' of https://github.com/MikaSu/QuickClient.git
 		for (final String arg : args) {
 			if (arg.equals("-docbroker")) {
 				docbroker = args[ind + 1];
