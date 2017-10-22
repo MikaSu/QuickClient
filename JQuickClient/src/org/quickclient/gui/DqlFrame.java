@@ -956,7 +956,7 @@ public class DqlFrame extends javax.swing.JFrame {
 		});
 		cmdHistoryUP = new javax.swing.JButton();
 
-		cmdHistoryUP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fi/fortica/quickclient/gui/small-up17.gif"))); // NOI18N
+		cmdHistoryUP.setIcon(new javax.swing.ImageIcon(getClass().getResource("small-up17.gif"))); // NOI18N
 		cmdHistoryUP.setToolTipText("Browse DQL History");
 		cmdHistoryUP.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1010,7 +1010,7 @@ public class DqlFrame extends javax.swing.JFrame {
 		});
 		cmdHistoryDown1 = new javax.swing.JButton();
 
-		cmdHistoryDown1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fi/fortica/quickclient/gui/small-down17.gif"))); // NOI18N
+		cmdHistoryDown1.setIcon(new javax.swing.ImageIcon(getClass().getResource("small-down17.gif"))); // NOI18N
 		cmdHistoryDown1.setToolTipText("Browse DQL History");
 		cmdHistoryDown1.addActionListener(new java.awt.event.ActionListener() {
 			@Override
