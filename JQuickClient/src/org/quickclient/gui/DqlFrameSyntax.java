@@ -1,7 +1,4 @@
 /*
- * DqlFrame.java
- *
- * Created on 28. lokakuuta 2006, 1:44
  */
 package org.quickclient.gui;
 
