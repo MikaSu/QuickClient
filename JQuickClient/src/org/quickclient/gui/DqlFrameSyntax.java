@@ -151,6 +151,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 	private javax.swing.JMenuItem mnuDump;
 	private javax.swing.JMenuItem mnuExportExcel;
 	private javax.swing.JMenuItem mnuSetAcl;
+	private javax.swing.JMenuItem mnuChangeType;
 	private javax.swing.JMenuItem mnuSetAttribute;
 	private javax.swing.JMenuItem mnuShowLocations;
 	private javax.swing.JMenuItem mnuViewContent;
@@ -667,6 +668,7 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 		mnuExportExcel = new javax.swing.JMenuItem();
 		mnuSetAttribute = new javax.swing.JMenuItem();
 		mnuSetAcl = new javax.swing.JMenuItem();
+		mnuChangeType = new javax.swing.JMenuItem();
 		jPanel1 = new javax.swing.JPanel();
 		lblTimer = new javax.swing.JLabel();
 		jPanel2 = new javax.swing.JPanel();
@@ -796,6 +798,15 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 			}
 		});
 		dqlPopUp.add(mnuSetAcl);
+
+		mnuChangeType.setText("Change Type");
+		mnuChangeType.addActionListener(new java.awt.event.ActionListener() {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent evt) {
+				mnuChangeTypeActionPerformed(evt);
+			}
+		});
+		dqlPopUp.add(mnuChangeType);
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("DQL");
@@ -1209,6 +1220,49 @@ public class DqlFrameSyntax extends javax.swing.JFrame {
 		final AttrEditorFrame3Text attredit = new AttrEditorFrame3Text(objid);
 		attredit.setVisible(true);
 	}// GEN-LAST:event_mnuAttributesActionPerformed
+
+	protected void mnuChangeTypeActionPerformed(final ActionEvent evt) {
+		final String newtype = JOptionPane.showInputDialog("new type?");
+		final int allversions = JOptionPane.showConfirmDialog(this, "All versions?", "option", JOptionPane.YES_NO_OPTION);
+		String all = "";
+		if (allversions == JOptionPane.YES_OPTION) {
+			all = "(ALL)";
+		}
+
+		final int rowvalues[] = tblResult.getSelectedRows();
+		final int column = tblResult.getSelectedColumn();
+		final int selrowcount = tblResult.getSelectedRowCount();
+		final Vector<String> myVector = new Vector<>();
+		for (int i = 0; i < selrowcount; i++) {
+			String val = "";
+			val = (String) tblResult.getValueAt(rowvalues[i], column);
+			myVector.add(val);
+		}
+		IDfSession session = null;
+		try {
+			session = smanager.getSession();
+			for (int i = 0; i < myVector.size(); i++) {
+				final String objid = myVector.get(i);
+				final IDfId id = new DfId(objid);
+				final IDfSysObject obj = (IDfSysObject) session.getObject(id);
+				final String typename = obj.getTypeName();
+				final String dql = "change " + typename + all + " " + " objects to '" + newtype + "' where r_object_id = '" + objid + "'";
+				SwingHelper.showInfoMessage("", dql);
+				// if (obj.isCheckedOut()) {
+				// obj.saveLock();
+				// } else {
+				// obj.save();
+				// }
+			}
+		} catch (final DfException ex) {
+			DfLogger.error(this, ex.getMessage(), null, ex);
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Error occured!", JOptionPane.ERROR_MESSAGE);
+		} finally {
+			if (session != null) {
+				smanager.releaseSession(session);
+			}
+		}
+	}
 
 	private void mnuCopyActionPerformed(final java.awt.event.ActionEvent evt) {
 		final int rowvalues[] = tblResult.getSelectedRows();
